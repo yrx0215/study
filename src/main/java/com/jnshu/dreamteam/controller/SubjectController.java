@@ -88,6 +88,11 @@ public class SubjectController {
     }
 
 
+    /**
+     *  删除科目方法
+     * @param id 删除的科目id
+     * @return 成功返回true 失败返回false
+     */
     @RequestMapping(value = "/a/u/subject/{id}",method = RequestMethod.DELETE)
     public Response delectSubject(@PathVariable("id") Long id){
         Boolean b = subjectService.delectSubject(id);
