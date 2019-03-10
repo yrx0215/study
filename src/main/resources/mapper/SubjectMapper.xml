@@ -3,13 +3,64 @@
 <mapper namespace="com.jnshu.dreamteam.mapper.SubjectMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Subject">
+    <resultMap id="Sbuject" type="com.jnshu.dreamteam.pojo.Subject">
         <id column="id" property="id" />
         <result column="subject_name" property="subjectName" />
-        <result column="subject_status" property="subjectStatus" />
+        <result column="subject_status" property="subjectStatus"/>
         <result column="grade" property="grade" />
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
+
+    <!--addSubject-->
+    <insert id="addSubject" parameterType="com.jnshu.dreamteam.pojo.Subject" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO subject (subject_name,grade,create_at) VALUES (#{subjectName},#{grade},#{createAt})
+
+    </insert>
+
+    <!--updateSubject-->
+    <update id="updateSubject" >
+        UPDATE  subject
+        SET subject_name = #{subjectName},
+            grade = #{grade},
+            update_at = #{updateAt}
+        where id = #{id}
+    </update>
+
+    <!--selectSubject-->
+    <select id="selectSubject" resultMap="Sbuject">
+      SELECT subject_name, grade, subject_status
+      FROM subject
+      WHERE id = #{id}
+    </select>
+
+    <!--delectSubject-->
+    <delete id="delectSubject">
+      DELETE
+      FROM subject
+      WHERE id = #{id}
+    </delete>
+
+    <!--selectAllSubject-->
+    <select id="selectAllSubject" resultType="com.jnshu.dreamteam.pojo.Subject">
+        select id, subject_name,grade,subject_status
+        FROM  subject
+    </select>
+
+    <!--selectSubjectStatusOrName-->
+    <select id="selectSubjectStatusOrName" resultType="com.jnshu.dreamteam.pojo.Subject">
+        SELECT id, subject_name, grade, subject_status
+        FROM subject
+        <where>
+            <if test="subjectStatus != null">
+              AND subject_status = #{subjectStatus}
+            </if>
+            <if test="subjectName != null &amp;&amp; subjectName != &quot;&quot;">
+              and subject_name = #{subjectName}
+            </if>
+        </where>
+    </select>
+
+
 
 </mapper>
