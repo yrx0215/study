@@ -1,10 +1,6 @@
 package com.jnshu.dreamteam.pojo;
 
 import lombok.Data;
-<<<<<<< HEAD
-import org.apache.ibatis.jdbc.Null;
-=======
->>>>>>> 1fe4c2e59acf425eddce88e24eafce7d906c2794
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -26,7 +22,7 @@ public class Response<T> implements Serializable {
         this.message = message;
         this.data = data;
     }
-<<<<<<< HEAD
+
 
     public Response(Integer code,String message){
         this.code = code;
@@ -45,6 +41,4 @@ public class Response<T> implements Serializable {
     public static Response error(){
         return new Response(StatusCode.FAILURE);
     }
-=======
->>>>>>> 1fe4c2e59acf425eddce88e24eafce7d906c2794
 }
