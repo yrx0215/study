@@ -29,11 +29,11 @@ public class HotRecommend implements Serializable {
     @TableField("grade")
     private Integer grade;
 
-    @TableField("category_id")
+    @TableField("subject_id")
     private Integer subject_id;
 
     // 课程
-    @TableField("course")
+    @TableField("course_id")
     private Integer course_id;
 
     @TableField("cover_img_url")
