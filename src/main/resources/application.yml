@@ -1,10 +1,9 @@
 spring:
   datasource:
     url: ${url}
-    username: ${username}
+    username: ${name}
     password: ${password}
     driver-class-name: ${driver-class-name}
-    platform: mysql
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
