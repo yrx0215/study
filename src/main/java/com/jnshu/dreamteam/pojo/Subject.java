@@ -7,13 +7,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
 /**
- * <p>
- * 
- * </p>
- *
- * @author wzp
- * @since 2019-03-10
+ * subject 实体类
+ * @author Administrator
  */
 @Data
 public class Subject implements Serializable {
