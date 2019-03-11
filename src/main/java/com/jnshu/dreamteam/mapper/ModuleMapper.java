@@ -1,6 +1,6 @@
 package com.jnshu.dreamteam.mapper;
 
-import com.jnshu.dreamteam.pojo.Permission;
+import com.jnshu.dreamteam.pojo.Module;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author wzp
  * @since 2019-03-10
  */
-public interface PermissionMapper extends BaseMapper<Permission> {
+public interface ModuleMapper extends BaseMapper<Module> {
 
 }

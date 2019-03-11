@@ -55,6 +55,7 @@ public class User implements Serializable {
     private Long changeAt;
 
     /**
+     * 该用户所拥有的角色
      * 不作为数据库字段使用
      */
     @TableField(exist = false)

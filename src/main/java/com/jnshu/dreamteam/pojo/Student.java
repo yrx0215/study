@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
@@ -9,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wzp
@@ -20,7 +21,7 @@ public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("id")
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
@@ -91,5 +92,4 @@ public class Student implements Serializable {
      */
     @TableField(exist = false)
     private List<Lesson> enshrineLesson;
-
 }

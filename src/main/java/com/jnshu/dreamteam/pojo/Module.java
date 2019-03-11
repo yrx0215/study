@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-03-10
  */
 @Data
-public class Permission implements Serializable {
+public class Module implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,10 +24,13 @@ public class Permission implements Serializable {
     private Long id;
 
     /**
-     * 权限
+     * 模块
      */
-    @TableField("permission")
-    private String permission;
+    @TableField("module")
+    private String module;
+
+    @TableField("parent_module_id")
+    private int parentModuleId;
 
 
 }

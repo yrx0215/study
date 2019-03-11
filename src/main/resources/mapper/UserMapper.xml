@@ -12,4 +12,12 @@
         <result column="change_at" property="changeAt" />
     </resultMap>
 
+
+    <insert id="insertUserRole">
+        INSERT INTO user_role VALUES
+        <foreach collection="roleIds" item="roleId" index="index" separator=",">
+            (#{userId},#{roleId})
+        </foreach>
+    </insert>
+
 </mapper>

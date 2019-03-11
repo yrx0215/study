@@ -15,4 +15,6 @@
         <result column="star" property="star" />
     </resultMap>
 
+
+
 </mapper>
