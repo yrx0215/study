@@ -4,19 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author wzp
- * @since 2019-03-10
+ * 课程相关属性
+ * @author yrx
  */
 @Data
+@Component
 public class Lesson implements Serializable {
 
     private static final long serialVersionUID = 1L;
