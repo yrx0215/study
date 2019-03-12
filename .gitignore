@@ -3,7 +3,7 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 
 
-*.yml
+application-config.yml
 
 ### STS ###
 .apt_generated
