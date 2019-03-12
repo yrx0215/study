@@ -64,30 +64,30 @@ public class DreamteamApplicationTests {
         }
     }
 
-    @Test
-    public void insert1(){
-        List<Long> list = new ArrayList<>();
-        list.add(1L);
-        list.add(2L);
-        userMapper.insertUserRole(1L,list);
-    }
 
     @Test
     public void json(){
         User user = new User();
+        user.setId(1L);
         user.setPassword("123456");
-        user.setAccount("123456@qq.com");
+        user.setAccount("klsdfjklsdjf");
         user.setPhone(9034892304L);
         List<Role> roles = new ArrayList<>();
         Role role = new Role();
         role.setId(1L);
         Role role1 = new Role();
         role1.setId(2L);
+        Role role2 = new Role();
+        role2.setId(3L);
         roles.add(role);
         roles.add(role1);
-        user.setRoles(roles);
+        roles.add(role2);
         Gson gson = new Gson();
         System.out.println(gson.toJson(user));
     }
+
+
+
+
 
 }

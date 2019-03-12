@@ -4,18 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
+ * 课程相关实体类
  *
- * @author wzp
- * @since 2019-03-10
+ * @author yrx
  */
 @Data
+@Component
 public class Course implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +30,12 @@ public class Course implements Serializable {
      */
     @TableField("course_name")
     private String courseName;
+
+    /**
+     * 所属科目名称
+     */
+    @TableField("subject_name")
+    private String subjectName;
 
     /**
      * 课程难度等级
@@ -66,7 +71,7 @@ public class Course implements Serializable {
      * 所属科目id
      */
     @TableField("subject_id")
-    private Integer subjectId;
+    private Long subjectId;
 
     /**
      * 课程创建时间
