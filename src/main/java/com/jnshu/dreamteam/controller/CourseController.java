@@ -13,6 +13,7 @@ public class CourseController {
     public Response getCourseBySubjectId(Long id){
         Course course = new Course();
         course.setCourseName("测试CourseName 选择所有课程");
+        course.setSubjectName("sujbectName 所有课程");
         course.setCourseIntroduction("测试CourseIntroduction 选择所有课程");
         course.setStudyNumber(100);
         course.setCourseStatus(1);
@@ -33,6 +34,7 @@ public class CourseController {
     public Response updateCourseByCourseId(Long id,Course course){
         course.setCourseName("测试CourseName 更新");
         course.setCourseIntroduction("测试CourseIntroduction 更新");
+        course.setSubjectName("subjectName 更新");
         course.setStudyNumber(100);
         course.setCourseStatus(1);
         course.setCourseLevel(2);
@@ -55,5 +57,6 @@ public class CourseController {
         return new Response(0,"success",course);
     }
 
+    
 
 }
