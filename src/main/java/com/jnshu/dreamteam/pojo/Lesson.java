@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -33,6 +34,18 @@ public class Lesson implements Serializable {
     private String lessonName;
 
     /**
+     * 所属科目名称
+     */
+    @TableField("subject_name")
+    private String subjectName;
+
+    /**
+     * 所属课程名称
+     */
+    @TableField("course_name")
+    private String courseName;
+
+    /**
      * 课时介绍
      */
     @TableField("lesson_introduced")
@@ -47,8 +60,8 @@ public class Lesson implements Serializable {
     /**
      * 通过课时奖励星星数
      */
-    @TableField("reward_statr")
-    private Integer rewardStatr;
+    @TableField("reward_star")
+    private Integer rewardStar;
 
     /**
      * 解锁课时需要的星星数 : 免费为0 默认为0
@@ -60,7 +73,13 @@ public class Lesson implements Serializable {
      * 解锁课时需要的人民币数  0为免费 默认为0
      */
     @TableField("unlock_cost")
-    private Double unlockCost;
+    private BigDecimal unlockCost;
+
+    /**
+     * 所属科目id
+     */
+    @TableField("subject_id")
+    private Long subjectId;
 
     /**
      * 所属课程id
@@ -81,4 +100,6 @@ public class Lesson implements Serializable {
     private Long updateAt;
 
 
+    public void setUnlockCost(double v) {
+    }
 }
