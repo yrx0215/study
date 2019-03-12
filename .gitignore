@@ -27,3 +27,4 @@ application-config.yml
 /nbdist/
 /.nb-gradle/
 /build/
+src/test/**
