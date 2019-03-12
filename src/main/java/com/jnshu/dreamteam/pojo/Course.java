@@ -33,6 +33,12 @@ public class Course implements Serializable {
     private String courseName;
 
     /**
+     * 所属科目名称
+     */
+    @TableField("subject_name")
+    private String subjectName;
+
+    /**
      * 课程难度等级
      */
     @TableField("course_level")
@@ -66,7 +72,7 @@ public class Course implements Serializable {
      * 所属科目id
      */
     @TableField("subject_id")
-    private Integer subjectId;
+    private Long subjectId;
 
     /**
      * 课程创建时间
