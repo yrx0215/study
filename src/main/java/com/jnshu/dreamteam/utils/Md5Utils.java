@@ -40,7 +40,6 @@ public class Md5Utils {
                 stringBuilder.append(hexString);
             }
         }
-        System.out.println(stringBuilder.length());
         return stringBuilder.toString();
     }
 
