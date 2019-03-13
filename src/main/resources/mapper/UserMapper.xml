@@ -10,14 +10,7 @@
         <result column="phone" property="phone" />
         <result column="create_at" property="createAt" />
         <result column="change_at" property="changeAt" />
+        <result column="role_name" property="roleName" />
     </resultMap>
-
-
-    <insert id="insertUserRole">
-        INSERT INTO user_role VALUES
-        <foreach collection="roleIds" item="roleId" index="index" separator=",">
-            (#{userId},#{roleId})
-        </foreach>
-    </insert>
 
 </mapper>
