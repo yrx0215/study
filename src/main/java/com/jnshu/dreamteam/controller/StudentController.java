@@ -11,13 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 前台注册模块
+ * @author wzp
+ */
 @Log4j2
 @RestController
 public class StudentController {
 
 
     /**
-     * 发送手机短信
+     * 发送手机短信,需要判断手机号是否唯一
      * @param phone
      * @return
      */
@@ -45,6 +49,7 @@ public class StudentController {
 
     /**
      * 手机验证后，添加用户名，昵称，年级等信息，需携带token
+     * 需要判断昵称用户名和昵称是否注册过
      * @param account
      * @param nickName
      * @param grade
@@ -65,14 +70,18 @@ public class StudentController {
      * @throws IOException
      */
     @PostMapping("/a/u/student/img")
-    public Response<String> uploadStudentImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest)
+    public Response<String> uploadStudentImg(@RequestParam("a") MultipartFile file, HttpServletRequest httpServletRequest)
                                              throws IOException {
         String url = UploadPic.uploadFactory(file,"test","student");
         return new Response<>(200,"上传成功","图片地址："+url);
     }
 
+    @PostMapping("/a/student/login")
+    public Response login(@RequestParam("account")String account
+                         ,@RequestParam("password") String password
+                         ,HttpServletResponse httpServletResponse){
+        return Response.ok();
 
 
-
-
+    }
 }

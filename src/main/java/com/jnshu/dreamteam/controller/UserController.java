@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.pojo.User;
 import com.jnshu.dreamteam.service.UserService;
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 
+/**
+ * 后台账户管理模块
+ * @author wzp
+ */
 @Log4j2
 @RestController
 public class UserController {
@@ -29,10 +34,11 @@ public class UserController {
      * @return
      */
     @PostMapping("/a/u/user")
-    public Response registerUser(@Validated @RequestBody User user, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public Response registerUser(@Validated @RequestBody User user, BindingResult bindingResult) throws ValidatedParamsOnlyException {
+        if(bindingResult.hasErrors()) {
             return ValidatedUtil.errorInfo(bindingResult);
         }
+        userService.validatedAccountOnly(user.getAccount());
         Long id = userService.insertUserOne(user);
         return id!=null?Response.ok():Response.error();
     }
@@ -44,11 +50,12 @@ public class UserController {
      * @return
      */
     @PutMapping("/a/u/user")
-    public Response updateUser(@Validated @RequestBody User user, BindingResult bindingResult){
+    public Response updateUser(@Validated @RequestBody User user, BindingResult bindingResult)throws ValidatedParamsOnlyException{
         log.info("入参为"+user);
         if(bindingResult.hasErrors()){
             return ValidatedUtil.errorInfo(bindingResult);
         }
+        userService.validatedAccountOnly(user.getAccount());
         return userService.updateUserOne(user)!=null?Response.ok():Response.error();
     }
 
@@ -104,11 +111,15 @@ public class UserController {
     /**
      * 携带请求头，依据token解析ID来进行对应密码更改
      * @param httpServletResponse
-     * @param password
+     * @param newPassword
+     * @param oldPassword
      * @return
      */
     @PostMapping("/a/u/password")
-    public Response changePassword(HttpServletResponse httpServletResponse,@RequestParam("password") String password){
+    public Response changePassword(HttpServletResponse httpServletResponse
+                                  ,@RequestParam("newPassword") String newPassword
+                                  ,@RequestParam("oldPassword") String oldPassword){
+//        newPassword.matches("^[0-9a-zA-Z_!@#$%^&*.,]{6,16}$");
         return Response.ok();
     }
 

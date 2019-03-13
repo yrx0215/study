@@ -2,7 +2,9 @@ package com.jnshu.dreamteam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.mapper.UserMapper;
+import com.jnshu.dreamteam.pojo.Student;
 import com.jnshu.dreamteam.pojo.User;
 import com.jnshu.dreamteam.service.UserService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
@@ -72,5 +74,16 @@ public class UserServiceImpl implements UserService {
             map.put("roleName",user.getRoleName());
         }
         return map;
+    }
+
+    @Override
+    public Boolean validatedAccountOnly(String account) throws ValidatedParamsOnlyException {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account",account);
+        Integer count = userMapper.selectCount(queryWrapper);
+        if(count==0){
+            return true;
+        }
+        throw new ValidatedParamsOnlyException("该账号已存在");
     }
 }
