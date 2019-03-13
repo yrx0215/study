@@ -1,7 +1,9 @@
 package com.jnshu.dreamteam.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,6 +12,7 @@ import java.util.List;
  * course课程相关信息
  * @author yrx
  */
+@Component
 public interface CourseMapper extends BaseMapper<Course> {
 
 
@@ -42,11 +45,16 @@ public interface CourseMapper extends BaseMapper<Course> {
 
 
     /**
-     * 模糊查询课程列表
+     * 模糊查询课程列表 并分页
+     * @param iPage  分页对象
+     * @param subjectName 科目名称
+     * @param conurseName  课程名称
+     * @param courseStatus 课程状态
      * @return 返回值为查询的对象列表
      */
-    List<Course> selectCourseByFuzzy(String subjectName,
-                                     Integer courseStatus,
-                                     String conurseName);
+    IPage selectCourseByFuzzy(IPage iPage,
+                              Integer subjectName,
+                              Integer courseStatus,
+                              String conurseName);
 
 }

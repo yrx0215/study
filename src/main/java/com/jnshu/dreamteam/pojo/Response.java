@@ -12,7 +12,7 @@ public class Response<T> implements Serializable {
     private String message;
     private T data;
 
-    private static final long serialVersionUid = 1L;
+    private static final long SERIALVERSIONUID = 1L;
 
     public Response() {
     }

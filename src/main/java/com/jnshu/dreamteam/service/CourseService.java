@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
 
 import java.util.List;
@@ -38,10 +39,15 @@ public interface CourseService {
 
 
     /**
-     * 模糊查询课程列表
-     * @return 返回值为查询的对象列表
+     * 模糊查询课程信息
+     * @param iPage 分页相关对象
+     * @param subjectName 科目名称
+     * @param courseStatus 课程状态
+     * @param courseName 课程名称
+     * @return 返回值为符合模糊查询的分页数据
      */
-    List<Course> selectCourseByFuzzy(String subjectName,
+    IPage<Course> selectCourseByFuzzy(IPage iPage,
+                                     Integer subjectName,
                                      Integer courseStatus,
                                      String courseName);
 

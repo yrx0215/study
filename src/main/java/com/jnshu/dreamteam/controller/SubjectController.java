@@ -1,16 +1,13 @@
 package com.jnshu.dreamteam.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.SubjectService;
+import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -35,8 +32,11 @@ public class SubjectController {
      * @return 返回值为 所有subject的集合
      */
     @RequestMapping(value = "/a/u/allSubject", method = RequestMethod.GET)
-    public Response<List<Subject>> getAllSubject(){
-        List<Subject> subjects = subjectService.selectAllSubject();
+    public Response getAllSubject(@RequestParam(value = "page",required = false) Integer page,
+                                  @RequestParam(value = "size",required = false) Integer size){
+        page = page==null||page<=0?1:page;
+        size = size==null||size<=0?10:size;
+        IPage<Subject> subjects = subjectService.selectAllSubject(page,size);
         return new Response<>(200,"success",subjects);
     }
 
@@ -48,8 +48,12 @@ public class SubjectController {
      * @return 根据科目状态和名称 返回对应的subject集合
      */
     @RequestMapping(value = "/a/u/statusOrName", method = RequestMethod.GET)
-    public Response<List<Subject>> getSubjectByStatusOrName(Integer subjectStatus, Integer subjectName){
-        List<Subject> subjects = subjectService.selectSubjectByStutasOrName(subjectStatus, subjectName);
+    public Response getSubjectByStatusOrName(@RequestParam(value = "page",required = false) Integer page,
+                                             @RequestParam(value = "size",required = false) Integer size,
+                                             @RequestParam(value = "subjectStatus",required = false) Integer subjectStatus,
+                                             @RequestParam(value = "subjectName",required = false) Integer subjectName){
+        IPage myPage = new MyPage(page,size);
+        IPage<Subject> subjects = subjectService.selectSubjectByStutasOrName(myPage,subjectStatus, subjectName);
         return new Response<>(0,"success",subjects);
     }
 

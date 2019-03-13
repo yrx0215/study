@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.CourseMapper;
 import com.jnshu.dreamteam.pojo.Course;
 import com.jnshu.dreamteam.service.CourseService;
@@ -39,9 +40,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> selectCourseByFuzzy(String subjectName,
+    public IPage selectCourseByFuzzy(IPage iPage,
+                                            Integer subjectName,
                                             Integer courseStatus,
                                             String courseName) {
-        return courseMapper.selectCourseByFuzzy(subjectName,courseStatus,courseName);
+        return courseMapper.selectCourseByFuzzy(iPage,subjectName,courseStatus,courseName);
     }
 }

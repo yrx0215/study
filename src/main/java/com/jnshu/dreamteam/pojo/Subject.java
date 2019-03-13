@@ -26,6 +26,7 @@ public class Subject implements Serializable {
     /**
      * 学科姓名 1-3对应 语文 数学 英语
      */
+    
     @TableField("subject_name")
     private Integer subjectName;
 
