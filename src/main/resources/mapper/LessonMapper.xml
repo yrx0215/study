@@ -8,7 +8,7 @@
         <result column="lesson_name" property="lessonName" />
         <result column="lesson_introduced" property="lessonIntroduced" />
         <result column="lesson_status" property="lessonStatus" />
-        <result column="reward_statr" property="rewardStatr" />
+        <result column="reward_statr" property="rewardStar" />
         <result column="unlock_star" property="unlockStar" />
         <result column="unlock_cost" property="unlockCost" />
         <result column="course_id" property="courseId" />

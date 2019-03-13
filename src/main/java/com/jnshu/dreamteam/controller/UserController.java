@@ -101,6 +101,17 @@ public class UserController {
         return new Response(100,"账号不存在或密码错误");
     }
 
+    /**
+     * 携带请求头，依据token解析ID来进行对应密码更改
+     * @param httpServletResponse
+     * @param password
+     * @return
+     */
+    @PostMapping("/a/u/password")
+    public Response changePassword(HttpServletResponse httpServletResponse,@RequestParam("password") String password){
+        return Response.ok();
+    }
+
 
 
 }

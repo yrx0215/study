@@ -34,6 +34,12 @@ public class Response<T> implements Serializable {
         this.message = statusCode.getMessage();
     }
 
+    public Response(StatusCode statusCode,T data){
+        this.code = statusCode.getCode();
+        this.message = statusCode.getMessage();
+        this.data = data;
+    }
+
     public static Response ok(){
         return new Response(StatusCode.SUCCESS);
     }
@@ -41,4 +47,5 @@ public class Response<T> implements Serializable {
     public static Response error(){
         return new Response(StatusCode.FAILURE);
     }
+
 }
