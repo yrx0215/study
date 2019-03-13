@@ -3,6 +3,7 @@ package com.jnshu.dreamteam.controller;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.SubjectService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,18 @@ import java.util.List;
 /**
  * subject 科目相关接口
  *
+ * @author yrx
  */
 @RestController
+@Slf4j
 public class SubjectController {
 
+    private final SubjectService subjectService;
+
     @Autowired
-    private SubjectService subjectService;
+    public SubjectController(SubjectService subjectService) {
+        this.subjectService = subjectService;
+    }
 
     /**
      *
@@ -28,9 +35,9 @@ public class SubjectController {
      * @return 返回值为 所有subject的集合
      */
     @RequestMapping(value = "/a/u/allSubject", method = RequestMethod.GET)
-    public Response getAllSubject(){
+    public Response<List<Subject>> getAllSubject(){
         List<Subject> subjects = subjectService.selectAllSubject();
-        return new Response(0,"success",subjects);
+        return new Response<>(200,"success",subjects);
     }
 
     /**
@@ -41,9 +48,9 @@ public class SubjectController {
      * @return 根据科目状态和名称 返回对应的subject集合
      */
     @RequestMapping(value = "/a/u/statusOrName", method = RequestMethod.GET)
-    public Response getSubjectByStatusOrName(Integer subjectStatus, Integer subjectName){
+    public Response<List<Subject>> getSubjectByStatusOrName(Integer subjectStatus, Integer subjectName){
         List<Subject> subjects = subjectService.selectSubjectByStutasOrName(subjectStatus, subjectName);
-        return new Response(0,"success",subjects);
+        return new Response<>(0,"success",subjects);
     }
 
     /**
@@ -52,9 +59,9 @@ public class SubjectController {
      * @return 科目对象信息
      */
     @RequestMapping(value = "/a/u/subject/{id}", method = RequestMethod.GET)
-    public Response getSubjectById(@PathVariable("id") Long id){
+    public Response<Subject> getSubjectById(@PathVariable("id") Long id){
         Subject subject = subjectService.selectSubject(id);
-        return new Response(0,"success",subject);
+        return new Response<>(0,"success",subject);
     }
 
     /**
@@ -64,14 +71,14 @@ public class SubjectController {
      */
     @RequestMapping(value = "/a/u/subject",method = RequestMethod.PUT)
     public Response updateSubject(Subject subject){
+        log.info("update subject, id = " + subject.getId());
         subject.setUpdateAt(System.currentTimeMillis());
         Boolean b = subjectService.updateSubject(subject);
-
         if (b){
-            return new Response(0,"success",subject);
+            log.info("update success, subjcet id = " + subject.getId());
+            return Response.ok();
         }
-
-        return new Response(-1,"更新失败",subject);
+        return new Response<>(-1,"更新失败",subject);
     }
 
     /**
@@ -80,11 +87,11 @@ public class SubjectController {
      * @return 返回值为新增subject对象
      */
     @RequestMapping(value = "/a/u/subject",method = RequestMethod.POST)
-    public Response addSubject(Subject subject){
+    public Response<Long> addSubject(Subject subject){
         subject.setCreateAt(System.currentTimeMillis());
         subjectService.addSubject(subject);
         Long id = subject.getId();
-        return new Response(0,"success",id);
+        return new Response<>(0,"success",id);
     }
 
 
@@ -94,13 +101,12 @@ public class SubjectController {
      * @return 成功返回true 失败返回false
      */
     @RequestMapping(value = "/a/u/subject/{id}",method = RequestMethod.DELETE)
-    public Response delectSubject(@PathVariable("id") Long id){
+    public Response<Boolean> delectSubject(@PathVariable("id") Long id){
         Boolean b = subjectService.delectSubject(id);
         if (b){
-            return new Response(0,"success",b);
+            return new Response<>(0,"success", true);
         }
-        return new Response(0,"Delect fail",b);
-
+        return new Response<>(0,"Delect fail",b);
     }
 
 
