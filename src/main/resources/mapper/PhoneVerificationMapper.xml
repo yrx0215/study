@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dreamteam.mapper.PhoneVerificationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.PhoneVerification">
+        <id column="phone" property="phone" />
+        <result column="verification_code" property="verificationCode" />
+        <result column="create_at" property="createAt" />
+    </resultMap>
+
+
+    <insert id="phoneVerification" parameterType="com.jnshu.dreamteam.pojo.PhoneVerification">
+        INSERT INTO phone_verification VALUE (#{phone},#{verificationCode},#{createAt})
+        ON DUPLICATE KEY UPDATE phone=#{phone},verification_code=#{verificationCode},create_at=#{createAt}
+    </insert>
+
+</mapper>

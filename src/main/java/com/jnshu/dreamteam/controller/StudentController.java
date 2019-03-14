@@ -1,12 +1,17 @@
 package com.jnshu.dreamteam.controller;
 
+import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Response;;
+import com.jnshu.dreamteam.service.StudentService;
+import com.jnshu.dreamteam.utils.MessageUtil;
 import com.jnshu.dreamteam.utils.UploadPic;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,6 +24,8 @@ import java.io.IOException;
 @RestController
 public class StudentController {
 
+    @Resource
+    private StudentService studentService;
 
     /**
      * 发送手机短信,需要判断手机号是否唯一
@@ -26,7 +33,15 @@ public class StudentController {
      * @return
      */
     @PostMapping("/a/student/phone")
-    public Response studentPhone(@RequestParam("phone") Long phone){
+    public Response studentPhone(@RequestParam("phone") Long phone) throws Exception{
+        studentService.validatedPhoneOnly(phone);
+        String code = MessageUtil.randomNum(6);
+        PhoneVerification phoneVerification = new PhoneVerification();
+        phoneVerification.setPhone(phone);
+        phoneVerification.setVerificationCode(code);
+        phoneVerification.setCreateAt(System.currentTimeMillis());
+        studentService.phoneVerification(phoneVerification);
+        MessageUtil.sendMessage(phone.toString(),code);
         return Response.ok();
     }
 
