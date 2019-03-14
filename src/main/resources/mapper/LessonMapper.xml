@@ -3,17 +3,57 @@
 <mapper namespace="com.jnshu.dreamteam.mapper.LessonMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Lesson">
+    <resultMap id="Lesson" type="com.jnshu.dreamteam.pojo.Lesson">
         <id column="id" property="id" />
         <result column="lesson_name" property="lessonName" />
+        <result column="course_name" property="courseName" />
+        <result column="subject_name" property="subjectName" />
         <result column="lesson_introduced" property="lessonIntroduced" />
         <result column="lesson_status" property="lessonStatus" />
-        <result column="reward_statr" property="rewardStar" />
+        <result column="reward_star" property="rewardStar" />
         <result column="unlock_star" property="unlockStar" />
         <result column="unlock_cost" property="unlockCost" />
         <result column="course_id" property="courseId" />
+        <result column="subject_id" property="subjectId" />
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
+
+    <!--public void selectAllLesson(IPage iPage);-->
+    <select id="selectAllLesson" resultMap="Lesson">
+      select id,lesson_name, subject_name, course_name, lesson_status
+      FROM lesson
+
+    </select>
+    <!--public void selectLessonById(Long id);-->
+    <select id="selectLessonById" resultMap="Lesson">
+      SELECT lesson_name, lesson_introduced, reward_star, subject_id, course_id
+      FROM  lesson
+      WHERE  id = #{id}
+    </select>
+
+    <!--public void updateLesson(Lesson lesson);-->
+    <update id="updateLesson">
+        UPDATE lesson
+        <set>
+            <if test="lessonName != null">
+              lesson_name = #{lessonName},
+            </if>
+            <if test="lessonIntroduced != null">
+              lesson_introduced = #{lessonIntroduced},
+            </if>
+            <if test="rewardStar != null">
+              reward_star = #{rewardStar},
+            </if>
+            update_at = #{updateAt}
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--public void addLesson(Lesson lesson);-->
+    <insert id="addLesson" keyProperty="id" useGeneratedKeys="true" parameterType="com.jnshu.dreamteam.pojo.Lesson">
+        INSERT  INTO  lesson (lesson_name, lesson_introduced, reward_star, unlock_star, unlock_cost, course_id, subject_id, course_name, subject_name,create_at)
+        VALUES (#{lessonName},#{lessonIntroduced},#{rewardStar},#{unlockStar},#{unlockCost},#{courseId},#{subjectId},#{courseName},#{subjectName},#{createAt})
+    </insert>
 
 </mapper>
