@@ -1,11 +1,15 @@
 package com.jnshu.dreamteam.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.User;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author wzp
+ */
 public interface UserService {
 
 
@@ -46,4 +50,12 @@ public interface UserService {
      * @return
      */
     Map<String,Object> validatePassword(String account, String password);
+
+    /**
+     * 验证账号是否已经注册，已注册则抛异常
+     * @param account
+     * @return
+     * @throws ValidatedParamsOnlyException
+     */
+    Boolean validatedAccountOnly(String account) throws ValidatedParamsOnlyException;
 }
