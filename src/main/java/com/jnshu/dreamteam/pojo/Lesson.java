@@ -1,13 +1,12 @@
 package com.jnshu.dreamteam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 课程相关属性
@@ -32,10 +31,10 @@ public class Lesson implements Serializable {
     private String lessonName;
 
     /**
-     * 所属科目名称
+     * 所属科目名称 123 语数英
      */
     @TableField("subject_name")
-    private String subjectName;
+    private Integer subjectName;
 
     /**
      * 所属课程名称
@@ -71,7 +70,7 @@ public class Lesson implements Serializable {
      * 解锁课时需要的人民币数  0为免费 默认为0
      */
     @TableField("unlock_cost")
-    private BigDecimal unlockCost;
+    private Double unlockCost;
 
     /**
      * 所属科目id
@@ -98,6 +97,4 @@ public class Lesson implements Serializable {
     private Long updateAt;
 
 
-    public void setUnlockCost(double v) {
-    }
 }

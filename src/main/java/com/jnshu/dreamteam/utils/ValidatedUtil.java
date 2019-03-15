@@ -18,7 +18,7 @@ public class ValidatedUtil {
             String message;
             List<ObjectError> list =bindingResult.getAllErrors();
             message=list.get(0).getDefaultMessage();
-            return new Response(-1,message);
+            return new Response(100,message);
     }
 
 

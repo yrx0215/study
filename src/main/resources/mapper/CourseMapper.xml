@@ -3,7 +3,7 @@
 <mapper namespace="com.jnshu.dreamteam.mapper.CourseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Course">
+    <resultMap id="Course" type="com.jnshu.dreamteam.pojo.Course">
         <id column="id" property="id" />
         <result column="course_name" property="courseName" />
         <result column="course_level" property="courseLevel" />
@@ -15,5 +15,64 @@
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
+    
+    <!--public List<Course> selectAllCourse();-->
+    <select id="selectAllCourse" resultType="com.jnshu.dreamteam.pojo.Course">
+        select id,course_name, subject_id, course_level, study_number,course_status
+        FROM course
+
+    </select>
+
+    <!--public Long addCourse(Course course);-->
+    <insert id="addCourse" parameterType="com.jnshu.dreamteam.pojo.Course" keyProperty="id" useGeneratedKeys="true">
+        INSERT  into course(course_name,course_level,course_pic,course_introduction,subject_id,subject_name, create_at)
+        VALUES  (#{courseName},#{courseLevel},#{coursePic},#{courseIntroduction},#{subjectId},#{subjectName},#{createAt})
+    </insert>
+
+    <!--public Course selectCourseById(Long id);-->
+    <select id="selectCourseById" resultMap="Course">
+        SELECT subject_id , course_name, course_level, course_pic, course_introduction
+        FROM course
+        WHERE  id = #{id}
+    </select>
+
+    <!--public Boolean updateCourse(Course course);-->
+    <update id="updateCourse" >
+      UPDATE course
+      <set>
+          <if test="courseName != null">
+            course_name = #{courseName},
+          </if>
+          <if test="courseLevel != null">
+            course_level = #{courseLevel},
+          </if>
+          <if test="coursePic != null">
+            course_pic = #{coursePic},
+          </if>
+          <if test="courseIntroduction != null">
+            course_introduction = #{courseIntroduction},
+          </if>
+          update_at = #{updateAt}
+      </set>
+        where id = #{id}
+    </update>
+
+    <!-- public List<Course> selectCourseByFuzzy();-->
+
+    <select id="selectCourseByFuzzy" resultMap="Course">
+      SELECT subject_id , course_name, course_level, course_pic, course_introduction
+      FROM course
+      <where>
+          <if test="subjectName != null">
+            subject_name = #{subjectName}
+          </if>
+          <if test="courseStatus != null">
+            course_status = #{courseStatus}
+          </if>
+          <if test="courseName != null">
+            course_name like concat(concat('%',#{courseName}),'%')
+          </if>
+      </where>
+    </select>
 
 </mapper>
