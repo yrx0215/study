@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.HeadPortraitBackgroundMapper;
 import com.jnshu.dreamteam.pojo.HeadPortraitBackground;
+import com.jnshu.dreamteam.service.BaseService;
 import com.jnshu.dreamteam.service.HeadPortraitBackgroundService;
 import com.jnshu.dreamteam.utils.MyPage;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author draper_hxy
  */
 @Service
-public class HeadPortraitBackgroundServiceImpl implements HeadPortraitBackgroundService {
+public class HeadPortraitBackgroundServiceImpl extends BaseService implements HeadPortraitBackgroundService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -41,8 +42,7 @@ public class HeadPortraitBackgroundServiceImpl implements HeadPortraitBackground
         Long date = System.currentTimeMillis();
         head.setCreateAt(date);
         head.setUpdateAt(date);
-        int resultInt = headPortraitBackgroundMapper.insert(head);
-        return resultInt == 1 ? Boolean.TRUE : Boolean.FALSE;
+        return getResult(headPortraitBackgroundMapper.insert(head));
     }
 
     @Override
@@ -50,8 +50,7 @@ public class HeadPortraitBackgroundServiceImpl implements HeadPortraitBackground
         LOGGER.trace("delete headBg, id = {}", id);
         QueryWrapper<HeadPortraitBackground> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(HeadPortraitBackground::getId, id);
-        int resultInt = headPortraitBackgroundMapper.delete(queryWrapper);
-        return resultInt == 1 ? Boolean.TRUE : Boolean.FALSE;
+        return getResult(headPortraitBackgroundMapper.delete(queryWrapper));
     }
 
     @Override
@@ -65,11 +64,11 @@ public class HeadPortraitBackgroundServiceImpl implements HeadPortraitBackground
         LOGGER.trace("update headBg, id = {}", headBg.getId());
         UpdateWrapper<HeadPortraitBackground> updateWrapper = new UpdateWrapper<>();
         updateWrapper.lambda()
+                .set(HeadPortraitBackground::getUpdateAt, System.currentTimeMillis())
                 .set(HeadPortraitBackground::getBackgroundImgUrl, headBg.getBackgroundImgUrl())
                 .set(HeadPortraitBackground::getUpdateAt, System.currentTimeMillis())
                 .eq(HeadPortraitBackground::getId, headBg.getId());
-        int resultInt = headPortraitBackgroundMapper.update(headBg, updateWrapper);
-        return resultInt == 1 ? Boolean.TRUE : Boolean.FALSE;
+        return getResult(headPortraitBackgroundMapper.update(headBg, updateWrapper));
     }
 
 }
