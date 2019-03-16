@@ -4,7 +4,32 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Role">
-        <id column="id" property="id" />
-        <result column="role" property="role" />
+        <id column="role_id" property="id"/>
+        <result column="role" property="role"/>
+        <collection property="moduleId" ofType="com.jnshu.dreamteam.pojo.Module">
+            <id column="id" property="id"/>
+            <result column="module" property="module"/>
+            <result column="parent_module_id" property="parentModuleId"/>
+        </collection>
     </resultMap>
+
+    <insert id="insertRoleModule">
+        INSERT INTO role_module VALUES 
+        <foreach collection="moduleIds" item="moduleId" index="index" separator=",">
+            (#{roleId},#{moduleId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleModuleById" parameterType="java.lang.Long">
+        DELETE FROM role_module WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="selectModuleByRoleId" resultMap="BaseResultMap">
+        SELECT r.*,m.* FROM role AS r
+        LEFT JOIN role_module AS rm ON r.role_id = rm.role_id
+        LEFT JOIN module AS m ON rm.module_id = m.id
+        WHERE r.role_id = #{roleId}
+    </select>
+
+
 </mapper>

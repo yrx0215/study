@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.utils;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class EmptyUtil {
 
@@ -56,6 +57,20 @@ public class EmptyUtil {
      */
     public static boolean isEmpty(Collection<?> collection) {
         return null == collection || collection.size() == 0;
+    }
+
+    /**
+     * 判断Map是否为空
+     * PS：
+     * 集合为空的条件：
+     * 1. 集合对象为null
+     * 2. 集合中没有元素
+     *
+     * @param map 需要进行判断的集合
+     * @return 为空(true), 不为空(false)
+     */
+    public static boolean isEmpty(Map map) {
+        return null == map || map.size() == 0;
     }
 
     /**

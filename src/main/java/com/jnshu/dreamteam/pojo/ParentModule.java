@@ -13,28 +13,30 @@ import java.util.List;
  * 
  * </p>
  *
- * @author wzp
- * @since 2019-03-10
+ * @author wangziping
+ * @since 2019-03-14
  */
 @Data
-public class Role implements Serializable {
+public class ParentModule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "role_id", type = IdType.AUTO)
+    @TableId(value = "parent_module_id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 角色名
+     * 父模块名称
      */
-    @TableField("role")
-    private String role;
+    @TableField("parent_module_name")
+    private String parentModuleName;
+
 
     /**
-     * 该角色所拥有的模块
+     * 拥有的子模块
+     * 不作为数据库字段使用
      */
     @TableField(exist = false)
-    private List<Module> moduleId;
+    private List<Module> moduleList;
 
 
 }

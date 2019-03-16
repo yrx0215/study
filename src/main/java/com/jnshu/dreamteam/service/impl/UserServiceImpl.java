@@ -86,4 +86,9 @@ public class UserServiceImpl implements UserService {
         }
         throw new ValidatedParamsOnlyException("该账号已存在");
     }
+
+    @Override
+    public User selectUserById(Long id) {
+        return userMapper.selectById(id);
+    }
 }

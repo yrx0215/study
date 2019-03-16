@@ -52,7 +52,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @return 返回对应的科目集合
      */
     List<Subject> selectSubjectStatusOrName(@Param("subjectStatus") Integer subjectStatus,
-                                                   @Param("subjectName") Integer subjectName);
+                                            @Param("subjectName") Integer subjectName);
 
 
 }
