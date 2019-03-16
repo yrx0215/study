@@ -3,12 +3,14 @@ package com.jnshu.dreamteam.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 /**
  * 头像背景
  *
  * @author draper_hxy
  */
+@Data
 public class HeadPortraitBackground {
 
     private static final long serialVersionUID = 1L;
