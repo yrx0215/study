@@ -55,12 +55,8 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      * @param subjectName 科目名称
      * @return 返回值为分页后的subject集合
      */
-<<<<<<< HEAD
-    List<Subject> selectSubjectStatusOrName(@Param("subjectStatus") Integer subjectStatus,
-=======
     IPage<Subject> selectSubjectStatusOrName(IPage iPage,
                                             @Param("subjectStatus") Integer subjectStatus,
->>>>>>> 1c04c1af23fbd596d292b45e5cd33e6759b61e80
                                             @Param("subjectName") Integer subjectName);
 
 
