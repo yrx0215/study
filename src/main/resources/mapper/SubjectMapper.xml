@@ -20,12 +20,21 @@
     <!--updateSubject-->
     <update id="updateSubject" >
         UPDATE  subject
-        SET subject_name = #{subjectName},
-            grade = #{grade},
+        <set>
+            <if test="subjectName != null">
+              subject_name = #{subjectName},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
             update_at = #{updateAt}
+        </set>
         where id = #{id}
     </update>
 
+    <!--SET subject_name = #{subjectName},-->
+    <!--grade = #{grade},-->
+    <!--update_at = #{updateAt}-->
     <!--selectSubject-->
     <select id="selectSubject" resultMap="Sbuject">
       SELECT subject_name, grade, subject_status

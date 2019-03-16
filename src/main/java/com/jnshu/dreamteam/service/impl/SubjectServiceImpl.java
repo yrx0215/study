@@ -1,14 +1,17 @@
 package com.jnshu.dreamteam.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.SubjectMapper;
 import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.SubjectService;
+import com.jnshu.dreamteam.utils.MyPage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+/**
+ * @author yrx
+ */
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
@@ -40,13 +43,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> selectAllSubject() {
-        return subjectMapper.selectAllSubject();
+    public IPage<Subject> selectAllSubject(Integer page, Integer size) {
+        page = page==null||page<=0?1:page;
+        size = size==null||size<=0?10:size;
+        IPage mypage = new MyPage(page,size);
+        return subjectMapper.selectAllSubject(mypage);
     }
 
     @Override
-    public List<Subject> selectSubjectByStutasOrName(@Param("subjectStatus") Integer subjectStatus,
+    public IPage<Subject> selectSubjectByStutasOrName(IPage iPage,
+                                                     @Param("subjectStatus") Integer subjectStatus,
                                                      @Param("subjectName") Integer subjectName) {
-        return subjectMapper.selectSubjectStatusOrName(subjectStatus, subjectName);
+        return subjectMapper.selectSubjectStatusOrName(iPage,subjectStatus, subjectName);
     }
 }

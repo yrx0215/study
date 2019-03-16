@@ -1,13 +1,15 @@
 package com.jnshu.dreamteam.mapper;
 
-import com.jnshu.dreamteam.pojo.Subject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.pojo.Subject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
-
+/**
+ * @author yrx
+ */
 @Component
 public interface SubjectMapper extends BaseMapper<Subject> {
 
@@ -40,18 +42,25 @@ public interface SubjectMapper extends BaseMapper<Subject> {
     Boolean delectSubject(Long id);
 
     /**
-     * 查询所有subject信息
-     * @return 返回subject对象的集合
+     * 查询所有科目信息
+     * @param iPage ipage对象, 主要作用用于分页, page和size 数据
+     * @return 返回值为ipage对象, 包含分页信息
      */
-    List<Subject> selectAllSubject();
+    IPage<Subject> selectAllSubject(IPage iPage);
 
     /**
      * 模糊查询 根据状态或科目名称查询信息
+     * @param iPage 分页信息
      * @param subjectStatus  科目状态
      * @param subjectName 科目名称
-     * @return 返回对应的科目集合
+     * @return 返回值为分页后的subject集合
      */
+<<<<<<< HEAD
     List<Subject> selectSubjectStatusOrName(@Param("subjectStatus") Integer subjectStatus,
+=======
+    IPage<Subject> selectSubjectStatusOrName(IPage iPage,
+                                            @Param("subjectStatus") Integer subjectStatus,
+>>>>>>> 1c04c1af23fbd596d292b45e5cd33e6759b61e80
                                             @Param("subjectName") Integer subjectName);
 
 
