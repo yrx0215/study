@@ -51,9 +51,7 @@ public class MessageServiceImpl extends QueryWrapperBaseService<Message> impleme
         message.setCreateAt(date);
         message.setUpdateAt(date);
 
-        int messageType = message.getMessageType();
-
-        switch (messageType) {
+        switch (message.getMessageType()) {
             case 0:
                 // TODO: 2019-03-18 立即发送消息
                 break;
@@ -61,7 +59,6 @@ public class MessageServiceImpl extends QueryWrapperBaseService<Message> impleme
                 BuildMessageJob(message);
                 break;
         }
-
 
         return getResult(messageMapper.insert(message));
     }
