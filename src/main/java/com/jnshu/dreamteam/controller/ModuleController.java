@@ -2,6 +2,7 @@ package com.jnshu.dreamteam.controller;
 
 
 import com.auth0.jwt.interfaces.Claim;
+import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.pojo.ParentModule;
 import com.jnshu.dreamteam.pojo.Response;
@@ -29,6 +30,7 @@ public class ModuleController {
      * 查询所有父模块及其子模块
      * @return
      */
+    @LogInfo
     @RequiresPermissions("角色管理")
     @GetMapping("/a/u/parentAllModule")
     public Response<List<ParentModule>> selectModuleAll(){
@@ -41,6 +43,7 @@ public class ModuleController {
      * @param request
      * @return
      */
+    @LogInfo
     @RequiresAuthentication
     @GetMapping("/a/u/moduleList")
     public Response<List<ParentModule>> selectModuleByToken(HttpServletRequest request) throws ServiceDaoException{

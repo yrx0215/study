@@ -4,25 +4,37 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.mapper.RoleMapper;
+import com.jnshu.dreamteam.mapper.UserMapper;
 import com.jnshu.dreamteam.pojo.Module;
 import com.jnshu.dreamteam.pojo.Role;
+import com.jnshu.dreamteam.pojo.User;
 import com.jnshu.dreamteam.service.RoleService;
+import com.jnshu.dreamteam.service.UserService;
+import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-@Log4j2
+@Slf4j
 @Service
 public class RoleServiceImpl implements RoleService {
 
     @Resource
     private RoleMapper roleMapper;
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public Long insertRole(Role role) throws ServiceDaoException {
+         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+         queryWrapper.eq("role",role.getRole());
+         if(roleMapper.selectCount(queryWrapper)>0){
+             throw new ServiceDaoException("添加失败，己经有同名角色");
+         }
          if(roleMapper.insert(role)>0){
              List<Long> moduleIds = new ArrayList<>();
              for (Module module : role.getModuleId()) {
@@ -37,11 +49,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deleteRole(Long roleId) throws ServiceDaoException {
-
-        if (roleMapper.deleteById(roleId)>0){
+        Role role = roleMapper.selectById(roleId);
+        if(EmptyUtil.isEmpty(role)){
+            throw new ServiceDaoException("无ID为"+role+"的角色");
+        }
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("role_name",role.getRole());
+        if (userMapper.selectCount(queryWrapper)==0){
+            roleMapper.deleteById(roleId);
             roleMapper.deleteRoleModuleById(roleId);
         }else {
-            throw new ServiceDaoException("删除角色失败");
+            throw new ServiceDaoException("删除失败，请将该角色取消关联账号后，再重新删除");
         }
     }
 
@@ -63,7 +81,7 @@ public class RoleServiceImpl implements RoleService {
     public Role selectModuleByRoleId(Long roleId) throws ServiceDaoException {
         Role role = roleMapper.selectModuleByRoleId(roleId);
         if(role==null){
-            throw new ServiceDaoException("查询角色信息失败");
+            throw new ServiceDaoException("无该角色");
         }
         return role;
     }

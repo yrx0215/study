@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.config.shiro;
 
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-@Log4j2
+@Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     @Override

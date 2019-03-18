@@ -71,5 +71,4 @@ public class User implements Serializable {
      */
     @TableField("role_name")
     private String roleName;
-
 }

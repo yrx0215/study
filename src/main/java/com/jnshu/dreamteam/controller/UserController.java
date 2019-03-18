@@ -2,6 +2,7 @@ package com.jnshu.dreamteam.controller;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.pojo.User;
@@ -10,6 +11,7 @@ import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.JwtUtil;
 import com.jnshu.dreamteam.utils.ValidatedUtil;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.BindingResult;
@@ -24,9 +26,12 @@ import java.util.Map;
  * 后台账户管理模块
  * @author wzp
  */
-@Log4j2
+
+@Slf4j
 @RestController
 public class UserController {
+
+    //sdklfdjkslfsdklfjdlsf
 
     @Resource
     private UserService userService;
@@ -36,6 +41,7 @@ public class UserController {
      * @param user 对user参数校验
      * @return
      */
+    @LogInfo
     @RequiresPermissions("账户管理")
     @PostMapping("/a/u/user")
     public Response registerUser(@Validated @RequestBody User user, BindingResult bindingResult) throws ValidatedParamsOnlyException {
@@ -53,14 +59,15 @@ public class UserController {
      * @param bindingResult 校验结果集
      * @return
      */
+    @LogInfo
     @RequiresPermissions("账户管理")
     @PutMapping("/a/u/user")
     public Response updateUser(@Validated @RequestBody User user, BindingResult bindingResult)throws ValidatedParamsOnlyException{
-        log.info("入参为"+user);
+        log.info("入参为"+user.toString());
         if(bindingResult.hasErrors()){
             return ValidatedUtil.errorInfo(bindingResult);
         }
-        userService.validatedAccountOnly(user.getAccount());
+//        userService.validatedAccountOnly(user.getAccount());
         return userService.updateUserOne(user)!=null?Response.ok():Response.error();
     }
 
@@ -69,6 +76,7 @@ public class UserController {
      * @param id 用户ID
      * @return
      */
+    @LogInfo
     @RequiresPermissions("账户管理")
     @DeleteMapping("/a/u/user/{id}")
     public Response deleteUser(@PathVariable("id") Long id){
@@ -84,6 +92,7 @@ public class UserController {
      * @param account 根据用户名查询用户 可不填
      * @return
      */
+    @LogInfo
     @RequiresPermissions("账户管理")
     @GetMapping("/a/u/user")
     public Response selectUserByParam(@RequestParam(value = "page",required = false) Integer page
@@ -103,6 +112,7 @@ public class UserController {
      * @param httpServletResponse 响应
      * @return
      */
+    @LogInfo
     @PostMapping("/a/login")
     public Response login(@RequestParam("account") String account, @RequestParam("password") String password
                          ,HttpServletResponse httpServletResponse){
@@ -121,17 +131,17 @@ public class UserController {
      * @param oldPassword
      * @return
      */
+    @LogInfo
     @RequiresPermissions("密码修改")
     @PostMapping("/a/u/password")
     public Response changePassword(HttpServletRequest httpServletRequest
                                   , @RequestParam("newPassword") String newPassword
                                   , @RequestParam("oldPassword") String oldPassword){
-        log.info(newPassword);
         if(newPassword.matches("^[0-9a-zA-Z_!@#$%^&*.,]{6,16}$")){
             String token = httpServletRequest.getHeader("Token");
             Claim claim = JwtUtil.getClaims(token,"userId");
             Long userId = claim.asLong();
-            log.info(userId);
+            log.info("通过自己修改密码的用户ID为：{}",userId);
             User user = userService.selectUserById(userId);
             if(EmptyUtil.isEmpty(userService.validatePassword(user.getAccount(),oldPassword))){
                return new Response(-1,"旧密码错误");
@@ -142,6 +152,7 @@ public class UserController {
         return new Response(-1,"密码格式错误，必须6-16位");
     }
 
+    @LogInfo
     @GetMapping("/unauthenticated")
     public Response unauthenticated(@RequestParam("message") String message){
         return new Response<>(-1,"无法认证",message);
