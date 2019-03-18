@@ -15,7 +15,6 @@
     <!--addSubject-->
     <insert id="addSubject" parameterType="com.jnshu.dreamteam.pojo.Subject" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO subject (subject_name,grade,create_at) VALUES (#{subjectName},#{grade},#{createAt})
-
     </insert>
 
     <!--updateSubject-->

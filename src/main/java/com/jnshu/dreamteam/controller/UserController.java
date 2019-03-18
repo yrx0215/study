@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.controller;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.Response;
@@ -9,13 +10,15 @@ import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.JwtUtil;
 import com.jnshu.dreamteam.utils.ValidatedUtil;
 import lombok.extern.log4j.Log4j2;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-
 
 /**
  * 后台账户管理模块
@@ -29,10 +32,11 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 添加后台账号，目前还没做权限
+     * 添加后台账号
      * @param user 对user参数校验
      * @return
      */
+    @RequiresPermissions("账户管理")
     @PostMapping("/a/u/user")
     public Response registerUser(@Validated @RequestBody User user, BindingResult bindingResult) throws ValidatedParamsOnlyException {
         if(bindingResult.hasErrors()) {
@@ -49,6 +53,7 @@ public class UserController {
      * @param bindingResult 校验结果集
      * @return
      */
+    @RequiresPermissions("账户管理")
     @PutMapping("/a/u/user")
     public Response updateUser(@Validated @RequestBody User user, BindingResult bindingResult)throws ValidatedParamsOnlyException{
         log.info("入参为"+user);
@@ -64,6 +69,7 @@ public class UserController {
      * @param id 用户ID
      * @return
      */
+    @RequiresPermissions("账户管理")
     @DeleteMapping("/a/u/user/{id}")
     public Response deleteUser(@PathVariable("id") Long id){
          return userService.deleteUserById(id)>0?Response.ok():Response.error();
@@ -78,6 +84,7 @@ public class UserController {
      * @param account 根据用户名查询用户 可不填
      * @return
      */
+    @RequiresPermissions("账户管理")
     @GetMapping("/a/u/user")
     public Response selectUserByParam(@RequestParam(value = "page",required = false) Integer page
                                      ,@RequestParam(value = "size",required = false) Integer size
@@ -102,27 +109,41 @@ public class UserController {
         Map<String,Object> map = userService.validatePassword(account,password);
         if(!EmptyUtil.isEmpty(map)){
             String token = JwtUtil.createToken(map);
-            httpServletResponse.setHeader("token",token);
+            httpServletResponse.setHeader("Token",token);
             return new Response(200,"登录成功");
         }
-        return new Response(100,"账号不存在或密码错误");
+        return new Response(-1,"账号不存在或密码错误");
     }
 
     /**
      * 携带请求头，依据token解析ID来进行对应密码更改
-     * @param httpServletResponse
      * @param newPassword
      * @param oldPassword
      * @return
      */
+    @RequiresPermissions("密码修改")
     @PostMapping("/a/u/password")
-    public Response changePassword(HttpServletResponse httpServletResponse
-                                  ,@RequestParam("newPassword") String newPassword
-                                  ,@RequestParam("oldPassword") String oldPassword){
-//        newPassword.matches("^[0-9a-zA-Z_!@#$%^&*.,]{6,16}$");
-        return Response.ok();
+    public Response changePassword(HttpServletRequest httpServletRequest
+                                  , @RequestParam("newPassword") String newPassword
+                                  , @RequestParam("oldPassword") String oldPassword){
+        log.info(newPassword);
+        if(newPassword.matches("^[0-9a-zA-Z_!@#$%^&*.,]{6,16}$")){
+            String token = httpServletRequest.getHeader("Token");
+            Claim claim = JwtUtil.getClaims(token,"userId");
+            Long userId = claim.asLong();
+            log.info(userId);
+            User user = userService.selectUserById(userId);
+            if(EmptyUtil.isEmpty(userService.validatePassword(user.getAccount(),oldPassword))){
+               return new Response(-1,"旧密码错误");
+            }
+            user.setPassword(newPassword);
+            return userService.updateUserOne(user)>0?Response.ok():Response.error();
+        }
+        return new Response(-1,"密码格式错误，必须6-16位");
     }
 
-
-
+    @GetMapping("/unauthenticated")
+    public Response unauthenticated(@RequestParam("message") String message){
+        return new Response<>(-1,"无法认证",message);
+    }
 }

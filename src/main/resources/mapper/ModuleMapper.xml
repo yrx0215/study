@@ -4,9 +4,18 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Module">
-        <id column="id" property="id"/>
-        <result column="module" property="module"/>
-        <result column="parent_module_id" property="parentModuleId"/>
+        <id column="id" property="id" />
+        <result column="module" property="module" />
+        <result column="parent_module_id" property="parentModuleId" />
     </resultMap>
+
+    <select id="selectModuleIdByRoleName" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT module_id FROM role_module WHERE role_id = (
+        SELECT role_id FROM role WHERE role = #{roleName})
+    </select>
+
+
+
+
 
 </mapper>

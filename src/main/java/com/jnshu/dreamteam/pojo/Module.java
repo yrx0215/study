@@ -4,17 +4,20 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
  * 
  * </p>
  *
- * @author wzp
- * @since 2019-03-10
+ * @author wangziping
+ * @since 2019-03-14
  */
+
 @Data
 public class Module implements Serializable {
 
@@ -29,8 +32,12 @@ public class Module implements Serializable {
     @TableField("module")
     private String module;
 
+    /**
+     * 父模块ID
+     */
     @TableField("parent_module_id")
-    private int parentModuleId;
+    private Long parentModuleId;
+
 
 
 }

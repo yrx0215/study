@@ -20,10 +20,16 @@ spring:
       connection-init-sqls: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
   profiles:
     include: config
+  devtools:
+      restart:
+        enabled: true  #设置开启热部署
 
 # mybatis
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.jnshu.dreamteam.pojo
+
+
+
 
 
