@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dreamteam.mapper.ParentModuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.ParentModule">
+        <id column="parent_module_id" property="id"/>
+        <result column="parent_module_name" property="parentModuleName"/>
+        <collection property="moduleList" ofType="com.jnshu.dreamteam.pojo.Module">
+            <id column="id" property="id"/>
+            <result column="module" property="module"/>
+            <result column="parent_module_id" property="parentModuleId"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectModuleAll" resultMap="BaseResultMap">
+        SELECT p.*,m.* FROM parent_module AS p
+        LEFT JOIN module AS m
+        ON p.parent_module_id=m.parent_module_id
+    </select>
+
+    <select id="selectModuleByRole" resultMap="BaseResultMap">
+        SELECT p.*,m.* FROM parent_module AS p INNER JOIN
+        module AS m ON p.parent_module_id=m.parent_module_id AND m.id in
+        <foreach collection="moduleIds" item="moduleId" index="index" open="(" separator="," close=")">
+            #{moduleId}
+        </foreach>
+    </select>
+
+</mapper>

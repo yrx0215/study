@@ -58,4 +58,6 @@ public interface UserService {
      * @throws ValidatedParamsOnlyException
      */
     Boolean validatedAccountOnly(String account) throws ValidatedParamsOnlyException;
+
+    User selectUserById(Long id);
 }

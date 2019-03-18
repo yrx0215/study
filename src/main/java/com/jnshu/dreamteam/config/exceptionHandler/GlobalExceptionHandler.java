@@ -3,30 +3,48 @@ package com.jnshu.dreamteam.config.exceptionHandler;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.Response;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // success
+    @ExceptionHandler(UnauthorizedException.class)
+    public Response unauthorizedExceptionHandle(UnauthorizedException e){
+        String message =e.getMessage().substring(e.getMessage().indexOf("[")+1,e.getMessage().lastIndexOf("]"));
+        return new Response(403,"拒绝访问，您没有"+message+"权限");
+    }
+
+    // failed
+    @ExceptionHandler(UnauthenticatedException.class)
+    public Response authenticationException(UnauthenticatedException e){
+        return new Response(401,"用户未登录,请登录");
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public Response SecurityExceptionHandler(SecurityException se){
+        return new Response(-1,se.getMessage());
+    }
+
     @ExceptionHandler(ServiceDaoException.class)
-    @ResponseBody
     public Response ServiceDaoExceptionHandler(ServiceDaoException sde){
         return new Response(-1,sde.getMessage());
     }
 
     @ExceptionHandler(ValidatedParamsOnlyException.class)
-    @ResponseBody
     public Response ValidatedParamsOnlyExceptionHandler(ValidatedParamsOnlyException vpoe){
         return new Response(-1,vpoe.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Response ExceptionHandler(Exception vpoe){
-        return new Response(100,vpoe.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public Response ExceptionHandler(Exception vpoe){
+//        return new Response(100,vpoe.getMessage());
+//    }
 
 
 }
