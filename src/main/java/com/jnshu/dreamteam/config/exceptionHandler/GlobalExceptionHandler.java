@@ -31,20 +31,5 @@ public class GlobalExceptionHandler {
         return new Response(-1,se.getMessage());
     }
 
-    @ExceptionHandler(ServiceDaoException.class)
-    public Response ServiceDaoExceptionHandler(ServiceDaoException sde){
-        return new Response(-1,sde.getMessage());
-    }
-
-    @ExceptionHandler(ValidatedParamsOnlyException.class)
-    public Response ValidatedParamsOnlyExceptionHandler(ValidatedParamsOnlyException vpoe){
-        return new Response(-1,vpoe.getMessage());
-    }
-
-//    @ExceptionHandler(Exception.class)
-//    public Response ExceptionHandler(Exception vpoe){
-//        return new Response(100,vpoe.getMessage());
-//    }
-
 
 }

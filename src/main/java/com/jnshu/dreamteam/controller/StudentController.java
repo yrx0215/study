@@ -1,11 +1,13 @@
 package com.jnshu.dreamteam.controller;
 
+import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Response;;
 import com.jnshu.dreamteam.service.StudentService;
 import com.jnshu.dreamteam.utils.MessageUtil;
 import com.jnshu.dreamteam.utils.UploadPic;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +22,8 @@ import java.io.IOException;
  * 前台注册模块
  * @author wzp
  */
-@Log4j2
+
+@Slf4j
 @RestController
 public class StudentController {
 
@@ -32,6 +35,7 @@ public class StudentController {
      * @param phone
      * @return
      */
+    @LogInfo
     @PostMapping("/a/student/phone")
     public Response studentPhone(@RequestParam("phone") Long phone) throws Exception{
         studentService.validatedPhoneOnly(phone);
@@ -52,6 +56,7 @@ public class StudentController {
      * @param validatedCode
      * @return
      */
+    @LogInfo
     @PostMapping("/a/student/register")
     public Response studentRegister(@RequestParam("phone") Long phone
                                    ,@RequestParam("password") String password
@@ -70,6 +75,7 @@ public class StudentController {
      * @param grade
      * @return
      */
+    @LogInfo
     @PostMapping("/a/u/student")
     public Response insertStudent(@RequestParam("account") String account
                                  ,@RequestParam("nickName") String nickName
@@ -84,6 +90,7 @@ public class StudentController {
      * @return
      * @throws IOException
      */
+    @LogInfo
     @PostMapping("/a/u/student/img")
     public Response<String> uploadStudentImg(@RequestParam("a") MultipartFile file, HttpServletRequest httpServletRequest)
                                              throws IOException {
@@ -91,6 +98,7 @@ public class StudentController {
         return new Response<>(200,"上传成功","图片地址："+url);
     }
 
+    @LogInfo
     @PostMapping("/a/student/login")
     public Response login(@RequestParam("account")String account
                          ,@RequestParam("password") String password
