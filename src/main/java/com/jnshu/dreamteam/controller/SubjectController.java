@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * subject 科目相关接口
@@ -33,8 +36,8 @@ public class SubjectController {
      */
     @RequestMapping(value = "/a/u/allSubject", method = RequestMethod.GET)
 
-    public Response getAllSubject(@RequestParam(value = "page", required = false) Integer page,
-                                  @RequestParam(value = "size", required = false) Integer size) {
+    public Response<IPage<Subject>> getAllSubject(@RequestParam(value = "page", required = false) Integer page,
+                                                  @RequestParam(value = "size", required = false) Integer size) {
         page = page == null || page <= 0 ? 1 : page;
         size = size == null || size <= 0 ? 10 : size;
         IPage<Subject> subjects = subjectService.selectAllSubject(page, size);
@@ -50,10 +53,10 @@ public class SubjectController {
      */
     @RequestMapping(value = "/a/u/statusOrName", method = RequestMethod.GET)
 
-    public Response getSubjectByStatusOrName(@RequestParam(value = "page", required = false) Integer page,
-                                             @RequestParam(value = "size", required = false) Integer size,
-                                             @RequestParam(value = "subjectStatus", required = false) Integer subjectStatus,
-                                             @RequestParam(value = "subjectName", required = false) Integer subjectName) {
+    public Response<IPage<Subject>> getSubjectByStatusOrName(@RequestParam(value = "page", required = false) Integer page,
+                                                             @RequestParam(value = "size", required = false) Integer size,
+                                                             @RequestParam(value = "subjectStatus", required = false) Integer subjectStatus,
+                                                             @RequestParam(value = "subjectName", required = false) String subjectName) {
         IPage myPage = new MyPage(page, size);
         IPage<Subject> subjects = subjectService.selectSubjectByStutasOrName(myPage, subjectStatus, subjectName);
         return new Response<>(0, "success", subjects);
@@ -93,14 +96,23 @@ public class SubjectController {
      * 添加方法 subject科目
      *
      * @param subject 新增subject对象
+     * @param grades 年级集合
      * @return 返回值为新增subject对象
      */
     @RequestMapping(value = "/a/u/subject", method = RequestMethod.POST)
-    public Response<Long> addSubject(Subject subject) {
-        subject.setCreateAt(System.currentTimeMillis());
-        subjectService.addSubject(subject);
-        Long id = subject.getId();
-        return new Response<>(0, "success", id);
+    public Response<List<Long>> addSubject(Subject subject ,@RequestParam("grades") List<Integer> grades) {
+        log.info("添加方法, 年级列表的大小为 {}",grades.size());
+        List<Long> ids = new ArrayList<>();
+        for (Integer grade : grades) {
+            subject.setGrade(grade);
+            subject.setCreateAt(System.currentTimeMillis());
+            subjectService.addSubject(subject);
+            Long id = subject.getId();
+            ids.add(id);
+        }
+        log.info("id的集合为 " + ids);
+
+        return new Response<>(200, "success", ids);
     }
 
 
@@ -118,5 +130,43 @@ public class SubjectController {
         }
         return new Response<>(0, "Delect fail", b);
     }
+
+
+    /**
+     * 修改上下架状态
+     * @param id 科目id信息
+     * @return 返回值
+     */
+    @RequestMapping(value = "/a/u/subjectStatus",method = RequestMethod.PUT)
+    public Response updateSubjectStatus(Long id){
+        log.info("开始修改上下架状态=====科目id是" + id);
+        Subject subject = subjectService.selectSubject(id);
+        log.info("修改的科目详细信息为: " + subject);
+        //判断当前状态是否为0;
+        if (subject.getSubjectStatus() == 0){
+            subject.setSubjectStatus(1);
+        } else {
+            subject.setSubjectStatus(0);
+        }
+        //设置信息
+        subject.setId(id);
+        subject.setUpdateAt(System.currentTimeMillis());
+        Boolean b = subjectService.updateSubjectStatus(subject);
+        if (!b) {
+            return Response.error();
+        }
+        return new Response<>(200, "success",true);
+    }
+
+
+    @RequestMapping(value = "/a/u/allSubjectName",method = RequestMethod.GET)
+    public Response<List> getAllSubjectName(){
+        log.info("查询所有的科目名称=======");
+        List list = subjectService.selectAllSubjectName();
+        log.info("所有科目列表长度为: " + list.size());
+        return new Response<>(200,"success",list);
+    }
+
+
 }
 

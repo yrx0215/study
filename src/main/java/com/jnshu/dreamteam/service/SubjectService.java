@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Subject;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 科目subject接口
  * @author yrx
@@ -13,7 +15,7 @@ public interface SubjectService {
 
     /**
      * 新增科目
-     * @param subject 新增的科目信息
+     * @param subject 新增的科目
      * @return 返回值为新增的科目id
      */
     Long addSubject(Subject subject);
@@ -56,6 +58,18 @@ public interface SubjectService {
      */
     IPage<Subject> selectSubjectByStutasOrName(IPage iPage,
                                                @Param("subjectStatus") Integer subjectStatus,
-                                              @Param("subjectName") Integer subjectName);
+                                              @Param("subjectName") String subjectName);
 
+    /**
+     * 更新科目的状态
+     * @param subject 科目的id
+     * @return 返回值为true 成功 false 失败
+     */
+    Boolean updateSubjectStatus(Subject subject);
+
+    /**
+     * 查询所有科目名称
+     * @return 科目名称列表
+     */
+    List selectAllSubjectName();
 }
