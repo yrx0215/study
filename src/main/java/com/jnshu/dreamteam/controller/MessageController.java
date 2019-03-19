@@ -36,6 +36,10 @@ public class MessageController {
         }
     }
 
+    /**
+     * sendType 0立即 1定时
+     * messageType
+     */
     @RequestMapping(value = "/a/u/message", method = RequestMethod.POST)
     public Response insert(@RequestBody Message message) {
         try {
