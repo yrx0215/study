@@ -11,12 +11,13 @@ import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.Md5Utils;
 import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Log4j2
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 

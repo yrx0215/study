@@ -7,6 +7,8 @@ import com.jnshu.dreamteam.mapper.ModuleMapper;
 import com.jnshu.dreamteam.pojo.ParentModule;
 import com.jnshu.dreamteam.service.ModuleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jnshu.dreamteam.utils.EmptyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import java.util.List;
  * @author wangziping
  * @since 2019-03-14
  */
+@Slf4j
 @Service
 public class ModuleServiceImpl implements ModuleService {
 
@@ -32,10 +35,9 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public List<ParentModule> selectModuleByRoleName(String roleName) throws ServiceDaoException {
         List<Long> moduleIds = moduleMapper.selectModuleIdByRoleName(roleName);
-        List<ParentModule> parentModuleList = parentModuleMapper.selectModuleByRole(moduleIds);
-        if(parentModuleList==null){
+        if(EmptyUtil.isEmpty(moduleIds)){
             throw new ServiceDaoException("该账号无可查看模块");
         }
-        return parentModuleList;
+        return parentModuleMapper.selectModuleByRole(moduleIds);
     }
 }
