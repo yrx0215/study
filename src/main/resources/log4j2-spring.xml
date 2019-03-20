@@ -6,7 +6,7 @@
 <configuration status="WARN" monitorInterval="180">
 
     <properties>
-        <property name="LOG_HOME">/maven_work/dreamteam</property>
+        <property name="LOG_HOME">dreamteam</property>
         <property name="FILE_NAME">tim</property>
     </properties>
 
@@ -82,6 +82,7 @@
         <Logger name="org.apache.http.wire" level="INFO"/>
         <Logger name="org.apache.catalina" level="WARN"/>
         <Logger name="com.netflix" level="WARN"/>
+        <Logger name="org.quartz.core.QuartzSchedulerThread" level="INFO"/>
         <Logger name="com.baomidou.mybatisplus.core.MybatisConfiguration" level="INFO"/>
         <Root level="trace">
             <AppenderRef ref="Console"/>

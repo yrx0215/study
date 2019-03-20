@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @author draper_hxy
  */
@@ -18,6 +20,17 @@ public class HelpController {
 
     @Autowired
     private HelpService helpService;
+
+    @RequestMapping(value = "/a/u/help", method = RequestMethod.GET)
+    public Response selectPages(@RequestParam Map<String, Object> params) {
+        try {
+            return new Response(200, "OK", helpService.selectPages(params));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
 
     @RequestMapping("/a/u/help/{id}")
     public Response select(@PathVariable Long id) {
@@ -52,7 +65,8 @@ public class HelpController {
         }
     }
 
-    public Response delete(@RequestBody Long id) {
+    @RequestMapping(value = "/a/u/help/{id}", method = RequestMethod.DELETE)
+    public Response delete(@PathVariable Long id) {
         try {
             return new Response(200, "OK", helpService.delete(id));
         } catch (Throwable t) {

@@ -3,11 +3,12 @@ package com.jnshu.dreamteam.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.NewsMapper;
 import com.jnshu.dreamteam.pojo.News;
 import com.jnshu.dreamteam.service.BaseServiceWrapper;
 import com.jnshu.dreamteam.service.NewsService;
-import com.mchange.v2.beans.BeansUtils;
+import com.jnshu.dreamteam.utils.MyPage;
 import org.apache.commons.beanutils.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +29,22 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     private NewsMapper newsMapper;
 
     @Override
+    public IPage<News> selectPages(Map<String, Object> params) {
+        initParams(params);
+        LOGGER.trace("get news page, page = {}, size = {}", params.get("page"), params.get("size"));
+        Long currentPage = Long.valueOf(params.get("page").toString());
+        Long size = Long.valueOf(params.get("size").toString());
+        MyPage<News> page = new MyPage<>(currentPage, size);
+        QueryWrapper<News> queryWrapper = buildQueryWrapper(null, params);
+        return newsMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
     public Boolean insert(News news) {
         LOGGER.trace("news insert");
+        Long dateTime = System.currentTimeMillis();
+        news.setCreateAt(dateTime);
+        news.setUpdateAt(dateTime);
         return getResult(newsMapper.insert(news));
     }
 
@@ -48,14 +63,12 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     }
 
     @Override
-    protected QueryWrapper<News> buildQueryWrapper(QueryWrapper<News> queryWrapper, Map<String, Object> params) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     protected UpdateWrapper<News> buildUpdateWrapper(UpdateWrapper<News> updateWrapper, Map<String, Object> params) {
         updateWrapper = super.buildUpdateWrapper(updateWrapper, null);
         LambdaUpdateWrapper<News> lambdaUpdateWrapper = updateWrapper.lambda();
+
+        lambdaUpdateWrapper.set(News::getUpdateAt, System.currentTimeMillis());
+
         if (params.get("title") != null)
             lambdaUpdateWrapper.set(News::getTitle, params.get("title"));
         if (params.get("type") != null)
@@ -66,6 +79,8 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getDigest, params.get("digest"));
         if (params.get("content") != null)
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
+
+        lambdaUpdateWrapper.eq(News::getId, params.get("id"));
         return updateWrapper;
     }
 }

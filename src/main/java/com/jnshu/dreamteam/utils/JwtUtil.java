@@ -23,7 +23,7 @@ public class JwtUtil {
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ","JWT")
                 .setHeaderParam("alg","HS256")
                 .setClaims(map)
-                .setExpiration(new Date(System.currentTimeMillis()+60*60000))
+                .setExpiration(new Date(System.currentTimeMillis()+10*24*60*60000))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes());
         return builder.compact();
     }
@@ -31,11 +31,12 @@ public class JwtUtil {
     /**
      * token解密
      */
-    public static Claims decodeToken(String token){
+    public static Object decodeToken(String token,String fieldName){
         try {
             return Jwts.parser()
-                    .setSigningKey(SECRET_KEY.getBytes())
-                    .parseClaimsJws(token).getBody();
+                   .setSigningKey(SECRET_KEY.getBytes())
+                   .parseClaimsJws(token).getBody()
+                   .get(fieldName);
         }catch (Exception e){
             e.printStackTrace();
             return null;
