@@ -65,7 +65,9 @@ public class LessonController {
         log.info("add lesson start , lesson is {}, subjectId is {}, courseId is {}",lesson,subjectId, courseId);
         lesson.setSubjectId(subjectId);
         lesson.setCourseId(courseId);
+
         //根据科目 课程id 写入相应的名字
+
         String subjectName = subjectService.selectSubject(subjectId).getSubjectName();
         String courseName = courseService.selectCourseById(courseId).getCourseName();
 
