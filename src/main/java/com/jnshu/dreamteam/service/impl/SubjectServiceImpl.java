@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author yrx
  */
@@ -21,7 +23,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Long addSubject(Subject subject) {
         Boolean b = subjectMapper.addSubject(subject);
-        if (b == false){
+        if (!b){
             return  0L;
         }
         return subject.getId();
@@ -53,7 +55,17 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public IPage<Subject> selectSubjectByStutasOrName(IPage iPage,
                                                      @Param("subjectStatus") Integer subjectStatus,
-                                                     @Param("subjectName") Integer subjectName) {
+                                                     @Param("subjectName") String subjectName) {
         return subjectMapper.selectSubjectStatusOrName(iPage,subjectStatus, subjectName);
+    }
+
+    @Override
+    public Boolean updateSubjectStatus(Subject subject) {
+        return subjectMapper.updateSubjectStatus(subject);
+    }
+
+    @Override
+    public List selectAllSubjectName() {
+        return subjectMapper.selectAllSubjectName();
     }
 }
