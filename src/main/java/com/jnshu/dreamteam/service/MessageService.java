@@ -17,4 +17,5 @@ public interface MessageService {
 
     Message select(Long id);
 
+    Boolean delete(Long id);
 }

@@ -21,7 +21,7 @@ public class HeadPortraitBackgroundController {
     @Autowired
     private HeadPortraitBackgroundService headService;
 
-    @RequestMapping(value = "/a/u/headBg/page", method = RequestMethod.GET)
+    @RequestMapping(value = "/a/u/headBg", method = RequestMethod.GET)
     public Response selectHeadPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", headService.selectPages(params));
@@ -55,7 +55,7 @@ public class HeadPortraitBackgroundController {
     }
 
     @RequestMapping(value = "/a/u/headBg/{id}", method = RequestMethod.GET)
-    public Response selectObject(@PathVariable Long id) {
+    public Response select(@PathVariable Long id) {
         try {
             return new Response(200, "OK", headService.selectObject(id));
         } catch (Throwable t) {
@@ -66,7 +66,7 @@ public class HeadPortraitBackgroundController {
     }
 
     @RequestMapping(value = "/a/u/headBg", method = RequestMethod.PUT)
-    public Response updateObject( @RequestBody HeadPortraitBackground headBg){
+    public Response update( @RequestBody HeadPortraitBackground headBg){
         try {
             return new Response(200, "OK", headService.update(headBg));
         } catch (Throwable t){

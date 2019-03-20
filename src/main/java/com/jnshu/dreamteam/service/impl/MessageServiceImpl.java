@@ -104,6 +104,12 @@ public class MessageServiceImpl extends QueryWrapperBaseService<Message> impleme
     }
 
     @Override
+    public Boolean delete(Long id) {
+        LOGGER.trace("delete message, id = {}", id);
+        return getResult(messageMapper.delete(new QueryWrapper<Message>().lambda().eq(Message::getId, id)));
+    }
+
+    @Override
     protected QueryWrapper<Message> buildQueryWrapper(QueryWrapper<Message> queryWrapper, Map<String, Object> params) {
         if (params.get("title") != null) {
             queryWrapper.lambda().like(Message::getTitle, params.get("title"));
