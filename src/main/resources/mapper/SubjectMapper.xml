@@ -7,9 +7,14 @@
         <id column="id" property="id" />
         <result column="subject_name" property="subjectName" />
         <result column="subject_status" property="subjectStatus"/>
-        <result column="grade" property="grade" />
+        <result column="grade" property="grade"/>
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
+        <!--<collection property="grade" ofType="">-->
+        <!--<result property="grade" column="grade" jdbcType="INTEGER"/>-->
+    <!--</collection>-->
+        <!--<collection property="grade" column="grade"/>-->
+
     </resultMap>
 
     <!--addSubject-->
@@ -61,14 +66,29 @@
         FROM subject
         <where>
             <if test="subjectStatus != null">
-              AND subject_status = #{subjectStatus}
+             AND subject_status = #{subjectStatus}
             </if>
-            <if test="subjectName != null">
+            <if test="subjectName != null ">
               and subject_name = #{subjectName}
             </if>
         </where>
     </select>
 
+    <!--Boolean updateSubjectStatus(Integer subjectStatus);-->
+    <update id="updateSubjectStatus">
+      UPDATE  subject
+      <set>
+          <if test="subjectStatus != null">
+              subject_status = #{subjectStatus},
+          </if>
+          update_at = #{updateAt}
+      </set>
+      where id = #{id}
+    </update>
 
+    <select id="selectAllSubjectName" resultType="string">
+        SELECT DISTINCT subject_name from subject
+
+    </select>
 
 </mapper>

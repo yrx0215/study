@@ -1,8 +1,8 @@
 package com.jnshu.dreamteam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -24,11 +24,11 @@ public class Subject implements Serializable {
     private Long id;
 
     /**
-     * 学科姓名 1-3对应 语文 数学 英语
+     * 学科姓名
      */
     
     @TableField("subject_name")
-    private Integer subjectName;
+    private String subjectName;
 
     /**
      * 科目上下架状态 0:下架 1:上架
@@ -53,6 +53,8 @@ public class Subject implements Serializable {
      */
     @TableField("update_at")
     private Long updateAt;
+
+
 
 
 

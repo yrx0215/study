@@ -46,7 +46,7 @@ public class LessonController {
         log.info("add lesson start , lesson is {}, subjectId is {}, courseId is {}",lesson,subjectId, courseId);
         lesson.setSubjectId(subjectId);
         lesson.setCourseId(courseId);
-        Integer subjectName = subjectService.selectSubject(subjectId).getSubjectName();
+        String subjectName = subjectService.selectSubject(subjectId).getSubjectName();
         String courseName = courseService.selectCourseById(courseId).getCourseName();
         log.info("subjectName = {}, courseName = {}",subjectName, courseName);
         lesson.setSubjectName(subjectName);
