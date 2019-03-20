@@ -1,16 +1,20 @@
 package com.jnshu.dreamteam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.mapper.PhoneVerificationMapper;
 import com.jnshu.dreamteam.mapper.StudentMapper;
 import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Student;
 import com.jnshu.dreamteam.service.StudentService;
+import com.jnshu.dreamteam.utils.EmptyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
-
+@Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -69,6 +73,25 @@ public class StudentServiceImpl implements StudentService {
         queryWrapper.eq("phone", phone);
         PhoneVerification phoneVerification = phoneVerificationMapper.selectOne(queryWrapper);
         phoneVerificationMapper.delete(queryWrapper);
-        return System.currentTimeMillis()-phoneVerification.getCreateAt()<60000 && verificationCode.equals(phoneVerification.getVerificationCode());
+        return System.currentTimeMillis()-phoneVerification.getCreateAt()<86400000 && verificationCode.equals(phoneVerification.getVerificationCode());
+    }
+
+    @Override
+    public Long insertStudent(Student student) throws ServiceDaoException{
+        student.setState(1);
+        student.setStar(0L);
+        studentMapper.insert(student);
+        Long id = student.getId();
+        if(EmptyUtil.isEmpty(id)){
+            throw new ServiceDaoException("数据库异常，添加失败");
+        }
+        return id;
+    }
+
+    @Override
+    public void updateStudentById(Student student) throws ServiceDaoException{
+        if(EmptyUtil.isEmpty(studentMapper.updateById(student))){
+            throw new ServiceDaoException("数据库异常，更新数据失败");
+        }
     }
 }

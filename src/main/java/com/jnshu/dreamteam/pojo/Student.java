@@ -72,6 +72,9 @@ public class Student implements Serializable {
     @TableField("star")
     private Long star;
 
+    @TableField("create_at")
+    private Long createAt;
+
     /**
      * 该学生学习课时数
      * 不作为数据库字段使用

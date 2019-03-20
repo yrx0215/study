@@ -28,7 +28,7 @@ public class MessageUtil {
 
     public static void sendMessage(String to,String data) throws Exception{
           CCPRestSmsSDK restAPI = initCCPRestSmsSDK();
-          Map<String,Object> result = restAPI.sendTemplateSMS(to,"1",new String[]{data,"1"});
+          Map<String,Object> result = restAPI.sendTemplateSMS(to,"1",new String[]{data,"5"});
         if(!"000000".equals(result.get("statusCode"))){
             throw new Exception("错误码"+result.get("statusCode")+"错误信息="+result.get("statusMsg"));
         }
