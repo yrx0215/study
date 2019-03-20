@@ -6,7 +6,7 @@
 <configuration status="WARN" monitorInterval="180">
 
     <properties>
-        <property name="LOG_HOME">/maven_work/dreamteam</property>
+        <property name="LOG_HOME">dreamteam</property>
         <property name="FILE_NAME">tim</property>
     </properties>
 

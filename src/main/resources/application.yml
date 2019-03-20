@@ -31,7 +31,5 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.jnshu.dreamteam.pojo
 
-
-
-
-
+server:
+    port: 20765

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @author draper_hxy
  */
@@ -18,6 +20,17 @@ public class NewsController {
 
     @Autowired
     private NewsService newsService;
+
+    @RequestMapping(value = "/a/u/news", method = RequestMethod.GET)
+    public Response selectPages(Map<String,Object> params){
+        try {
+            return new Response(200,"OK", newsService.selectPages(params));
+        } catch (Throwable t){
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
 
     @RequestMapping(value = "/a/u/news", method = RequestMethod.POST)
     public Response insert(@RequestBody News news) {

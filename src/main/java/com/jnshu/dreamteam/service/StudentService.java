@@ -1,8 +1,11 @@
 package com.jnshu.dreamteam.service;
 
+import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Student;
+
+import javax.xml.ws.Service;
 
 /**
  * @author wzp
@@ -54,5 +57,20 @@ public interface StudentService {
      * @return
      */
     Boolean selectVerification(Long phone,Integer verificationCode);
+
+    /**
+     * 添加用户，返回用户ID
+     * @param student
+     * @return
+     */
+    Long insertStudent(Student student) throws ServiceDaoException;
+
+    /**
+     * 依据ID更新用户信息
+     * @param student
+     * @throws ServiceDaoException
+     */
+    void updateStudentById(Student student) throws ServiceDaoException;
+
 
 }
