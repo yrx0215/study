@@ -48,6 +48,12 @@ public class MissionContent implements Serializable {
     @TableField("content")
     private String content;
 
+    @TableField("create_at")
+    private Long createAt;
+
+    @TableField("update_at")
+    private Long updateAt;
+
 
 
 

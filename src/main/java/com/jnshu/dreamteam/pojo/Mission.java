@@ -32,6 +32,12 @@ public class Mission implements Serializable {
     private String missionName;
 
     /**
+     * 任务状态 0 下架 1上架
+     */
+    @TableField("mission_status")
+    private Integer missionStatus;
+
+    /**
      * 所属科目名称
      */
     @TableField("subject_id")
@@ -66,6 +72,12 @@ public class Mission implements Serializable {
      */
     @TableField("lesson_name")
     private String lessonName;
+
+    @TableField("create_at")
+    private Long createAt;
+
+    @TableField("update_at")
+    private Long updateAt;
 
     private List<MissionContent> missionContent;
 

@@ -31,7 +31,7 @@ public class Lesson implements Serializable {
     private String lessonName;
 
     /**
-     * 所属科目名称 123 语数英
+     * 所属科目名称
      */
     @TableField("subject_name")
     private String subjectName;
