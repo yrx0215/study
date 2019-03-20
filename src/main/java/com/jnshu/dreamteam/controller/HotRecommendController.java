@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @author draper_hxy
  */
@@ -18,6 +20,17 @@ public class HotRecommendController {
 
     @Autowired
     private HotRecommendService hotRecommendService;
+
+    @RequestMapping(value = "/a/u/hotRc", method = RequestMethod.GET)
+    public Response selectPages(@RequestParam Map<String,Object> params){
+        try {
+            return new Response(200,"OK", hotRecommendService.selectPages(params));
+        } catch (Throwable t){
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
 
     @RequestMapping(value = "/a/u/hotRc/{id}", method = RequestMethod.GET)
     public Response select(@PathVariable Long id) {

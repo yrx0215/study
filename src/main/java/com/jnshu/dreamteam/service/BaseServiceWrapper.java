@@ -16,7 +16,12 @@ public abstract class BaseServiceWrapper<T> extends QueryWrapperBaseService<T> {
     }
 
     @Override
-    protected abstract QueryWrapper<T> buildQueryWrapper(QueryWrapper<T> queryWrapper, Map<String, Object> params);
+    protected QueryWrapper<T> buildQueryWrapper(QueryWrapper<T> queryWrapper, Map<String, Object> params){
+        if (queryWrapper == null){
+            return new QueryWrapper<>();
+        }
+        return queryWrapper;
+    }
 
     protected UpdateWrapper<T> buildUpdateWrapper(UpdateWrapper<T> updateWrapper, Map<String, Object> params) {
         if (updateWrapper == null){
