@@ -1,17 +1,16 @@
 package com.jnshu.dreamteam.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
 import com.jnshu.dreamteam.pojo.Response;
+import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.SubjectService;
+import com.jnshu.dreamteam.utils.EmptyUtil;
+import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * course 表现层
@@ -32,11 +31,76 @@ public class CourseController {
      * @return 返回值为课程信息列表
      */
     @RequestMapping(value = "/a/u/allCourse",method = RequestMethod.GET)
-    public Response<List<Course>> getAllCourse(){
-        log.info("getAllCourse start" );
-        List<Course> courses = courseService.selectAllCourse();
-        log.info("allcourse size is = " + courses.size());
-        return new Response<>(0,"success",courses);
+    public Response getAllCourse(@RequestParam(value = "page",required = false)Integer page,
+                                 @RequestParam(value = "size",required = false) Integer size){
+        log.info("查询所有课程信息page:{} size{}",page, size );
+        page = page == null || page <= 0 ? 1 : page;
+        size = size == null || size <= 0 ? 10 : size;
+        MyPage myPage = new MyPage(page, size);
+        IPage<Course> courses = courseService.selectAllCourse(myPage);
+        log.info("所有课程的 size is = " + courses.getTotal());
+        return new Response(0,"success",courses);
+    }
+
+
+    /**
+     * 更新课程course上下架状态
+     * @param id 课程id
+     * @return  返回值为200 成功
+     */
+    @RequestMapping(value = "/a/u/courseStatus/{id}",method = RequestMethod.PUT)
+    public Response updateCourseStatus(@PathVariable("id") Long id){
+        log.info("更新course上下架状态==== id为 {}",id);
+        Course course = courseService.selectCourseById(id);
+        log.info("course信息为 :{}" ,course);
+        Integer courseStatus = course.getCourseStatus();
+        log.info("当前上下架状态为{}",courseStatus);
+        if (courseStatus == 0){
+            course.setCourseStatus(1);
+        } else {
+            course.setCourseStatus(0);
+        }
+        courseService.updateCourseStatus(id);
+        return new Response(200,"success",null);
+    }
+
+    /**
+     * 删除 课程信息
+     * @param id 课程id
+     * @return 成功返回true
+     */
+    @RequestMapping(value = "/a/u/course/{id}",method = RequestMethod.DELETE)
+    public Response deleteCourseById(@PathVariable("id") Long id){
+        log.info("删除course id是 : {}",id);
+        courseService.deleteCourseById(id);
+        return new Response(200,"success",null);
+    }
+
+    /**
+     * 模糊查询
+     * @param page 页数默认1
+     * @param size 页面容量 默认10
+     * @param subjectName 科目名称
+     * @param courseName 课程名称
+     * @param courseStatus 课程状态 0 下架 1 上架
+     * @param courseLevel 课程难度等级
+     * @return 符合条件的集合
+     */
+    @RequestMapping(value = "/a/u/courseFuzzy",method = RequestMethod.GET)
+    public Response selectCourseByFuzzy(@RequestParam(value = "page", required = false) Integer page,
+                                        @RequestParam(value = "size", required = false) Integer size,
+                                        @RequestParam(value = "subjectName", required = false) String subjectName,
+                                        @RequestParam(value = "courseName", required = false) String courseName,
+                                        @RequestParam(value = "courseStatus", required = false) Integer courseStatus,
+                                        @RequestParam(value = "courseLevel",required = false) Integer courseLevel){
+
+        log.info("模糊查询,subjectName = {},courseName = {}, courseStatus = {} ",subjectName, courseName, courseStatus);
+        page = page == null || page <= 0 ? 1 : page;
+        size = size == null || size <= 0 ? 10 : size;
+        IPage myPage = new MyPage(page, size);
+        IPage<Course> course = courseService.selectCourseByFuzzy(myPage, subjectName,courseStatus,courseName,courseLevel);
+        log.info("course 的长度是 = ",course.getSize());
+        return new Response(200,"success",course);
     }
 
     /**
@@ -46,11 +110,16 @@ public class CourseController {
      */
     @RequestMapping(value = "/a/u/course",method = RequestMethod.POST)
     public Response<Long> addCourse(Course course){
-        log.info("addCourse start");
+        log.info("插入课程 start 课程相关信息为: {}", course);
         Long subjectId = course.getSubjectId();
-        Integer subjectName = subjectService.selectSubject(subjectId).getSubjectName();
+        //获取subjectName set到course中
+        Subject subject = subjectService.selectSubject(subjectId);
+        log.info("所关联的subject 项目为: {}", subject);
+        if (EmptyUtil.isEmpty(subject)){
+            return new Response(-1,"error","错误的subjectId");
+        }
         course.setCreateAt(System.currentTimeMillis());
-        course.setSubjectName(subjectName);
+        course.setSubjectName(subject.getSubjectName());
         courseService.addCourse(course);
         log.info("addCourse id is = " + course.getId());
         return new Response<>(0,"success",course.getId());
@@ -79,7 +148,7 @@ public class CourseController {
      */
     @RequestMapping(value = "/a/u/course/{id}",method = RequestMethod.GET)
     public Response<Course> selectCourseByCourseId(@PathVariable("id") Long id){
-        log.info("get course by id start");
+        log.info("获取course信息 id是 {}", id);
         Course course = courseService.selectCourseById(id);
         log.info("course is = " + course);
         return new Response<>(0,"success",course);

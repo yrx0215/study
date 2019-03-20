@@ -52,12 +52,15 @@ public class SubjectController {
      * @return 根据科目状态和名称 返回对应的subject集合
      */
     @RequestMapping(value = "/a/u/statusOrName", method = RequestMethod.GET)
-
     public Response<IPage<Subject>> getSubjectByStatusOrName(@RequestParam(value = "page", required = false) Integer page,
                                                              @RequestParam(value = "size", required = false) Integer size,
                                                              @RequestParam(value = "subjectStatus", required = false) Integer subjectStatus,
                                                              @RequestParam(value = "subjectName", required = false) String subjectName) {
+        log.info("subjectStatus : {} , subjectName : {}" ,subjectStatus, subjectName);
+        page = page == null || page <= 0 ? 1 : page;
+        size = size == null || size <= 0 ? 10 : size;
         IPage myPage = new MyPage(page, size);
+        log.info("查询所有subject数据 page {}, size {}",page,size);
         IPage<Subject> subjects = subjectService.selectSubjectByStutasOrName(myPage, subjectStatus, subjectName);
         return new Response<>(0, "success", subjects);
     }
@@ -70,6 +73,7 @@ public class SubjectController {
      */
     @RequestMapping(value = "/a/u/subject/{id}", method = RequestMethod.GET)
     public Response<Subject> getSubjectById(@PathVariable("id") Long id) {
+        log.info("根据id查询科目 id是{}",id);
         Subject subject = subjectService.selectSubject(id);
         return new Response<>(0, "success", subject);
     }
@@ -89,7 +93,7 @@ public class SubjectController {
             log.info("update success, subjcet id = " + subject.getId());
             return Response.ok();
         }
-        return new Response<>(-1, "更新失败", subject);
+        return new Response<>(-1, "更新失败,subjectId异常 ", subject);
     }
 
     /**
@@ -124,10 +128,12 @@ public class SubjectController {
      */
     @RequestMapping(value = "/a/u/subject/{id}", method = RequestMethod.DELETE)
     public Response<Boolean> delectSubject(@PathVariable("id") Long id) {
+        log.info("删除科目 id为{}",id);
         Boolean b = subjectService.delectSubject(id);
         if (b) {
             return new Response<>(0, "success", true);
         }
+        log.info("删除失败 id错误");
         return new Response<>(0, "Delect fail", b);
     }
 
@@ -159,6 +165,10 @@ public class SubjectController {
     }
 
 
+    /**
+     * 查找所有学科名称
+     * @return 返回值为科目名称列表
+     */
     @RequestMapping(value = "/a/u/allSubjectName",method = RequestMethod.GET)
     public Response<List> getAllSubjectName(){
         log.info("查询所有的科目名称=======");

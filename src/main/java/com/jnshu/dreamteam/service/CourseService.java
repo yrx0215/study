@@ -3,8 +3,6 @@ package com.jnshu.dreamteam.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
 
-import java.util.List;
-
 /**
  * 课程相关接口
  * @author yrx
@@ -14,7 +12,7 @@ public interface CourseService {
      * 查询全部课程数据
      * @return 课程列表
      */
-    List<Course> selectAllCourse();
+    IPage<Course> selectAllCourse(IPage iPage);
 
     /**
      * 新增课程
@@ -44,11 +42,27 @@ public interface CourseService {
      * @param subjectName 科目名称
      * @param courseStatus 课程状态
      * @param courseName 课程名称
+     * @param  courseLevel 课程等级
      * @return 返回值为符合模糊查询的分页数据
      */
     IPage<Course> selectCourseByFuzzy(IPage iPage,
-                                     Integer subjectName,
+                                     String subjectName,
                                      Integer courseStatus,
-                                     String courseName);
+                                     String courseName,
+                                      Integer courseLevel);
+
+    /**
+     * 更新课程上下架状态
+     * @param id 课程id
+     * @return 返回值为true 更新成功
+     */
+    Boolean updateCourseStatus(Long id);
+
+    /**
+     * 删除单条课程数据
+     * @param id 课程id
+     * @return 返回值为true 删除成功
+     */
+    Boolean deleteCourseById(Long id);
 
 }

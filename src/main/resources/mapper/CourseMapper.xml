@@ -31,7 +31,7 @@
 
     <!--public Course selectCourseById(Long id);-->
     <select id="selectCourseById" resultMap="Course">
-        SELECT subject_id , course_name, course_level, course_pic, course_introduction
+        SELECT subject_id , course_name, course_level, course_pic, course_introduction, course_status
         FROM course
         WHERE  id = #{id}
     </select>
@@ -70,9 +70,31 @@
             course_status = #{courseStatus}
           </if>
           <if test="courseName != null">
-            course_name like concat(concat('%',#{courseName}),'%')
+            course_name = #{courseName}
+          </if>
+          <if test="courseStatus != null">
+            course_status = #{courseStatus}
+          </if>
+          <if test="courseLevel != null">
+              course_level = #{courseLevel}
           </if>
       </where>
     </select>
+<!--like concat(concat('%',#{courseName}),'%')-->
+
+    <!-- Boolean updateCourseStatus();-->
+    <update id="updateCourseStatus">
+        UPDATE course
+        SET course_status = #{courseStatus}
+        where id = #{id}
+
+    </update>
+
+    <!-- Boolean deleteCourse(Long id);-->
+    <delete id="deleteCourse">
+      DELETE
+      FROM course
+      where id = #{id}
+    </delete>
 
 </mapper>
