@@ -3,9 +3,69 @@
 <mapper namespace="com.jnshu.dreamteam.mapper.MissionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jnshu.dreamteam.pojo.Mission">
+    <resultMap id="Mission" type="com.jnshu.dreamteam.pojo.Mission">
         <id column="id" property="id" />
         <result column="mission_name" property="missionName" />
+        <result column="mission_status" property="missionStatus"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="lesson_id" property="lessonId"/>
+        <result column="subject_name" property="subjectName"/>
+        <result column="course_name" property="courseName"/>
+        <result column="lesson_name" property="lessonName"/>
+        <result column="create_at" property="createAt"/>
+        <result column="update_at" property="updateAt"/>
+        <collection  property="missionContent" ofType="com.jnshu.dreamteam.pojo.MissionContent">
+            <id column="id" property="id"/>
+            <result column="mission_id" property="missionId"/>
+            <result column="content_step" property="contentStep"/>
+            <result column="content_type" property="contentType"/>
+            <result column="content" property="content"/>
+        </collection>
     </resultMap>
+    
+    <resultMap id="MissionContent" type="com.jnshu.dreamteam.pojo.MissionContent">
+        <id column="id" property="id"/>
+        <result column="mission_id" property="missionId"/>
+        <result column="content_step" property="contentStep"/>
+        <result column="content_type" property="contentType"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+    <insert id="addMission" useGeneratedKeys="true" keyProperty="id" >
+      INSERT  INTO mission (subject_id, course_id, lesson_id, mission_name, create_at )
+      VALUES (#{subjectId}, #{courseId}, #{lessonId}, #{missionName}, #{createAt})
+    </insert>
+    <!--List selectAllMission();-->
+    <select id="selectAllMission" resultType="com.jnshu.dreamteam.pojo.Mission">
+        SELECT mission_name, subject_name, course_name, lesson_name, mission_status
+        FROM mission
+    </select>
+
+    <!-- Boolean updateMissionStatus();-->
+    <update id="updateMissionStatus">
+      update mission
+      SET mission_status = #{missionStatus}, update_at = #{updateAt}
+      where id = {id}
+    </update>
+<!-- Boolean deleteMissionById(Long id);-->
+    <delete id="deleteMissionById">
+      DELETE
+      FROM  mission
+      where id = #{id}
+    </delete>
+<!--Mission selectMissionById(Long id);-->
+    <select id="selectMissionById" resultType="com.jnshu.dreamteam.pojo.Mission">
+      SELECT m.subject_name, m.course_name, m.lesson_name, mc.content_step, mc.content_type,mc.content
+      FROM mission m
+      LEFT JOIN  mission_content mc ON m.id = mc.mission_id
+      WHERE m.id = #{id}
+    </select>
+<!--  Mission selectMissionStatus(Long id);-->
+    <select id="selectMissionStatus" resultType="com.jnshu.dreamteam.pojo.Mission">
+        select mission_status
+        FROM mission
+        WHERE id = #{id}
+    </select>
 
 </mapper>

@@ -28,6 +28,12 @@ public class LessonController {
     @Autowired
     private CourseService courseService;
 
+    /**
+     * 查询所有课时
+     * @param page 所在页数 默认1
+     * @param size 页面的容量 默认10
+     * @return 返回值为所有数据
+     */
     @RequestMapping(value = "/a/u/allLesson",method = RequestMethod.GET)
     public Response getAllLesson(@RequestParam(value = "page",required = false) Integer page,
                                  @RequestParam(value = "size",required = false) Integer size){
@@ -41,13 +47,28 @@ public class LessonController {
 
     }
 
+//todo 模糊查询
+
+
+
+
+
+    /**
+     * 增加课时
+     * @param lesson 课时对象
+     * @param subjectId 所属科目id
+     * @param courseId 所属 课程id
+     * @return
+     */
     @RequestMapping(value = "/a/u/lesson",method = RequestMethod.POST)
     public Response addLesson(Lesson lesson,Long subjectId,Long courseId){
         log.info("add lesson start , lesson is {}, subjectId is {}, courseId is {}",lesson,subjectId, courseId);
         lesson.setSubjectId(subjectId);
         lesson.setCourseId(courseId);
-        Integer subjectName = subjectService.selectSubject(subjectId).getSubjectName();
+        //根据科目 课程id 写入相应的名字
+        String subjectName = subjectService.selectSubject(subjectId).getSubjectName();
         String courseName = courseService.selectCourseById(courseId).getCourseName();
+
         log.info("subjectName = {}, courseName = {}",subjectName, courseName);
         lesson.setSubjectName(subjectName);
         lesson.setCourseName(courseName);
@@ -58,6 +79,11 @@ public class LessonController {
         return new Response(200,"success",lesson.getId());
     }
 
+    /**
+     * 根据id查询课时信息
+     * @param id 课时id
+     * @return 返回课时信息
+     */
     @RequestMapping(value = "/a/u/lesson/{id}", method = RequestMethod.GET)
     public Response getLessonById(@PathVariable("id") Long id){
         log.info("get lesson by id , id is " + id);
@@ -66,14 +92,21 @@ public class LessonController {
         return new Response(0,"success",lesson);
     }
 
+    /**
+     * 更新课时信息
+     * @param lesson 更新的课时信息
+     * @return 返回更新后的课时信息
+     */
     @RequestMapping(value = "/a/u/lesson",method = RequestMethod.PUT)
     public Response updateLesson(Lesson lesson){
         log.info("update lesson , lesson is " + lesson);
         lesson.setUpdateAt(System.currentTimeMillis());
         Boolean isSuccess = lessonService.updateLesson(lesson);
         if (isSuccess == true){
+            log.info("lesson is {}" , lesson);
             return new Response(0,"success",lesson);
         }
+        log.info("更新失败");
         return Response.error();
     }
 
