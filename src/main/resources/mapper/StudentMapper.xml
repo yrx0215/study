@@ -16,6 +16,10 @@
         <result column="create_at" property="createAt"/>
     </resultMap>
 
+    <select id="selectByAccountOrPhone" resultMap="BaseResultMap">
+        SELECT * FROM student WHERE student_account = #{account} OR phone = #{account}
+    </select>
+
 
 
 </mapper>

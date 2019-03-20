@@ -1,6 +1,5 @@
 package com.jnshu.dreamteam.controller;
 
-import com.auth0.jwt.JWT;
 import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.pojo.PhoneVerification;
@@ -11,13 +10,11 @@ import com.jnshu.dreamteam.utils.JwtUtil;
 import com.jnshu.dreamteam.utils.Md5Utils;
 import com.jnshu.dreamteam.utils.MessageUtil;
 import com.jnshu.dreamteam.utils.UploadPic;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -135,13 +132,22 @@ public class StudentController {
         return new Response<>(-1,"Token错误");
     }
 
+    /**
+     * 登录接口
+     * @param account
+     * @param password
+     * @param httpServletResponse
+     * @return
+     */
     @LogInfo
     @PostMapping("/a/student/login")
     public Response login(@RequestParam("account")String account
                          ,@RequestParam("password") String password
-                         ,HttpServletResponse httpServletResponse){
-        return Response.ok();
+                         ,HttpServletResponse httpServletResponse) throws ServiceDaoException{
 
-
+        Map map = studentService.selectByAccountOrPhone(account,password);
+        String token = JwtUtil.createToken(map);
+        httpServletResponse.setHeader("Token",token);
+        return new Response(200,"登录成功");
     }
 }

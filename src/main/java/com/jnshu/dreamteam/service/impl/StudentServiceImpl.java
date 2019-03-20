@@ -9,11 +9,14 @@ import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Student;
 import com.jnshu.dreamteam.service.StudentService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
+import com.jnshu.dreamteam.utils.Md5Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -93,5 +96,19 @@ public class StudentServiceImpl implements StudentService {
         if(EmptyUtil.isEmpty(studentMapper.updateById(student))){
             throw new ServiceDaoException("数据库异常，更新数据失败");
         }
+    }
+
+    @Override
+    public Map<String,Long> selectByAccountOrPhone(String account,String password) throws ServiceDaoException{
+        Student student = studentMapper.selectByAccountOrPhone(account);
+        if(!EmptyUtil.isEmpty(student)){
+            String pwd = Md5Utils.stringMD5(password,student.getCreateAt());
+            if(pwd.equals(student.getPassword())){
+                Map<String, Long> map = new HashMap<>();
+                map.put("userId",student.getId());
+                return map;
+            }
+        }
+        throw new ServiceDaoException("账户名或密码错误");
     }
 }

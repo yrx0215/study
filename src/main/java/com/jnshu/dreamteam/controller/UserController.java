@@ -31,8 +31,6 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    //sdklfdjkslfsdklfjdlsf
-
     @Resource
     private UserService userService;
 

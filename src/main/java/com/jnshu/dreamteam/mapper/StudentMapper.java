@@ -2,6 +2,7 @@ package com.jnshu.dreamteam.mapper;
 
 import com.jnshu.dreamteam.pojo.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,5 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface StudentMapper extends BaseMapper<Student> {
 
+    Student selectByAccountOrPhone(@Param("account") String account);
 
 }

@@ -57,13 +57,13 @@
 
     <!--selectSubjectStatusOrName-->
     <select id="selectSubjectStatusOrName" resultType="com.jnshu.dreamteam.pojo.Subject">
-        SELECT id, subject_name, grade, subject_status
+        SELECT *
         FROM subject
         <where>
             <if test="subjectStatus != null">
               AND subject_status = #{subjectStatus}
             </if>
-            <if test="subjectName != null &amp;&amp; subjectName != &quot;&quot;">
+            <if test="subjectName != null">
               and subject_name = #{subjectName}
             </if>
         </where>
