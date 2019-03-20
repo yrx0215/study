@@ -7,8 +7,6 @@ import com.jnshu.dreamteam.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * course实现类
  * @author yrx
@@ -20,8 +18,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
 
     @Override
-    public List<Course> selectAllCourse() {
-        return courseMapper.selectAllCourse();
+    public IPage<Course> selectAllCourse(IPage iPage) {
+        return courseMapper.selectAllCourse(iPage);
     }
 
     @Override
@@ -41,9 +39,20 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public IPage selectCourseByFuzzy(IPage iPage,
-                                            Integer subjectName,
-                                            Integer courseStatus,
-                                            String courseName) {
-        return courseMapper.selectCourseByFuzzy(iPage,subjectName,courseStatus,courseName);
+                                     String subjectName,
+                                     Integer courseStatus,
+                                     String courseName,
+                                     Integer courseLevel) {
+        return courseMapper.selectCourseByFuzzy(iPage,subjectName,courseStatus,courseName,courseLevel);
+    }
+
+    @Override
+    public Boolean updateCourseStatus(Long id) {
+        return courseMapper.updateCourseStatus(id);
+    }
+
+    @Override
+    public Boolean deleteCourseById(Long id) {
+        return courseMapper.deleteCourse(id);
     }
 }

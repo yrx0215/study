@@ -3,7 +3,6 @@ package com.jnshu.dreamteam.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Subject;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -57,8 +56,8 @@ public interface SubjectService {
      * @return 返回分页的subject对象
      */
     IPage<Subject> selectSubjectByStutasOrName(IPage iPage,
-                                               @Param("subjectStatus") Integer subjectStatus,
-                                              @Param("subjectName") String subjectName);
+                                               Integer subjectStatus,
+                                               String subjectName);
 
     /**
      * 更新科目的状态

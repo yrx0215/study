@@ -5,7 +5,6 @@ import com.jnshu.dreamteam.mapper.SubjectMapper;
 import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.SubjectService;
 import com.jnshu.dreamteam.utils.MyPage;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +53,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public IPage<Subject> selectSubjectByStutasOrName(IPage iPage,
-                                                     @Param("subjectStatus") Integer subjectStatus,
-                                                     @Param("subjectName") String subjectName) {
+                                                      Integer subjectStatus,
+                                                      String subjectName) {
         return subjectMapper.selectSubjectStatusOrName(iPage,subjectStatus, subjectName);
     }
 
