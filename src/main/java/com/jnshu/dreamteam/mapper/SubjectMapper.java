@@ -6,6 +6,8 @@ import com.jnshu.dreamteam.pojo.Subject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @author yrx
@@ -15,7 +17,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
     /**
      *  添加方法
-     * @param subject subject对象
+     * @param subject 科目
      * @return 成功返回true 失败返回false
      */
     Boolean addSubject(Subject subject);
@@ -57,7 +59,20 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      */
     IPage<Subject> selectSubjectStatusOrName(IPage iPage,
                                             @Param("subjectStatus") Integer subjectStatus,
-                                            @Param("subjectName") Integer subjectName);
+                                            @Param("subjectName") String subjectName);
 
+    /**
+     * 修改科目上下架状态
+     * @param subject 科目
+     * @return 返回值为true 更新成功 false 更新失败
+     */
+    Boolean updateSubjectStatus(Subject subject);
+
+
+    /**
+     * 查询所有科目名称
+     * @return 科目名称列表
+     */
+    List selectAllSubjectName();
 
 }

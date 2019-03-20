@@ -13,7 +13,40 @@
         <result column="state" property="state" />
         <result column="picture" property="picture" />
         <result column="star" property="star" />
+        <result column="create_at" property="createAt"/>
+        <result column="study_lesson" property="studyingLesson" jdbcType="INTEGER"/>
     </resultMap>
+
+    <select id="selectByAccountOrPhone" resultMap="BaseResultMap">
+        SELECT * FROM student WHERE student_account = #{account} OR phone = #{account}
+    </select>
+
+    <select id="selectByMultiple" resultMap="BaseResultMap">
+        SELECT s.*,sl.study_lesson
+        FROM student AS s LEFT JOIN (SELECT s.student_account,count(sld.class_id) AS study_lesson
+        FROM student AS s LEFT JOIN student_lesson_datum AS sld ON s.id = sld.student_id
+        GROUP BY s.student_account) AS sl ON s.student_account = sl.student_account
+        <where>
+            <if test="nickName != null">
+                AND s.nick_name = #{nickName}
+            </if>
+            <if test="account != null">
+                AND s.student_account = #{account}
+            </if>
+            <if test="grade !=null">
+                AND s.grade = #{grade}
+            </if>
+            <if test="state != null">
+                AND s.state = #{state}
+            </if>
+            <if test="starMin != null &amp;&amp; starMax!=null &amp;&amp; starMin lt starMax">
+                AND s.star BETWEEN #{starMin} AND #{starMax}
+            </if>
+            <if test="studyLessonMin !=null &amp;&amp; studyLessonMax != null &amp;&amp; studyLessonMin lt studyLessonMax">
+                AND study_lesson BETWEEN studyLessonMin AND studyLessonMax
+            </if>
+        </where>
+    </select>
 
 
 

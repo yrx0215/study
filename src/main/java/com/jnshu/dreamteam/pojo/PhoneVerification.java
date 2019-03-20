@@ -26,7 +26,7 @@ public class PhoneVerification implements Serializable {
      * 验证码
      */
     @TableField("verification_code")
-    private String verificationCode;
+    private Integer verificationCode;
 
     /**
      * 创建时间
