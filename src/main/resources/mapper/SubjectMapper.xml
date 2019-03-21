@@ -61,17 +61,19 @@
     </select>
 
     <!--selectSubjectStatusOrName-->
+    <!--SELECT id, subject_name, grade, subject_status-->
     <select id="selectSubjectStatusOrName" resultType="com.jnshu.dreamteam.pojo.Subject">
-        SELECT id, subject_name, grade, subject_status
+        SELECT *
         FROM subject
         <where>
             <if test="subjectStatus != null">
              AND subject_status = #{subjectStatus}
             </if>
             <if test="subjectName != null ">
-              and subject_name = #{subjectName}
+              and subject_name like concat(concat('%',#{subjectName},'%'))
             </if>
         </where>
+        order by update_at desc
     </select>
 
     <!--Boolean updateSubjectStatus(Integer subjectStatus);-->
@@ -86,9 +88,15 @@
       where id = #{id}
     </update>
 
-    <select id="selectAllSubjectName" resultType="string">
+    <select id="selectAllSubjectName" resultType="list">
         SELECT DISTINCT subject_name from subject
 
+    </select>
+
+    <select id="selectIdByNameAndGrade" resultType="java.lang.Long">
+      SELECT id
+      from subject
+      WHERE subject_name = #{subjectName} and grade = #{grade}
     </select>
 
 </mapper>

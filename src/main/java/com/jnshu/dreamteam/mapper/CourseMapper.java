@@ -3,6 +3,7 @@ package com.jnshu.dreamteam.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 
@@ -53,18 +54,18 @@ public interface CourseMapper extends BaseMapper<Course> {
      * @return 返回值为查询的对象列表
      */
     IPage selectCourseByFuzzy(IPage iPage,
-                              String subjectName,
-                              Integer courseStatus,
-                              String courseName,
-                              Integer courseLevel);
+                              @Param("subjectName") String subjectName,
+                              @Param("courseStatus") Integer courseStatus,
+                              @Param("courseName") String courseName,
+                              @Param("courseLevel") Integer courseLevel);
 
 
     /**
      * 更新上下架状态
-     * @param id 课程id
+     * @param course 课程信息
      * @return 返回值为true 更新成功
      */
-    Boolean updateCourseStatus(Long id);
+    Boolean updateCourseStatus(Course course);
 
     /**
      * 删除course信息
@@ -72,5 +73,14 @@ public interface CourseMapper extends BaseMapper<Course> {
      * @return 返回值为true, 删除成功
      */
     Boolean deleteCourse(Long id);
+
+    /**
+     * 根据subjectId 和课程名称 查找到课程对应id
+     * @param subejctId 科目id
+     * @param courseName 课程名称
+     * @return 返回值为对应的id
+     */
+    Long selectIdBySubejctIdAndCourseName(@Param("subjectId") Long subejctId,
+                                          @Param("courseName")String courseName);
 
 }

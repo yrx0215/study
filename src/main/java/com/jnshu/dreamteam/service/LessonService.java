@@ -37,4 +37,40 @@ public interface LessonService {
      */
     Long addLesson(Lesson lesson);
 
+    /**
+     * 条件查询数据
+     * @param iPage 分页信息
+     * @param subjectName 科目名称
+     * @param courseLevel 所属课程难度
+     * @param courseName 课程名称
+     * @param lessonStatus 课时状态
+     * @param lessonName 课时名称
+     * @return 返回选定数据列表
+     */
+    IPage selectLessonFuzzy(IPage iPage,
+                            String subjectName,
+                            Integer courseLevel,
+                            String courseName,
+                            Integer lessonStatus,
+                            String lessonName);
+
+
+    /**
+     * 根据id 删除相应数据
+     * @param id lesson对应的id
+     * @return 返回值为true 删除成功
+     */
+    Boolean deleteLessonById(Long id);
+
+    /**
+     * 根据条件查找到对应的lessonid
+     * @param subjectId 科目id
+     * @param courseId 课程id
+     * @param lessonName 课时名称
+     * @return 返回值为课时的id
+     */
+    Long selectIdBySubjectIdAndCourseIdAndLessonName(Long subjectId,
+                                                     Long courseId,
+                                                     String lessonName);
+
 }

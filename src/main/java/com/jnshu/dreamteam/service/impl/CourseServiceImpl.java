@@ -47,12 +47,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Boolean updateCourseStatus(Long id) {
-        return courseMapper.updateCourseStatus(id);
+    public Boolean updateCourseStatus(Course course) {
+        return courseMapper.updateCourseStatus(course);
     }
 
     @Override
     public Boolean deleteCourseById(Long id) {
         return courseMapper.deleteCourse(id);
+    }
+
+    @Override
+    public Long selectIdBySubejctIdAndCourseName(Long subejctId, String courseName) {
+        return courseMapper.selectIdBySubejctIdAndCourseName(subejctId, courseName);
     }
 }
