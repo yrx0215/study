@@ -3,6 +3,7 @@ package com.jnshu.dreamteam.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Mission;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -29,10 +30,10 @@ public interface MissionMapper extends BaseMapper<Mission> {
 
     /**
      * 更新mission上下架状态
-     * @param id mission对应的id
+     * @param mission mission更新信息
      * @return 返回值为true 更新成功
      */
-    Boolean updateMissionStatus(Long id);
+    Boolean updateMissionStatus(Mission mission);
 
     /**
      * 删除mission
@@ -54,5 +55,22 @@ public interface MissionMapper extends BaseMapper<Mission> {
      * @return mission对象
      */
     Mission selectMissionStatus(Long id);
+
+    /**
+     * 模糊分页按条件查询
+     * @param iPage 分页信息
+     * @param subjectName 科目名称
+     * @param courseLevel 课程等级
+     * @param courseName  科目名称
+     * @param lessonName 课时名称
+     * @param missionName 任务名称
+     * @return 返回为选中条件的数据集合
+     */
+    IPage selectMissionByFuzzy(IPage iPage,
+                               @Param("subjectName")String subjectName,
+                               @Param("courseLevel")Integer courseLevel,
+                               @Param("courseName")String courseName,
+                               @Param("lessonName")String lessonName,
+                               @Param("missionName")String missionName);
 
 }

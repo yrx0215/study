@@ -67,4 +67,9 @@ public class SubjectServiceImpl implements SubjectService {
     public List selectAllSubjectName() {
         return subjectMapper.selectAllSubjectName();
     }
+
+    @Override
+    public Long selectIdByNameAndGrade(String subjectName, Integer grade) {
+        return subjectMapper.selectIdByNameAndGrade(subjectName,grade);
+    }
 }

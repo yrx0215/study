@@ -36,4 +36,19 @@ public class LessonServiceImpl implements LessonService {
     public Long addLesson(Lesson lesson) {
         return lessonMapper.addLesson(lesson);
     }
+
+    @Override
+    public IPage selectLessonFuzzy(IPage iPage, String subjectName, Integer courseLevel, String courseName, Integer lessonStatus, String lessonName) {
+        return lessonMapper.selectLessonFuzzy(iPage,subjectName,courseLevel,courseName,lessonStatus,lessonName);
+    }
+
+    @Override
+    public Boolean deleteLessonById(Long id) {
+        return lessonMapper.deleteLessonById(id);
+    }
+
+    @Override
+    public Long selectIdBySubjectIdAndCourseIdAndLessonName(Long subjectId, Long courseId, String lessonName) {
+        return lessonMapper.selectIdBySubjectIdAndCourseIdAndLessonName(subjectId, courseId, lessonName);
+    }
 }

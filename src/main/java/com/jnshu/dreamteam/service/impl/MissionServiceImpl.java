@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.MissionMapper;
 import com.jnshu.dreamteam.pojo.Mission;
 import com.jnshu.dreamteam.service.MissionService;
-import com.jnshu.dreamteam.utils.MyPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +22,14 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public IPage getAllMission(Integer page, Integer size) {
-        page = page==null||page<=0?1:page;
-        size = size==null||size<=0?10:size;
-        IPage mypage = new MyPage(page,size);
-        return missionMapper.selectAllMission(mypage);
+    public IPage getAllMission(IPage iPage) {
+
+        return missionMapper.selectAllMission(iPage);
     }
 
     @Override
-    public Boolean updateMissionStatus(Long id) {
-        return missionMapper.updateMissionStatus(id);
+    public Boolean updateMissionStatus(Mission mission) {
+        return missionMapper.updateMissionStatus(mission);
     }
 
     @Override
@@ -48,5 +45,10 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public Mission selectMissionStatus(Long id) {
         return missionMapper.selectMissionStatus(id);
+    }
+
+    @Override
+    public IPage selectMissionByFuzzy(IPage iPage, String subjectName, Integer courseLevel, String courseName, String lessonName, String missionName) {
+        return missionMapper.selectMissionByFuzzy(iPage,subjectName,courseLevel,courseName,lessonName,missionName);
     }
 }

@@ -75,4 +75,13 @@ public interface SubjectMapper extends BaseMapper<Subject> {
      */
     List selectAllSubjectName();
 
+    /**
+     * 根据科目名和年级查询科目id
+     * @param subjectName 科目名称
+     * @param grade 年级
+     * @return 返回对应的id
+     */
+    Long selectIdByNameAndGrade(@Param("subjectName") String subjectName,
+                                @Param("grade") Integer grade);
+
 }

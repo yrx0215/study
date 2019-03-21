@@ -3,24 +3,22 @@
 <mapper namespace="com.jnshu.dreamteam.mapper.MissionContentMapper">
 
     <resultMap id="MissionContent" type="com.jnshu.dreamteam.pojo.MissionContent">
-        <id column="id" property="id"/>
+        <id column="mc_id" property="mcId"/>
         <result column="mission_id" property="missionId"/>
         <result column="content_step" property="contentStep"/>
         <result column="content_type" property="contentType"/>
         <result column="content" property="content"/>
-        <result column="create_at" property="createAt"/>
-        <result column="update_at" property="updateAt"/>
     </resultMap>
 
     <insert id="addMissionContent" >
-        insert INTO  mission_content(mission_id, content_step, content_type, content,create_at)
-        VALUES (#{missionId}, #{contentStep}, #{contentType}, #{content}, #{createAt})
+        insert INTO  mission_content(mission_id, content_step, content_type, content)
+        VALUES (#{missionId}, #{contentStep}, #{contentType}, #{content})
     </insert>
 
     <!--Boolean delectMissionContentById(Long id);-->
     <delete id="delectMissionContentById">
         DELETE
         FROM mission_content
-        where id = #{id}
+        where mission_id = #{missionId}
     </delete>
 </mapper>
