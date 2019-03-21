@@ -10,9 +10,7 @@ import com.jnshu.dreamteam.service.UserService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.JwtUtil;
 import com.jnshu.dreamteam.utils.ValidatedUtil;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -30,8 +28,6 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class UserController {
-
-    //sdklfdjkslfsdklfjdlsf
 
     @Resource
     private UserService userService;
@@ -114,15 +110,15 @@ public class UserController {
      */
     @LogInfo
     @PostMapping("/a/login")
-    public Response login(@RequestParam("account") String account, @RequestParam("password") String password
-                         ,HttpServletResponse httpServletResponse){
+    public Response<String> login(@RequestParam("account") String account, @RequestParam("password") String password
+                         , HttpServletResponse httpServletResponse){
         Map<String,Object> map = userService.validatePassword(account,password);
         if(!EmptyUtil.isEmpty(map)){
             String token = JwtUtil.createToken(map);
             httpServletResponse.setHeader("Token",token);
-            return new Response(200,"登录成功");
+            return new Response<>(200,"登录成功","该用户的角色为"+map.get("roleName"));
         }
-        return new Response(-1,"账号不存在或密码错误");
+        return new Response<>(-1,"账号不存在或密码错误");
     }
 
     /**
@@ -154,7 +150,7 @@ public class UserController {
 
     @LogInfo
     @GetMapping("/unauthenticated")
-    public Response unauthenticated(@RequestParam("message") String message){
+    public Response<String> unauthenticated(@RequestParam("message") String message){
         return new Response<>(-1,"无法认证",message);
     }
 }

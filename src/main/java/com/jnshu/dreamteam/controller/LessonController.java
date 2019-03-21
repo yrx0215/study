@@ -1,14 +1,11 @@
 package com.jnshu.dreamteam.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.jnshu.dreamteam.pojo.Course;
 import com.jnshu.dreamteam.pojo.Lesson;
 import com.jnshu.dreamteam.pojo.Response;
-import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.LessonService;
 import com.jnshu.dreamteam.service.SubjectService;
-import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

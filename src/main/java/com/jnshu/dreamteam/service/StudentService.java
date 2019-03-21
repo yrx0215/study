@@ -4,8 +4,10 @@ import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.config.exception.ValidatedParamsOnlyException;
 import com.jnshu.dreamteam.pojo.PhoneVerification;
 import com.jnshu.dreamteam.pojo.Student;
+import org.apache.ibatis.annotations.Param;
 
 import javax.xml.ws.Service;
+import java.util.Map;
 
 /**
  * @author wzp
@@ -71,6 +73,17 @@ public interface StudentService {
      * @throws ServiceDaoException
      */
     void updateStudentById(Student student) throws ServiceDaoException;
+
+    /**
+     * 前台登录服务，账号名可为用户名也可以为手机号
+     * 若密码正确，则返回带有userId的map供生成Token使用
+     * 若密码错误，则抛出异常
+     * @param account
+     * @param password
+     * @return
+     * @throws ServiceDaoException
+     */
+    Map<String,Long> selectByAccountOrPhone(String account,String password) throws ServiceDaoException;
 
 
 }

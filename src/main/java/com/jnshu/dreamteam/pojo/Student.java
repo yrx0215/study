@@ -80,7 +80,7 @@ public class Student implements Serializable {
      * 不作为数据库字段使用
      */
     @TableField(exist = false)
-    private Long studyingLesson;
+    private Integer studyingLesson;
 
     /**
      * 学生收藏的课程
