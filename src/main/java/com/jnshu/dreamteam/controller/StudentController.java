@@ -4,18 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.pojo.*;
-;
 import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.StudentService;
 import com.jnshu.dreamteam.utils.*;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +18,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+;
 
 /**
  * 前台注册模块
@@ -242,5 +238,68 @@ public class StudentController {
         IPage iPage = new MyPage(page,10);
         IPage<List<Lesson>> mypage = studentService.selectBuyLessonByStudentId(iPage,studentId);
         return new Response<>(200,"查询成功",mypage);
+    }
+
+    @RequestMapping(value = "/a/u/student/check",method = RequestMethod.PUT)
+    public Response studentCheckIn(HttpServletRequest request) throws  ServiceDaoException{
+        String token = request.getHeader("Token");
+        if (!JwtUtil.verify(token)){
+            return new Response(-1,"token 错误",null);
+        }
+//        Long id = JwtUtil.getClaims(token,"userId").asLong();
+        Long id = 26L;
+        log.info("学生签到功能, 学生id是{}",id);
+        Student student = studentService.selectStudentById(id);
+        log.info("student 信息为: {}",student);
+        Long star = student.getStar();
+        StudentCheck sc = studentService.selectStudentCheckById(id);
+        log.info("当前学生签到情况为:{}",sc);
+        //表中没有数据
+        if (EmptyUtil.isEmpty(sc)){
+            log.info("签到表没有数据, 新增用户签到, 学生id是 :{}",id);
+            StudentCheck studentCheck = new StudentCheck();
+            studentCheck.setStudentId(id);
+            studentCheck.setCheckTime(System.currentTimeMillis());
+            studentCheck.setCheckDay(1);
+            studentService.insertStudentCheck(studentCheck);
+            Long scId = studentCheck.getId();
+            log.info("签到表新增, 对应id是{}",scId);
+            //更新星星数
+            student.setId(id);
+            student.setStar(star + 3);
+            studentService.updateStudentById(student);
+            return new Response(200,"success",null);
+        }
+        Long checkTimeInDb = sc.getCheckTime();
+        //表中有数据
+        Long diff = (System.currentTimeMillis() - checkTimeInDb) / (24 * 60 * 60 * 1000);
+        if (diff == 0L){
+            //当天已经签到
+            log.info("当天已经签到");
+            return new Response(-1,"已经签到",null);
+        }
+        if (diff == 1L ){
+            //连续签到
+            sc.setCheckDay(sc.getCheckDay() + 1);
+            sc.setCheckTime(System.currentTimeMillis());
+            studentService.updateStudentCheck(sc);
+            //更新学生信息
+            student.setId(id);
+            student.setStar(star + 3);
+            studentService.updateStudentById(student);
+            return Response.ok();
+        }
+        if (diff > 1L){
+            //断签
+            sc.setCheckDay(1);
+            sc.setCheckTime(System.currentTimeMillis());
+            studentService.updateStudentCheck(sc);
+            //更新学生信息;
+            student.setId(id);
+            student.setStar(star + 3);
+            studentService.updateStudentById(student);
+        }
+        return new Response(200,"success",null);
+
     }
 }
