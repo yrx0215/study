@@ -71,4 +71,13 @@ public interface SubjectService {
      * @return 科目名称列表
      */
     List selectAllSubjectName();
+
+    /**
+     * 根据科目名称和年级查询对应的id
+     * @param subjectName 年级名称
+     * @param grade 年级
+     * @return 返回值为对应的id
+     */
+    Long selectIdByNameAndGrade( String subjectName,
+                                 Integer grade);
 }

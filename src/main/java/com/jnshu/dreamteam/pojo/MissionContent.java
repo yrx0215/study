@@ -21,8 +21,8 @@ public class MissionContent implements Serializable {
     /**
      * 自增主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "mc_id", type = IdType.AUTO)
+    private Long mcId;
 
     /**
      * 所属任务的id
@@ -47,6 +47,7 @@ public class MissionContent implements Serializable {
      */
     @TableField("content")
     private String content;
+
 
 
 

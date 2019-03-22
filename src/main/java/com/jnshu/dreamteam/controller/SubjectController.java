@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.pojo.Subject;
 import com.jnshu.dreamteam.service.SubjectService;
+import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class SubjectController {
      * @param subjectName   科目名称, 1:语文 2:数学 3:英语, 没有设置为空
      * @return 根据科目状态和名称 返回对应的subject集合
      */
-    @RequestMapping(value = "/a/u/statusOrName", method = RequestMethod.GET)
+    @RequestMapping(value = "/a/u/subjectFuzzy", method = RequestMethod.GET)
     public Response<IPage<Subject>> getSubjectByStatusOrName(@RequestParam(value = "page", required = false) Integer page,
                                                              @RequestParam(value = "size", required = false) Integer size,
                                                              @RequestParam(value = "subjectStatus", required = false) Integer subjectStatus,
@@ -61,6 +62,13 @@ public class SubjectController {
         size = size == null || size <= 0 ? 10 : size;
         IPage myPage = new MyPage(page, size);
         log.info("查询所有subject数据 page {}, size {}",page,size);
+        //前端必须传空字符串, 进行判空,设置为null
+        if (EmptyUtil.isEmpty(subjectName)){
+            subjectName = null ;
+        }
+        if (EmptyUtil.isEmpty(subjectStatus)){
+            subjectStatus = null;
+        }
         IPage<Subject> subjects = subjectService.selectSubjectByStutasOrName(myPage, subjectStatus, subjectName);
         return new Response<>(0, "success", subjects);
     }
@@ -143,8 +151,8 @@ public class SubjectController {
      * @param id 科目id信息
      * @return 返回值
      */
-    @RequestMapping(value = "/a/u/subjectStatus",method = RequestMethod.PUT)
-    public Response updateSubjectStatus(Long id){
+    @RequestMapping(value = "/a/u/subjectStatus/{id}",method = RequestMethod.PUT)
+    public Response updateSubjectStatus(@PathVariable("id") Long id){
         log.info("开始修改上下架状态=====科目id是" + id);
         Subject subject = subjectService.selectSubject(id);
         log.info("修改的科目详细信息为: " + subject);
@@ -175,6 +183,24 @@ public class SubjectController {
         List list = subjectService.selectAllSubjectName();
         log.info("所有科目列表长度为: " + list.size());
         return new Response<>(200,"success",list);
+    }
+
+
+    /**
+     * 根据名称和年级查找id
+     * @param subjectName 科目名称
+     * @param grade 年级
+     * @return 返回值为对应id
+     */
+    @RequestMapping(value = "/a/u/subjectId",method = RequestMethod.GET)
+    public Response getIdBySubjectNameAndGrade(String subjectName, Integer grade){
+        log.info("根据科目名称和年级查询对应id subjectn {}, grade {}",subjectName, grade);
+        Long id = subjectService.selectIdByNameAndGrade(subjectName, grade);
+        if (EmptyUtil.isEmpty(id)){
+            return Response.error();
+        }
+        log.info("对应的id是{}",id);
+        return new Response(200,"success",id);
     }
 
 

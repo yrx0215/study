@@ -60,7 +60,8 @@ public class CourseController {
         } else {
             course.setCourseStatus(0);
         }
-        courseService.updateCourseStatus(id);
+        course.setUpdateAt(System.currentTimeMillis());
+        courseService.updateCourseStatus(course);
         return new Response(200,"success",null);
     }
 
@@ -99,7 +100,7 @@ public class CourseController {
         size = size == null || size <= 0 ? 10 : size;
         IPage myPage = new MyPage(page, size);
         IPage<Course> course = courseService.selectCourseByFuzzy(myPage, subjectName,courseStatus,courseName,courseLevel);
-        log.info("course 的长度是 = ",course.getSize());
+        log.info("course 的长度是 = {}",course.getTotal());
         return new Response(200,"success",course);
     }
 
@@ -154,6 +155,22 @@ public class CourseController {
         return new Response<>(0,"success",course);
     }
 
+    /**
+     * 根据subjectId 和课程名称 查找到课程对应id
+     * @param subjectId 科目id
+     * @param courseName 课程名称
+     * @return 返回值为对应的id
+     */
+    @RequestMapping(value = "/a/u/courseId",method = RequestMethod.GET)
+    public Response getIdBySubjectIdAndCourseName(Long subjectId, String courseName){
+        log.info("根据科目id和课程名称找到对应的id subjectid : {}, courseName : {}" ,subjectId, courseName);
+        Long id = courseService.selectIdBySubejctIdAndCourseName(subjectId,courseName);
+        if (EmptyUtil.isEmpty(id)){
+            return Response.error();
+        }
+        log.info("course 的id是{}",id);
+        return new Response(200,"success",id);
+    }
     
 
 }

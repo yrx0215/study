@@ -53,10 +53,10 @@ public interface CourseService {
 
     /**
      * 更新课程上下架状态
-     * @param id 课程id
+     * @param course 课程信息
      * @return 返回值为true 更新成功
      */
-    Boolean updateCourseStatus(Long id);
+    Boolean updateCourseStatus(Course course);
 
     /**
      * 删除单条课程数据
@@ -65,4 +65,12 @@ public interface CourseService {
      */
     Boolean deleteCourseById(Long id);
 
+    /**
+     * 根据subjectId 和课程名称 查找到课程对应id
+     * @param subejctId 科目id
+     * @param courseName 课程名称
+     * @return 返回值为对应的id
+     */
+    Long selectIdBySubejctIdAndCourseName(Long subejctId,
+                                          String courseName);
 }
