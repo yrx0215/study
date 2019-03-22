@@ -116,6 +116,9 @@ public class StudentServiceImpl implements StudentService {
     public Map<String,Long> selectByAccountOrPhone(String account,String password) throws ServiceDaoException{
         Student student = studentMapper.selectByAccountOrPhone(account);
         if(!EmptyUtil.isEmpty(student)){
+            if(student.getState()==0){
+                throw new ServiceDaoException("无法登录,该账号已被冻结，请联系管理员");
+            }
             String pwd = Md5Utils.stringMD5(password,student.getCreateAt());
             if(pwd.equals(student.getPassword())){
                 Map<String, Long> map = new HashMap<>();
