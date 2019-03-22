@@ -39,11 +39,17 @@
             <if test="state != null">
                 AND s.state = #{state}
             </if>
-            <if test="starMin != null &amp;&amp; starMax!=null &amp;&amp; starMin lt starMax">
-                AND s.star BETWEEN #{starMin} AND #{starMax}
+            <if test="starMin != null">
+                AND s.star &gt; #{starMin}
             </if>
-            <if test="studyLessonMin !=null &amp;&amp; studyLessonMax != null &amp;&amp; studyLessonMin lt studyLessonMax">
-                AND study_lesson BETWEEN studyLessonMin AND studyLessonMax
+            <if test="starMax!=null">
+                AND s.star &lt; #{starMax}
+            </if>
+            <if test="studyLessonMin != null">
+                AND study_lesson &gt; #{studyLessonMin}
+            </if>
+            <if test="studyLessonMax != null">
+                AND study_lesson &lt; #{studyLessonMax}
             </if>
         </where>
     </select>

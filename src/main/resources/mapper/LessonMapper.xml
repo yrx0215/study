@@ -96,4 +96,25 @@
     </select>
 
 
+    <select id="selectLessonByStudentId" resultMap="Lesson">
+        SELECT l.id,l.lesson_name,l.subject_name,l.course_name,l.lesson_status
+        FROM lesson AS l
+        INNER JOIN student_lesson_datum AS sld ON l.id = sld.class_id
+        WHERE sld.student_id = #{studentId} AND sld.enshrine = 1
+    </select>
+
+    <select id="selectDatumByStudentId" resultMap="Lesson">
+        SELECT l.id,l.lesson_name,l.subject_name,l.course_name,l.lesson_status
+        FROM lesson AS l
+        INNER JOIN student_lesson_datum AS sld ON l.id = sld.class_id
+        WHERE sld.student_id = #{studentId} AND sld.datum = 1
+    </select>
+
+    <select id="selectBuyLessonByStudentId" resultMap="Lesson">
+        SELECT l.id,l.lesson_name,l.subject_name,l.course_name,l.lesson_status
+        FROM lesson AS l
+        INNER JOIN student_lesson_datum AS sld ON l.id = sld.class_id
+        WHERE sld.student_id = #{studentId} AND sld.buy = 1
+    </select>
+
 </mapper>

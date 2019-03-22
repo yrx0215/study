@@ -6,6 +6,8 @@ import com.jnshu.dreamteam.pojo.Course;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * course课程相关信息
@@ -82,5 +84,12 @@ public interface CourseMapper extends BaseMapper<Course> {
      */
     Long selectIdBySubejctIdAndCourseName(@Param("subjectId") Long subejctId,
                                           @Param("courseName")String courseName);
+    /**
+     * 根据用户ID查询其收藏的课程
+     * by wzp
+     * @param studentId
+     * @return
+     */
+    IPage<List<Course>> selectByStudentId(IPage iPage, @Param("studentId") Long studentId);
 
 }

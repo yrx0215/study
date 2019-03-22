@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -46,6 +48,7 @@ public interface LessonMapper extends BaseMapper<Lesson> {
     Long addLesson(Lesson lesson);
 
     /**
+<<<<<<< HEAD
      * 根据条件选择lesson数据
      * @param iPage 分页信息
      * @param subjectName 科目名称
@@ -80,5 +83,30 @@ public interface LessonMapper extends BaseMapper<Lesson> {
     Long selectIdBySubjectIdAndCourseIdAndLessonName(@Param("subjectId")Long subjectId,
                                                      @Param("courseId")Long courseId,
                                                      @Param("lessonName")String lessonName);
+    /**
+     * 依据用户ID查询其收藏的课时列表
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectLessonByStudentId(IPage iPage, @Param("studentId") Long studentId);
+
+    /**
+     * 根据用户ID查询其购买的资料
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectDatumByStudentId(IPage iPage,@Param("studentId") Long studentId);
+
+
+    /**
+     * 根据用户ID查询其购买的课程
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectBuyLessonByStudentId(IPage iPage,@Param("studentId") Long studentId);
+
 
 }

@@ -19,7 +19,7 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     Student selectByAccountOrPhone(@Param("account") String account);
 
-    List<Student> selectByMultiple(IPage iPage
+    IPage<List<Student>> selectByMultiple(IPage iPage
                                   ,@Param("nickName") String nickName
                                   ,@Param("account") String account
                                   ,@Param("grade") String grade

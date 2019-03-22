@@ -96,6 +96,7 @@
       where id = #{id}
     </delete>
 
+
 <!--selectIdBySubejctIdAndCourseName-->
     <select id="selectIdBySubejctIdAndCourseName" resultType="java.lang.Long">
       SELECT id
@@ -103,6 +104,14 @@
       where subject_id = #{subjectId} and course_name = #{courseName}
     </select>
 
+
+
+
+    <select id="selectByStudentId" resultMap="Course">
+        SELECT c.id,c.course_name,c.subject_name,c.course_level,c.study_number,c.course_status
+        FROM course AS c INNER JOIN student_course AS sc ON c.id=sc.course_id
+        WHERE sc.student_id =#{studentId}
+    </select>
 
 
 </mapper>

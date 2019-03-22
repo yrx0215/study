@@ -1,25 +1,28 @@
 package com.jnshu.dreamteam.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
-import com.jnshu.dreamteam.pojo.PhoneVerification;
-import com.jnshu.dreamteam.pojo.Response;;
-import com.jnshu.dreamteam.pojo.Student;
+import com.jnshu.dreamteam.pojo.*;
+;
+import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.StudentService;
-import com.jnshu.dreamteam.utils.JwtUtil;
-import com.jnshu.dreamteam.utils.Md5Utils;
-import com.jnshu.dreamteam.utils.MessageUtil;
-import com.jnshu.dreamteam.utils.UploadPic;
+import com.jnshu.dreamteam.utils.*;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +36,8 @@ public class StudentController {
 
     @Resource
     private StudentService studentService;
+    @Resource
+    private CourseService courseService;
 
     /**
      * 发送手机短信,需要判断手机号是否唯一
@@ -102,7 +107,11 @@ public class StudentController {
         if(JwtUtil.verify(token)){
             Long userId = JwtUtil.getClaims(token,"userId").asLong();
             Student student = new Student();
+            student.setId(userId);
             student.setStudentAccount(account);
+            if(nickName.matches("^[\\u4e00-\\u9fa5]{2,6}$")){
+                throw new ServiceDaoException("昵称必须为2-6位中文字符");
+            }
             student.setNickName(nickName);
             student.setGrade(grade);
             studentService.updateStudentById(student);
@@ -120,7 +129,7 @@ public class StudentController {
      */
     @LogInfo
     @PostMapping("/a/u/student/img")
-    public Response<String> uploadStudentImg(@RequestParam("a") MultipartFile file, HttpServletRequest httpServletRequest)
+    public Response<String> uploadStudentImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest)
                                              throws IOException {
         String token = httpServletRequest.getHeader("Token");
         if(JwtUtil.verify(token)){
@@ -149,5 +158,89 @@ public class StudentController {
         String token = JwtUtil.createToken(map);
         httpServletResponse.setHeader("Token",token);
         return new Response(200,"登录成功");
+    }
+
+    @LogInfo
+    @GetMapping("/a/u/students")
+    public Response<IPage<List<Student>>> selectByMultiple(@RequestParam(value = "page",required = false) Integer page
+                                  , @RequestParam(value = "size",required = false) Integer size
+                                  , @RequestParam(value = "nickName",required = false) String nickName
+                                  , @RequestParam(value = "account",required = false) String account
+                                  , @RequestParam(value = "grade",required = false) String grade
+                                  , @RequestParam(value = "state",required = false) Integer state
+                                  , @RequestParam(value = "starMin",required = false) Long starMin
+                                  , @RequestParam(value = "starMax",required = false) Long starMax
+                                  , @RequestParam(value = "studyLessonMin",required = false) Integer studyLessonMin
+                                  , @RequestParam(value = "studyLessonMax",required = false) Integer studyLessonMax) throws ServiceDaoException{
+
+        page = page==null||page<=0?1:page;
+        size = size==null||size<=0?10:size;
+        IPage iPage = new MyPage(page,size);
+        IPage<List<Student>> myPage = studentService.selectByMultiple(iPage,nickName,account,grade,state,starMin,starMax,studyLessonMin,studyLessonMax);
+        return new Response<>(200,"查询成功",myPage);
+    }
+
+    /**
+     * 根据用户ID查询该学生收藏的课程
+     * @param studentId
+     * @return
+     * @throws ServiceDaoException
+     */
+    @LogInfo
+    @GetMapping("/a/u/enshrineCourse")
+    public Response<IPage<List<Course>>> selectEnshrineCourseByStudentId(@RequestParam("studentId") Long studentId
+                                                                        ,@RequestParam(value = "page",required = false) Integer page) throws ServiceDaoException {
+        page = page==null||page<=0?1:page;
+        IPage iPage = new MyPage(page,10);
+        IPage<List<Course>> myPage = studentService.selectByStudentId(iPage,studentId);
+        return new Response<>(200,"查询成功",myPage);
+    }
+
+    /**
+     * 根据用户ID查询该学生的收藏的课时
+     * @param studentId
+     * @param page
+     * @return
+     */
+    @LogInfo
+    @GetMapping("/a/u/enshrineLesson")
+    public Response<IPage<List<Lesson>>> selectEnshrineLessonByStudentId(@RequestParam("studentId") Long studentId
+                                                    ,@RequestParam(value = "page",required = false) Integer page){
+        page = page==null||page<=0?1:page;
+        IPage iPage = new MyPage(page,10);
+        IPage<List<Lesson>> myPage = studentService.selectLessonByStudentId(iPage,studentId);
+        return new Response<>(200,"查询成功",myPage);
+    }
+
+    /**
+     * 根据用户ID查询该学生购买的资料
+     * @param studentId
+     * @param page
+     * @return
+     */
+    @LogInfo
+    @GetMapping("/a/u/buyDatum")
+    public Response<IPage<List<Lesson>>> selectDatumByStudentId(@RequestParam("studentId") Long studentId
+                                          , @RequestParam(value = "page",required = false) Integer page){
+        page = page==null||page<=0?1:page;
+        IPage iPage = new MyPage(page,10);
+        IPage<List<Lesson>> myPage = studentService.selectDatumByStudentId(iPage,studentId);
+        return new Response<>(200,"查询成功",myPage);
+    }
+
+    /**
+     * 分页查询，依据用户ID查询该用户购买的课程
+     * @param studentId
+     * @param page
+     * @return
+     */
+    @LogInfo
+    @GetMapping("/a/u/buyLesson")
+    public Response<IPage<List<Lesson>>> selectBuyLessonByStudentId(@RequestParam("studentId") Long studentId
+                                              , @RequestParam(value = "page",required = false) Integer page){
+        page = page==null||page<=0?1:page;
+        IPage iPage = new MyPage(page,10);
+        IPage<List<Lesson>> mypage = studentService.selectBuyLessonByStudentId(iPage,studentId);
+        return new Response<>(200,"查询成功",mypage);
     }
 }
