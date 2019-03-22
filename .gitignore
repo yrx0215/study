@@ -4,8 +4,8 @@ HELP.md
 
 
 application-config.yml
-test
-dreamteam
+/src/test/
+/dreamteam/
 
 ### STS ###
 .apt_generated
