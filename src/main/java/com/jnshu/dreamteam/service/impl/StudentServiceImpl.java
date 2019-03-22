@@ -170,6 +170,5 @@ public class StudentServiceImpl implements StudentService {
         if (EmptyUtil.isEmpty(studentMapper.updateById(student))){
             throw new ServiceDaoException("数据库异常，更新失败");
         }
-
     }
 }
