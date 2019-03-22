@@ -2,6 +2,7 @@ package com.jnshu.dreamteam.mapper;
 
 import com.jnshu.dreamteam.pojo.Mission;
 import com.jnshu.dreamteam.pojo.Student;
+import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.devtools.restart.server.SourceFolderUrlFilter;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.security.util.AuthResources_it;
 
 /**
  * @author draper_hxy
@@ -48,6 +50,8 @@ public class HelpMapperTest {
     public void sdklfj(){
         int i = 1;
         System.out.println(i++ + ++i);
+        Student student = new Student();
+        System.out.println(EmptyUtil.isEmpty(student));
     }
 
 
