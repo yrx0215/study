@@ -5,6 +5,7 @@ import com.jnshu.dreamteam.utils.MyPage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.devtools.restart.server.SourceFolderUrlFilter;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -42,5 +43,10 @@ public class HelpMapperTest {
 
     System.out.println(subjectMapper.selectSubjectStatusOrName(myPage,1,null));
 }
+    @Test
+    public void sdklfj(){
+        int i = 1;
+        System.out.println(i++ + ++i);
+    }
 
 }
