@@ -78,9 +78,9 @@ public class StudentController {
             student.setPassword(Md5Utils.stringMD5(password,student.getCreateAt()));
             Long studentId = studentService.insertStudent(student);
             Map<String,Object> map = new HashMap<>();
-            map.put("userId",studentId);
+            map.put("studentId",studentId);
             String token = JwtUtil.createToken(map);
-            httpServletResponse.setHeader("Token",token);
+            httpServletResponse.setHeader("HomeToken",token);
             return new Response(200,"注册成功");
         }else {
             log.info("注册失败，验证码错误");
@@ -103,9 +103,9 @@ public class StudentController {
                                  ,@RequestParam("nickName") String nickName
                                  ,@RequestParam("grade") String grade
                                  ,HttpServletRequest httpServletRequest) throws ServiceDaoException{
-        String token = httpServletRequest.getHeader("Token");
+        String token = httpServletRequest.getHeader("HomeToken");
         if(JwtUtil.verify(token)){
-            Long userId = JwtUtil.getClaims(token,"userId").asLong();
+            Long userId = JwtUtil.getClaims(token,"studentId").asLong();
             Student student = new Student();
             student.setId(userId);
             student.setStudentAccount(account);
@@ -130,12 +130,16 @@ public class StudentController {
     @LogInfo
     @PostMapping("/a/u/student/img")
     public Response<String> uploadStudentImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest)
-                                             throws IOException {
-        String token = httpServletRequest.getHeader("Token");
+                                             throws IOException,ServiceDaoException {
+        String token = httpServletRequest.getHeader("HomeToken");
         if(JwtUtil.verify(token)){
-            Long userId = JwtUtil.getClaims(token,"userId").asLong();
+            Long userId = JwtUtil.getClaims(token,"studentId").asLong();
             String pictureId = System.currentTimeMillis()+""+userId;
             String url = UploadPic.uploadFactory(file,pictureId,"student");
+            Student student = new Student();
+            student.setPicture(url);
+            student.setId(userId);
+            studentService.updateStudentById(student);
             return new Response<>(200,"上传成功","图片地址为："+url);
         }
         return new Response<>(-1,"Token错误");
@@ -156,7 +160,7 @@ public class StudentController {
 
         Map map = studentService.selectByAccountOrPhone(account,password);
         String token = JwtUtil.createToken(map);
-        httpServletResponse.setHeader("Token",token);
+        httpServletResponse.setHeader("HomeToken",token);
         return new Response(200,"登录成功");
     }
 
@@ -242,5 +246,10 @@ public class StudentController {
         IPage iPage = new MyPage(page,10);
         IPage<List<Lesson>> mypage = studentService.selectBuyLessonByStudentId(iPage,studentId);
         return new Response<>(200,"查询成功",mypage);
+    }
+
+    @GetMapping("/a/u/student")
+    public Response<Student> selectStudentById(@RequestParam("studentId")Long studentId){
+        return new Response<>(200,"查询成功",studentService.selectStudentById(studentId));
     }
 }

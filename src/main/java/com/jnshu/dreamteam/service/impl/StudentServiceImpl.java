@@ -122,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
             String pwd = Md5Utils.stringMD5(password,student.getCreateAt());
             if(pwd.equals(student.getPassword())){
                 Map<String, Long> map = new HashMap<>();
-                map.put("userId",student.getId());
+                map.put("studentId",student.getId());
                 return map;
             }
         }
