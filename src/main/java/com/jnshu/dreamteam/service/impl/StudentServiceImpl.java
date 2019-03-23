@@ -8,15 +8,11 @@ import com.jnshu.dreamteam.mapper.CourseMapper;
 import com.jnshu.dreamteam.mapper.LessonMapper;
 import com.jnshu.dreamteam.mapper.PhoneVerificationMapper;
 import com.jnshu.dreamteam.mapper.StudentMapper;
-import com.jnshu.dreamteam.pojo.Course;
-import com.jnshu.dreamteam.pojo.Lesson;
-import com.jnshu.dreamteam.pojo.PhoneVerification;
-import com.jnshu.dreamteam.pojo.Student;
+import com.jnshu.dreamteam.pojo.*;
 import com.jnshu.dreamteam.service.StudentService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.Md5Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -173,5 +169,20 @@ public class StudentServiceImpl implements StudentService {
         if (EmptyUtil.isEmpty(studentMapper.updateById(student))){
             throw new ServiceDaoException("数据库异常，更新失败");
         }
+    }
+
+    @Override
+    public StudentCheck selectStudentCheckById(Long id) {
+        return studentMapper.selectStudentCheckById(id);
+    }
+
+    @Override
+    public Long insertStudentCheck(StudentCheck studentCheck) {
+        return studentMapper.insertStudentCheck(studentCheck);
+    }
+
+    @Override
+    public Boolean updateStudentCheck(StudentCheck studentCheck) {
+        return studentMapper.updateStudentCheck(studentCheck);
     }
 }
