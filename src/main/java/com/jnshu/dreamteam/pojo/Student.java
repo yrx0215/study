@@ -3,8 +3,10 @@ package com.jnshu.dreamteam.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.jnshu.dreamteam.config.annotation.Phone;
 import lombok.Data;
 
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
@@ -27,12 +29,14 @@ public class Student implements Serializable {
     /**
      * 用户名（可当做账号使用）
      */
+    @Pattern(regexp = "^[a-zA-Z][0-9a-zA-Z_]{6,16}$",message ="账号长度必须为6-16位,且不能以数字开头")
     @TableField("student_account")
     private String studentAccount;
 
     /**
      * 密码
      */
+    @Pattern(regexp = "^[0-9a-zA-Z_!@#$%^&*.,]{6,16}$",message ="密码长度必须为6-16位")
     @TableField("password")
     private String password;
 
@@ -51,6 +55,7 @@ public class Student implements Serializable {
     /**
      * 手机号
      */
+    @Phone(message = "手机号格式错误")
     @TableField("phone")
     private Long phone;
 
@@ -95,4 +100,5 @@ public class Student implements Serializable {
      */
     @TableField(exist = false)
     private List<Lesson> enshrineLesson;
+
 }

@@ -73,6 +73,8 @@ public class Course implements Serializable {
     @TableField("subject_id")
     private Long subjectId;
 
+
+
     /**
      * 课程创建时间
      */

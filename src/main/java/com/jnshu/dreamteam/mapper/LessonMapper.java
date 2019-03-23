@@ -3,7 +3,10 @@ package com.jnshu.dreamteam.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Lesson;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +46,67 @@ public interface LessonMapper extends BaseMapper<Lesson> {
      * @return 返回值为新增加额lesson的id
      */
     Long addLesson(Lesson lesson);
+
+    /**
+<<<<<<< HEAD
+     * 根据条件选择lesson数据
+     * @param iPage 分页信息
+     * @param subjectName 科目名称
+     * @param courseLevel 课程难度
+     * @param courseName 课程名称
+     * @param lessonStatus 课时状态
+     * @param lessonName 课时名称
+     * @return 返回所选数据列表
+     */
+    IPage selectLessonFuzzy(IPage iPage,
+                            @Param("subjectName")String subjectName,
+                            @Param("courseLevel")Integer courseLevel,
+                            @Param("courseName")String courseName,
+                            @Param("lessonStatus")Integer lessonStatus,
+                            @Param("lessonName")String lessonName);
+
+
+    /**
+     * 删除lesson课时数据
+     * @param id lesson 的id
+     * @return 返回值为true 删除成功
+     */
+    Boolean deleteLessonById(@Param("id") Long id);
+
+    /**
+     * 根据条件查找到对应的lessonid
+     * @param subjectId 科目id
+     * @param courseId 课程id
+     * @param lessonName 课时名称
+     * @return 返回值为课时的id
+     */
+    Long selectIdBySubjectIdAndCourseIdAndLessonName(@Param("subjectId")Long subjectId,
+                                                     @Param("courseId")Long courseId,
+                                                     @Param("lessonName")String lessonName);
+    /**
+     * 依据用户ID查询其收藏的课时列表
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectLessonByStudentId(IPage iPage, @Param("studentId") Long studentId);
+
+    /**
+     * 根据用户ID查询其购买的资料
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectDatumByStudentId(IPage iPage,@Param("studentId") Long studentId);
+
+
+    /**
+     * 根据用户ID查询其购买的课程
+     * @param iPage
+     * @param studentId
+     * @return
+     */
+    IPage<List<Lesson>> selectBuyLessonByStudentId(IPage iPage,@Param("studentId") Long studentId);
 
 
 }

@@ -24,7 +24,7 @@ public class JwtUtil {
                 .setHeaderParam("alg","HS256")
                 .setClaims(map)
                 .setExpiration(new Date(System.currentTimeMillis()+10*24*60*60000))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes());
+                .signWith(SignatureAlgorithm.HS256,SECRET_KEY.getBytes());
         return builder.compact();
     }
 

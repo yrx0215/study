@@ -17,6 +17,13 @@
         <result column="study_lesson" property="studyingLesson" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="studentCheck" type="com.jnshu.dreamteam.pojo.StudentCheck">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="check_day" property="checkDay"/>
+    </resultMap>
+
     <select id="selectByAccountOrPhone" resultMap="BaseResultMap">
         SELECT * FROM student WHERE student_account = #{account} OR phone = #{account}
     </select>
@@ -39,15 +46,45 @@
             <if test="state != null">
                 AND s.state = #{state}
             </if>
-            <if test="starMin != null &amp;&amp; starMax!=null &amp;&amp; starMin lt starMax">
-                AND s.star BETWEEN #{starMin} AND #{starMax}
+            <if test="starMin != null">
+                AND s.star &gt; #{starMin}
             </if>
-            <if test="studyLessonMin !=null &amp;&amp; studyLessonMax != null &amp;&amp; studyLessonMin lt studyLessonMax">
-                AND study_lesson BETWEEN studyLessonMin AND studyLessonMax
+            <if test="starMax!=null">
+                AND s.star &lt; #{starMax}
+            </if>
+            <if test="studyLessonMin != null">
+                AND study_lesson &gt; #{studyLessonMin}
+            </if>
+            <if test="studyLessonMax != null">
+                AND study_lesson &lt; #{studyLessonMax}
             </if>
         </where>
     </select>
 
+
+    <!--Student selectStudentCheckById(Long id);-->
+    <select id="selectStudentCheckById" resultMap="studentCheck">
+        SELECT  sc.student_id, sc.check_time, sc.check_day
+        from student s
+        LEFT JOIN student_check sc
+        ON s.id = sc.student_id
+        where s.id = #{id}
+
+    </select>
+
+    <!-- Boolean updateStudentCheck(StudentCheck studentCheck);-->
+    <update id="updateStudentCheck">
+        UPDATE student_check
+        SET check_time = #{checkTime},
+        check_day = #{checkDay}
+        where student_id = #{studentId}
+
+    </update>
+    <!-- Long insertStudentCheck(StudentCheck studentCheck);-->
+    <insert id="insertStudentCheck" useGeneratedKeys="true" keyProperty="id" parameterType="com.jnshu.dreamteam.pojo.StudentCheck">
+        INSERT into student_check(student_id, check_time, check_day)
+        VALUES (#{studentId},#{checkTime},#{checkDay})
+    </insert>
 
 
 </mapper>

@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * @author draper_hxy
  */
+
 @RestController
 public class HotRecommendController {
 

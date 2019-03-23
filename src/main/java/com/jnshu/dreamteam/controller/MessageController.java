@@ -1,6 +1,6 @@
 package com.jnshu.dreamteam.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
+
 import com.jnshu.dreamteam.pojo.Message;
 import com.jnshu.dreamteam.pojo.Response;
 import com.jnshu.dreamteam.service.MessageService;
@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.Map;
 
 /**
  * @author draper_hxy
  */
+
 @RestController
 public class MessageController {
 

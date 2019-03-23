@@ -10,11 +10,13 @@ import com.jnshu.dreamteam.service.UserService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.JwtUtil;
 import com.jnshu.dreamteam.utils.ValidatedUtil;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -128,7 +130,7 @@ public class UserController {
      * @return
      */
     @LogInfo
-    @RequiresPermissions("密码修改")
+    @RequiresPermissions("密码修改,必须携带TOKEN")
     @PostMapping("/a/u/password")
     public Response changePassword(HttpServletRequest httpServletRequest
                                   , @RequestParam("newPassword") String newPassword
@@ -153,4 +155,6 @@ public class UserController {
     public Response<String> unauthenticated(@RequestParam("message") String message){
         return new Response<>(-1,"无法认证",message);
     }
+
+
 }
