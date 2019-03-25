@@ -92,4 +92,10 @@ public interface CourseMapper extends BaseMapper<Course> {
      */
     IPage<List<Course>> selectByStudentId(IPage iPage, @Param("studentId") Long studentId);
 
+    /**
+     * 根据id查询不重复课程名称,
+     * @param subjectId 所属科目id
+     * @return 返回值为 名称列表
+     */
+    List<String> selectCourseName(@Param("subjectId")Long subjectId);
 }

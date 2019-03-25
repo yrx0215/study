@@ -16,6 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * course 表现层
@@ -192,6 +196,24 @@ public class CourseController {
         String url = UploadPic.uploadFactory(file,pictureId,"course");
         return new Response<>(200,"上传封面成功","图片地址为："+url);
     }
-    
+
+
+    /**
+     * 根据科目id查询所属不重复的课程名称
+     * @param subjectId 科目id
+     * @return 返回值为
+     */
+    @RequestMapping(value = "/a/u/courseName",method = RequestMethod.GET)
+    public Response selectCourseName(Long subjectId){
+        log.info("查询不重复的课程名称=======, 所属的课程id为{}",subjectId);
+        List courses = courseService.selectCourseName(subjectId);
+        log.info("courses 集合的长度为: {}",courses.size());
+        Map coursesMap = new LinkedHashMap(16);
+        for (int i = 0; i < courses.size(); i++) {
+             coursesMap.put(i,courses.get(i));
+        }
+        return new Response(200,"success",coursesMap);
+
+    }
 
 }

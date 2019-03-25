@@ -88,9 +88,8 @@
       where id = #{id}
     </update>
 
-    <select id="selectAllSubjectName" resultType="list">
+    <select id="selectAllSubjectName" resultType="string">
         SELECT DISTINCT subject_name from subject
-
     </select>
 
     <select id="selectIdByNameAndGrade" resultType="java.lang.Long">
