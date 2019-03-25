@@ -12,6 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * course 表现层
@@ -173,6 +177,24 @@ public class CourseController {
         log.info("course 的id是{}",id);
         return new Response(200,"success",id);
     }
-    
+
+
+    /**
+     * 根据科目id查询所属不重复的课程名称
+     * @param subjectId 科目id
+     * @return 返回值为
+     */
+    @RequestMapping(value = "/a/u/courseName",method = RequestMethod.GET)
+    public Response selectCourseName(Long subjectId){
+        log.info("查询不重复的课程名称=======, 所属的课程id为{}",subjectId);
+        List courses = courseService.selectCourseName(subjectId);
+        log.info("courses 集合的长度为: {}",courses.size());
+        Map coursesMap = new LinkedHashMap(16);
+        for (int i = 0; i < courses.size(); i++) {
+             coursesMap.put(i,courses.get(i));
+        }
+        return new Response(200,"success",coursesMap);
+
+    }
 
 }

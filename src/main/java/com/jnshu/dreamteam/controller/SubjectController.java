@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -180,11 +182,15 @@ public class SubjectController {
      * @return 返回值为科目名称列表
      */
     @RequestMapping(value = "/a/u/allSubjectName",method = RequestMethod.GET)
-    public Response<List> getAllSubjectName(){
+    public Response getAllSubjectName(){
         log.info("查询所有的科目名称=======");
         List list = subjectService.selectAllSubjectName();
+        Map subjectName = new HashMap(16);
+        for (int i = 0; i < list.size(); i++) {
+            subjectName.put(i,list.get(i));
+        }
         log.info("所有科目列表长度为: " + list.size());
-        return new Response<>(200,"success",list);
+        return new Response(200,"success",subjectName);
     }
 
 

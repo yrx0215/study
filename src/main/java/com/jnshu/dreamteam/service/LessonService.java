@@ -3,6 +3,8 @@ package com.jnshu.dreamteam.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Lesson;
 
+import java.util.List;
+
 /**
  * lesson接口
  * @author yrx
@@ -72,5 +74,15 @@ public interface LessonService {
     Long selectIdBySubjectIdAndCourseIdAndLessonName(Long subjectId,
                                                      Long courseId,
                                                      String lessonName);
+
+    /**
+     * 查询课时名称, 且不重复
+     * @param subjectId 所属科目id
+     * @param courseId 所属的课程id
+     *
+     * @return 返回值为课时列表
+     */
+    List<String> selectLessonName(Long subjectId,
+                                  Long courseId);
 
 }

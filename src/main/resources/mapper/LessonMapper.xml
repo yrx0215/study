@@ -117,4 +117,9 @@
         WHERE sld.student_id = #{studentId} AND sld.buy = 1
     </select>
 
+    <select id="selectLessonName" resultType="string">
+        select DISTINCT lesson_name from lesson
+        WHERE subject_id = #{subjectId} and course_id = #{courseId}
+    </select>
+
 </mapper>
