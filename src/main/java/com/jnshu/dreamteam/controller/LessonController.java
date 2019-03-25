@@ -14,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -207,11 +205,11 @@ public class LessonController {
         log.info("查询不重复的课时名称, subjectId是 {}, courseid是{}",subjectId, courseId);
         List lessons = lessonService.selectLessonName(subjectId,courseId);
         log.info("课时的名称列表长度为 {}",lessons.size());
-        Map lessonMap = new LinkedHashMap(16);
-        for (int i = 0; i < lessons.size(); i++) {
-            lessonMap.put(i,lessons.get(i));
+        Object[] obj = new Object[lessons.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = lessons.get(i);
         }
-        return new Response(200,"success",lessonMap);
+        return new Response(200,"success",obj);
 
     }
 

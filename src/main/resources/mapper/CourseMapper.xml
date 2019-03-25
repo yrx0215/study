@@ -70,7 +70,7 @@
           <if test="courseStatus == 0 or courseStatus == 1">
               and course_status = #{courseStatus}
           </if>
-          <if test="courseLevel != null and courseLevel.trim() != ''">
+          <if test="courseLevel != null ">
               and course_level = #{courseLevel}
           </if>
           <if test="courseName != null and courseName.trim() != ''">
@@ -111,7 +111,7 @@
         WHERE sc.student_id =#{studentId}
     </select>
 
-    <select id="selectCourseName" resultType="string">
+    <select id="selectCourseName" resultMap="Course">
         select DISTINCT course_name from course
         where subject_id = #{subjectId}
     </select>
