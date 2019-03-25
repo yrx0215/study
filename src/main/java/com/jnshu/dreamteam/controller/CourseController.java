@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -208,11 +205,11 @@ public class CourseController {
         log.info("查询不重复的课程名称=======, 所属的课程id为{}",subjectId);
         List courses = courseService.selectCourseName(subjectId);
         log.info("courses 集合的长度为: {}",courses.size());
-        Map coursesMap = new LinkedHashMap(16);
-        for (int i = 0; i < courses.size(); i++) {
-             coursesMap.put(i,courses.get(i));
+        Object[] obj = new Object[courses.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = courses.get(i);
         }
-        return new Response(200,"success",coursesMap);
+        return new Response(200,"success",obj);
 
     }
 

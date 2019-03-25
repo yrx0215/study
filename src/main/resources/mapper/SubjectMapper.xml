@@ -88,7 +88,7 @@
       where id = #{id}
     </update>
 
-    <select id="selectAllSubjectName" resultType="string">
+    <select id="selectAllSubjectName" resultMap="Sbuject">
         SELECT DISTINCT subject_name from subject
     </select>
 

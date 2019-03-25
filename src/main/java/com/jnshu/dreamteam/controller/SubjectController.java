@@ -10,11 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -185,12 +182,12 @@ public class SubjectController {
     public Response getAllSubjectName(){
         log.info("查询所有的科目名称=======");
         List list = subjectService.selectAllSubjectName();
-        Map subjectName = new HashMap(16);
-        for (int i = 0; i < list.size(); i++) {
-            subjectName.put(i,list.get(i));
+        Object[] obj = new Object[list.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = list.get(i);
         }
         log.info("所有科目列表长度为: " + list.size());
-        return new Response(200,"success",subjectName);
+        return new Response(200,"success",obj);
     }
 
 
