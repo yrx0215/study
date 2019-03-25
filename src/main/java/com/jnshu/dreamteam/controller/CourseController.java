@@ -8,9 +8,13 @@ import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.SubjectService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
+import com.jnshu.dreamteam.utils.UploadPic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 /**
@@ -33,15 +37,15 @@ public class CourseController {
      * @return 返回值为课程信息列表
      */
     @RequestMapping(value = "/a/u/allCourse",method = RequestMethod.GET)
-    public Response getAllCourse(@RequestParam(value = "page",required = false)Integer page,
-                                 @RequestParam(value = "size",required = false) Integer size){
+    public Response<IPage<Course>> getAllCourse(@RequestParam(value = "page",required = false)Integer page,
+                                                @RequestParam(value = "size",required = false) Integer size){
         log.info("查询所有课程信息page:{} size{}",page, size );
         page = page == null || page <= 0 ? 1 : page;
         size = size == null || size <= 0 ? 10 : size;
         MyPage myPage = new MyPage(page, size);
         IPage<Course> courses = courseService.selectAllCourse(myPage);
         log.info("所有课程的 size is = " + courses.getTotal());
-        return new Response(0,"success",courses);
+        return new Response<>(0,"success",courses);
     }
 
 
@@ -90,12 +94,12 @@ public class CourseController {
      * @return 符合条件的集合
      */
     @RequestMapping(value = "/a/u/courseFuzzy",method = RequestMethod.GET)
-    public Response selectCourseByFuzzy(@RequestParam(value = "page", required = false) Integer page,
-                                        @RequestParam(value = "size", required = false) Integer size,
-                                        @RequestParam(value = "subjectName", required = false) String subjectName,
-                                        @RequestParam(value = "courseName", required = false) String courseName,
-                                        @RequestParam(value = "courseStatus", required = false) Integer courseStatus,
-                                        @RequestParam(value = "courseLevel",required = false) Integer courseLevel){
+    public Response<IPage<Course>> selectCourseByFuzzy(@RequestParam(value = "page", required = false) Integer page,
+                                                       @RequestParam(value = "size", required = false) Integer size,
+                                                       @RequestParam(value = "subjectName", required = false) String subjectName,
+                                                       @RequestParam(value = "courseName", required = false) String courseName,
+                                                       @RequestParam(value = "courseStatus", required = false) Integer courseStatus,
+                                                       @RequestParam(value = "courseLevel",required = false) Integer courseLevel){
 
         log.info("模糊查询,subjectName = {},courseName = {}, courseStatus = {} ",subjectName, courseName, courseStatus);
         page = page == null || page <= 0 ? 1 : page;
@@ -103,7 +107,7 @@ public class CourseController {
         IPage myPage = new MyPage(page, size);
         IPage<Course> course = courseService.selectCourseByFuzzy(myPage, subjectName,courseStatus,courseName,courseLevel);
         log.info("course 的长度是 = {}",course.getTotal());
-        return new Response(200,"success",course);
+        return new Response<>(200,"success",course);
     }
 
     /**
@@ -171,7 +175,22 @@ public class CourseController {
             return Response.error();
         }
         log.info("course 的id是{}",id);
-        return new Response(200,"success",id);
+        return new Response<>(200,"success",id);
+    }
+
+    /**
+     * 上传课程封面接口
+     * @param file
+     * @param courseId
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/a/u/course/img")
+    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file
+                                           ,@RequestParam("courseId") Long courseId) throws IOException {
+        String pictureId = System.currentTimeMillis()+""+courseId;
+        String url = UploadPic.uploadFactory(file,pictureId,"course");
+        return new Response<>(200,"上传封面成功","图片地址为："+url);
     }
     
 
