@@ -181,14 +181,12 @@ public class CourseController {
     /**
      * 上传课程封面接口
      * @param file
-     * @param courseId
      * @return
      * @throws IOException
      */
     @PostMapping("/a/u/course/img")
-    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file
-                                           ,@RequestParam("courseId") Long courseId) throws IOException {
-        String pictureId = System.currentTimeMillis()+""+courseId;
+    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file) throws IOException {
+        String pictureId = System.currentTimeMillis()+"";
         String url = UploadPic.uploadFactory(file,pictureId,"course");
         return new Response<>(200,"上传封面成功","图片地址为："+url);
     }
