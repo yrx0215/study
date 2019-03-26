@@ -65,7 +65,7 @@
             <if test="subjectName != null and subjectName.trim() != ''">
                 and subject_name = #{subjectName}
             </if>
-            <if test="courseLevel != null and courseLevel.trim() != ''">
+            <if test="courseLevel != null">
                 and course_level = #{courseLevel}
             </if>
             <if test="courseName != null and courseName.trim() != ''">
@@ -115,6 +115,11 @@
         FROM lesson AS l
         INNER JOIN student_lesson_datum AS sld ON l.id = sld.class_id
         WHERE sld.student_id = #{studentId} AND sld.buy = 1
+    </select>
+
+    <select id="selectLessonName" resultMap="Lesson">
+        select DISTINCT lesson_name from lesson
+        WHERE subject_id = #{subjectId} and course_id = #{courseId}
     </select>
 
 </mapper>

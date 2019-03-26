@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,11 +179,15 @@ public class SubjectController {
      * @return 返回值为科目名称列表
      */
     @RequestMapping(value = "/a/u/allSubjectName",method = RequestMethod.GET)
-    public Response<List> getAllSubjectName(){
+    public Response getAllSubjectName(){
         log.info("查询所有的科目名称=======");
         List list = subjectService.selectAllSubjectName();
+        Object[] obj = new Object[list.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = list.get(i);
+        }
         log.info("所有科目列表长度为: " + list.size());
-        return new Response<>(200,"success",list);
+        return new Response(200,"success",obj);
     }
 
 

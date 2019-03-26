@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -190,6 +191,24 @@ public class CourseController {
         String url = UploadPic.uploadFactory(file,pictureId,"course");
         return new Response<>(200,"上传封面成功","图片地址为："+url);
     }
-    
+
+
+    /**
+     * 根据科目id查询所属不重复的课程名称
+     * @param subjectId 科目id
+     * @return 返回值为
+     */
+    @RequestMapping(value = "/a/u/courseName",method = RequestMethod.GET)
+    public Response selectCourseName(Long subjectId){
+        log.info("查询不重复的课程名称=======, 所属的课程id为{}",subjectId);
+        List courses = courseService.selectCourseName(subjectId);
+        log.info("courses 集合的长度为: {}",courses.size());
+        Object[] obj = new Object[courses.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = courses.get(i);
+        }
+        return new Response(200,"success",obj);
+
+    }
 
 }
