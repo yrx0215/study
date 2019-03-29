@@ -121,5 +121,11 @@
         select DISTINCT lesson_name from lesson
         WHERE subject_id = #{subjectId} and course_id = #{courseId}
     </select>
+    
+    <update id="updateStatus" >
+      UPDATE lesson
+      SET lesson_status = #{lessonStatus}, update_at = #{updateAt}
+      where id = #{id}
+    </update>
 
 </mapper>
