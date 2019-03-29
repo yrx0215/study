@@ -69,7 +69,7 @@ public class CourseController {
         }
         course.setUpdateAt(System.currentTimeMillis());
         courseService.updateCourseStatus(course);
-        return new Response(200,"success",null);
+        return new Response(200,"success","变更的状态为:"+ course.getCourseStatus());
     }
 
     /**
@@ -213,4 +213,16 @@ public class CourseController {
 
     }
 
+
+    @RequestMapping(value = "/a/u/coursesName",method = RequestMethod.GET)
+    public Response selectCourseBySubjectIdAndLevel (Long subjectId,
+                                                     Integer courseLevel){
+        log.info("根据科目id和课程等级查询课程的名称和id, subjectId {}, courseLevel {}",subjectId, courseLevel);
+        List courses = courseService.selectCourseIdBySubjectIdAndCourseLevel(subjectId,courseLevel);
+        log.info("查询的课程大小为 : {}",courses.size());
+        if (courses.size() == 0){
+            return new Response(200,"success","没有找到相应数据");
+        }
+        return new Response(200, "success",courses);
+    }
 }
