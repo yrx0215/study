@@ -43,7 +43,7 @@
             <if test="lessonIntroduced != null and lessonIntroduced.trim != ''">
               lesson_introduced = #{lessonIntroduced},
             </if>
-            <if test="rewardStar != null and rewardStar.trim() != ''">
+            <if test="rewardStar != null ">
               reward_star = #{rewardStar},
             </if>
             update_at = #{updateAt}
