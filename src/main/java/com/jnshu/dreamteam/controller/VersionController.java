@@ -24,9 +24,9 @@ public class VersionController {
     private VersionService versionService;
 
     @RequestMapping(value = "/a/u/version", method = RequestMethod.GET)
-    public Response selectPages(@RequestParam Map<String, Object> params) {
+    public Response selectPages(Map<String, Object> params) {
         try {
-            return new Response(200,"OK", versionService.selectPages(params));
+            return new Response(200, "OK", versionService.selectPages(params));
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());
@@ -48,7 +48,7 @@ public class VersionController {
     @RequestMapping(value = "/a/u/version", method = RequestMethod.POST)
     public Response insert(@RequestBody Version version) {
         try {
-            return new Response(200, "OK",versionService.insert(version));
+            return new Response(200, "OK", versionService.insert(version));
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());

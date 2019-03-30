@@ -24,7 +24,7 @@ public class HeadPortraitBackgroundController {
     private HeadPortraitBackgroundService headService;
 
     @RequestMapping(value = "/a/u/headBg", method = RequestMethod.GET)
-    public Response selectHeadPages(@RequestParam Map<String, Object> params) {
+    public Response selectHeadPages(Map<String, Object> params) {
         try {
             return new Response(200, "OK", headService.selectPages(params));
         } catch (Throwable t) {
@@ -68,10 +68,25 @@ public class HeadPortraitBackgroundController {
     }
 
     @RequestMapping(value = "/a/u/headBg", method = RequestMethod.PUT)
-    public Response update( @RequestBody HeadPortraitBackground headBg){
+    public Response update(@RequestBody HeadPortraitBackground headBg) {
         try {
             return new Response(200, "OK", headService.update(headBg));
-        } catch (Throwable t){
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+
+    //    ---------------------------------------- 以下为前台
+
+
+    @RequestMapping(value = "/a/headBg/{id}", method = RequestMethod.GET)
+    public Response frontSelect(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", headService.selectObject(id));
+        } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());
             return Response.error();

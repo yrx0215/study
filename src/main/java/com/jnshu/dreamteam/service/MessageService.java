@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface MessageService {
 
-    IPage<Message> search(Map<String, Object> params);
+    IPage<Message> selectPages(Map<String, Object> params);
 
     Boolean insert(Message message) throws SchedulerException, InterruptedException;
 

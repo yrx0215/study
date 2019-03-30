@@ -24,10 +24,10 @@ public class NewsController {
     private NewsService newsService;
 
     @RequestMapping(value = "/a/u/news", method = RequestMethod.GET)
-    public Response selectPages(Map<String,Object> params){
+    public Response selectPages(Map<String, Object> params) {
         try {
-            return new Response(200,"OK", newsService.selectPages(params));
-        } catch (Throwable t){
+            return new Response(200, "OK", newsService.selectPages(params));
+        } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());
             return Response.error();
@@ -60,6 +60,31 @@ public class NewsController {
     public Response update(@RequestBody News news) {
         try {
             return new Response(200, "OK", newsService.update(news));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+//    ---------------------------------------- 以下为前台
+
+
+    @RequestMapping(value = "/a/news")
+    public Response frontSelectPages(Map<String, Object> params) {
+        try {
+            return new Response(200, "OK", newsService.selectPages(params));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    @RequestMapping(value = "/a/news/{id}")
+    public Response frontSelect(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", newsService.select(id));
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());

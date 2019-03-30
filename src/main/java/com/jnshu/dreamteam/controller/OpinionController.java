@@ -24,7 +24,7 @@ public class OpinionController {
     private OpinionService opinionService;
 
     @RequestMapping(value = "/a/u/opinion", method = RequestMethod.GET)
-    public Response selectPages(@RequestParam Map<String, Object> params) {
+    public Response selectPages(Map<String, Object> params) {
         try {
             return new Response(200, "OK", opinionService.selectPages(params));
         } catch (Throwable t) {
@@ -60,7 +60,22 @@ public class OpinionController {
     public Response insert(@RequestBody Opinion opinion) {
         try {
             return new Response(200, "OK", opinionService.insert(opinion));
-        } catch (Throwable t){
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+
+    //    ---------------------------------------- 以下为前台
+
+
+    @RequestMapping(value = "/a/opinion", method = RequestMethod.POST)
+    public Response frontInsert(@RequestBody Opinion opinion) {
+        try {
+            return new Response(200, "OK", opinionService.insert(opinion));
+        } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());
             return Response.error();

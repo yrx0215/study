@@ -32,7 +32,7 @@ public class MessageServiceImpl extends QueryWrapperBaseService<Message> impleme
     private MessageMapper messageMapper;
 
     @Override
-    public IPage<Message> search(Map<String, Object> params) {
+    public IPage<Message> selectPages(Map<String, Object> params) {
         initParams(params);
         LOGGER.trace("get message page, page = {}, size = {}", params.get("page"), params.get("size"));
         Long currentPage = Long.valueOf(params.get("page").toString());
