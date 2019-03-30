@@ -68,5 +68,5 @@ public interface MissionService {
                                String lessonName,
                                String missionName);
 
-
+    Boolean updateMissionNameById(Mission mission);
 }
