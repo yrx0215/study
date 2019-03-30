@@ -7,6 +7,8 @@ import com.jnshu.dreamteam.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 实现类
  * @author yrx
@@ -50,5 +52,15 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Long selectIdBySubjectIdAndCourseIdAndLessonName(Long subjectId, Long courseId, String lessonName) {
         return lessonMapper.selectIdBySubjectIdAndCourseIdAndLessonName(subjectId, courseId, lessonName);
+    }
+
+    @Override
+    public List<String> selectLessonName(Long subjectId, Long courseId) {
+        return lessonMapper.selectLessonName(subjectId, courseId);
+    }
+
+    @Override
+    public Boolean updateStatus(Lesson lesson) {
+        return lessonMapper.updateStatus(lesson);
     }
 }

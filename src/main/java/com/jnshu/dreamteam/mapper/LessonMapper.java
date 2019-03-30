@@ -108,5 +108,22 @@ public interface LessonMapper extends BaseMapper<Lesson> {
      */
     IPage<List<Lesson>> selectBuyLessonByStudentId(IPage iPage,@Param("studentId") Long studentId);
 
+    /**
+     * 查询课时名称, 且不重复
+     * @param subjectId 所属科目id
+     * @param courseId 所属的课程id
+     *
+     * @return 返回值为课时列表
+     */
+    List<String> selectLessonName(@Param("subjectId")Long subjectId,
+                                  @Param("courseId")Long courseId);
+
+
+    /**
+     * 更新课时的上下架状态
+     * @param lesson 所属课时的id
+     * @return 返回值true 更新成功
+     */
+    Boolean updateStatus(Lesson lesson);
 
 }

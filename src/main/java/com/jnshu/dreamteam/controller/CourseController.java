@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -68,7 +69,7 @@ public class CourseController {
         }
         course.setUpdateAt(System.currentTimeMillis());
         courseService.updateCourseStatus(course);
-        return new Response(200,"success",null);
+        return new Response(200,"success","变更的状态为:"+ course.getCourseStatus());
     }
 
     /**
@@ -181,17 +182,45 @@ public class CourseController {
     /**
      * 上传课程封面接口
      * @param file
-     * @param courseId
      * @return
      * @throws IOException
      */
     @PostMapping("/a/u/course/img")
-    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file
-                                           ,@RequestParam("courseId") Long courseId) throws IOException {
-        String pictureId = System.currentTimeMillis()+""+courseId;
+    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file) throws IOException {
+        String pictureId = System.currentTimeMillis()+"";
         String url = UploadPic.uploadFactory(file,pictureId,"course");
         return new Response<>(200,"上传封面成功","图片地址为："+url);
     }
-    
 
+
+    /**
+     * 根据科目id查询所属不重复的课程名称
+     * @param subjectId 科目id
+     * @return 返回值为
+     */
+    @RequestMapping(value = "/a/u/courseName",method = RequestMethod.GET)
+    public Response selectCourseName(Long subjectId){
+        log.info("查询不重复的课程名称=======, 所属的课程id为{}",subjectId);
+        List courses = courseService.selectCourseName(subjectId);
+        log.info("courses 集合的长度为: {}",courses.size());
+        Object[] obj = new Object[courses.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = courses.get(i);
+        }
+        return new Response(200,"success",obj);
+
+    }
+
+
+    @RequestMapping(value = "/a/u/coursesName",method = RequestMethod.GET)
+    public Response selectCourseBySubjectIdAndLevel (Long subjectId,
+                                                     Integer courseLevel){
+        log.info("根据科目id和课程等级查询课程的名称和id, subjectId {}, courseLevel {}",subjectId, courseLevel);
+        List courses = courseService.selectCourseIdBySubjectIdAndCourseLevel(subjectId,courseLevel);
+        log.info("查询的课程大小为 : {}",courses.size());
+        if (courses.size() == 0){
+            return new Response(200,"success","没有找到相应数据");
+        }
+        return new Response(200, "success",courses);
+    }
 }

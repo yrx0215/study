@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.pojo.Course;
 import com.jnshu.dreamteam.pojo.Lesson;
 import com.jnshu.dreamteam.pojo.Response;
@@ -13,6 +14,8 @@ import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -53,8 +56,17 @@ public class LessonController {
     }
 
 
-
-
+    /**
+     * 按照所选条件查询数据, 且支持模糊查询
+     * @param page  当前页数 默认1
+     * @param size 当前页的条数, 默认10
+     * @param subjectName 科目名称
+     * @param courseLevel 课程等级
+     * @param courseName 课程名称
+     * @param lessonStatus 课时状态
+     * @param lessonName 课时名称
+     * @return
+     */
     @RequestMapping(value = "/a/u/lessonFuzzy",method = RequestMethod.GET)
     public Response selectLessonByFuzzy(@RequestParam(value = "page",required = false)Integer page,
                                         @RequestParam(value = "size", required = false)Integer size,
@@ -181,8 +193,55 @@ public class LessonController {
         log.info("lesson 的id是: {}" ,id);
         return new Response (200, "success",id);
 
+    }
+
+    /**
+     * 查询课时名称, 且不重复
+     * @param subjectId 科目id
+     * @param courseId 课程id
+     * @return 返回值为对应的课时名称
+     */
+    @RequestMapping(value = "/a/u/lessonName",method = RequestMethod.GET)
+    public Response selectLessonName(Long subjectId,Long courseId){
+        log.info("查询不重复的课时名称, subjectId是 {}, courseid是{}",subjectId, courseId);
+        List lessons = lessonService.selectLessonName(subjectId,courseId);
+        log.info("课时的名称列表长度为 {}",lessons.size());
+        Object[] obj = new Object[lessons.size()];
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = lessons.get(i);
+        }
+        return new Response(200,"success",obj);
 
     }
 
 
+    /**
+     * 更新上下架状态
+     * @param id 对应的lessonid
+     * @return 返回值为true 更新成功
+     */
+    @LogInfo
+    @RequestMapping(value = "/a/u/lessonStatus/{id}",method = RequestMethod.PUT)
+    public Response updateStatus(@PathVariable("id") Long id){
+        log.info("更新上下架状态 对应的lessonId是{}",id);
+        Lesson lesson =lessonService.getLessonById(id);
+        if (EmptyUtil.isEmpty(lesson)){
+            return Response.error();
+        }
+        Integer status = lesson.getLessonStatus();
+        log.info("当前lesson的状态是 {}",status);
+        if (status == 0){
+            lesson.setLessonStatus(1);
+        } else {
+            lesson.setLessonStatus(0);
+        }
+        log.info("更改后的lesson状态是 :{}" ,lesson.getLessonStatus());
+        lesson.setUpdateAt(System.currentTimeMillis());
+
+        Boolean b = lessonService.updateStatus(lesson);
+        if (!b){
+            return Response.error();
+        }
+        return new Response(200,"success","更新后的状态是:" + lesson.getLessonStatus());
+    }
 }

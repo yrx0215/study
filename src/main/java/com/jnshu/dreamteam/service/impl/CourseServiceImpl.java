@@ -7,6 +7,8 @@ import com.jnshu.dreamteam.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * course实现类
  * @author yrx
@@ -59,5 +61,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Long selectIdBySubejctIdAndCourseName(Long subejctId, String courseName) {
         return courseMapper.selectIdBySubejctIdAndCourseName(subejctId, courseName);
+    }
+
+    @Override
+    public List<String> selectCourseName(Long subjectId) {
+        return courseMapper.selectCourseName(subjectId);
+    }
+
+    @Override
+    public List selectCourseIdBySubjectIdAndCourseLevel(Long subjectId, Integer courseLevel) {
+        return courseMapper.selectCourseIdBySubjectIdAndCourseLevel(subjectId,courseLevel);
     }
 }

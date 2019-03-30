@@ -3,6 +3,8 @@ package com.jnshu.dreamteam.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Course;
 
+import java.util.List;
+
 /**
  * 课程相关接口
  * @author yrx
@@ -73,4 +75,19 @@ public interface CourseService {
      */
     Long selectIdBySubejctIdAndCourseName(Long subejctId,
                                           String courseName);
+
+    /**
+     * 根据id查询不重复课程名称,
+     * @param subjectId 所属科目id
+     * @return 返回值为 名称列表
+     */
+    List<String> selectCourseName(Long subjectId);
+    /**
+     * 根据科目id和课程等级查询课程信息
+     * @param subjectId 科目id
+     * @param courseLevel 课程等级
+     * @return 返回值为课程id和名称
+     */
+    List<String> selectCourseIdBySubjectIdAndCourseLevel(Long subjectId,
+                                                         Integer courseLevel);
 }

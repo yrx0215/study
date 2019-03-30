@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dreamteam.mapper.DatumMapper">
+    <resultMap id="Datum" type="com.jnshu.dreamteam.pojo.Datum">
+        <id column="id" property="id"/>
+        <result column="course_id" property="courseId"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="lesson_id" property="lessonId"/>
+        <result column="subject_name" property="subjectName"/>
+        <result column="course_name" property="courseName"/>
+        <result column="lesson_name" property="lessonName"/>
+        <result column="datum" property="datum"/>
+        <result column="price" property="price"/>
+        <result column="create_at" property="createAt"/>
+        <result column="update_at" property="updateAt"/>
+    </resultMap>
+
+
+    <select id="selectAllDatum" resultMap="Datum">
+        select *
+        from datum
+    </select>
+
+    <select id="selectDatumFuzzy" resultMap="Datum">
+        SELECT *
+        FROM datum
+        <where>
+            <if test="subjectName != null and subjectName.trim() != ''">
+                and subject_name = #{subjectName}
+            </if>
+
+            <if test="courseName != null and courseName.trim() != ''">
+                and course_name = #{courseName}
+            </if>
+            <if test="lessonName != null and lessonName.trim() != ''">
+                and lesson_name like concat(concat('%',#{lessonName},'%'))
+            </if>
+        </where>
+        order by update_at desc
+    </select>
+
+    <!--<if test="lessonStatus == 0 or lessonStatus == 1">-->
+        <!--and lesson_status = #{lessonStatus}-->
+    <!--</if>-->
+    <!--<if test="grade != null">-->
+        <!--and grade = #{grade}-->
+    <!--</if>-->
+
+
+    <!--selectDatumById-->
+    <select id="selectDatumById" resultMap="Datum">
+        select *
+        FROM datum
+        WHERE  id = #{id}
+    </select>
+
+    <!--updateDatumBuId-->
+    <update id="updateDatumBuId">
+        UPDATE  datum
+        <set>
+            <if test="price != null and price != ''">
+              price = #{price},
+            </if>
+            <if test="datum != null and datum.trim() != ''">
+              datum = #{datum},
+            </if>
+            update_at = #{updateAt}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delectDatumById">
+        DELETE
+        from datum
+        WHERE  id = #{id}
+    </delete>
+
+    <insert id="addDatum" keyProperty="id" useGeneratedKeys="true" parameterType="com.jnshu.dreamteam.pojo.Datum">
+        insert into datum(subject_id, course_id, lesson_id, subject_name, course_name, lesson_name,
+                          price, datum,create_at)
+        VALUES (#{subjectId},#{courseId},#{lessonId},#{subjectName},#{courseName},#{lessonName},
+        #{price},#{datum},#{createAt})
+    </insert>
+
+</mapper>

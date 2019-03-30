@@ -70,14 +70,14 @@
           <if test="courseStatus == 0 or courseStatus == 1">
               and course_status = #{courseStatus}
           </if>
-          <if test="courseLevel != null and courseLevel.trim() != ''">
+          <if test="courseLevel != null ">
               and course_level = #{courseLevel}
           </if>
           <if test="courseName != null and courseName.trim() != ''">
               and course_name like concat(concat('%',#{courseName},'%'))
           </if>
-          order by update_at desc
       </where>
+        order by update_at desc
     </select>
 <!--like concat(concat('%',#{courseName}),'%')-->
 
@@ -105,13 +105,21 @@
     </select>
 
 
-
-
     <select id="selectByStudentId" resultMap="Course">
         SELECT c.id,c.course_name,c.subject_name,c.course_level,c.study_number,c.course_status
         FROM course AS c INNER JOIN student_course AS sc ON c.id=sc.course_id
         WHERE sc.student_id =#{studentId}
     </select>
 
+    <select id="selectCourseName" resultMap="Course">
+        select DISTINCT course_name from course
+        where subject_id = #{subjectId}
+    </select>
+    
+    <select id="selectCourseIdBySubjectIdAndCourseLevel" resultMap="Course">
+        select id, course_name
+        from course
+        where subject_id = #{subjectId} and course_level = #{courseLevel}
+    </select>
 
 </mapper>
