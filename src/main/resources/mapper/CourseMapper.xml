@@ -44,7 +44,7 @@
           <if test="courseName != null and courseName.trim() != ''">
             course_name = #{courseName},
           </if>
-          <if test="courseLevel != null and courseLevel.trim() != ''">
+          <if test="courseLevel != null">
             course_level = #{courseLevel},
           </if>
           <if test="coursePic != null and coursePic.trim() != ''">
