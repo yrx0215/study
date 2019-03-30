@@ -115,5 +115,11 @@
         select DISTINCT course_name from course
         where subject_id = #{subjectId}
     </select>
+    
+    <select id="selectCourseIdBySubjectIdAndCourseLevel" resultMap="Course">
+        select id, course_name
+        from course
+        where subject_id = #{subjectId} and course_level = #{courseLevel}
+    </select>
 
 </mapper>

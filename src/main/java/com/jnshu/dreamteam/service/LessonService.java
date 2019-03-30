@@ -85,4 +85,11 @@ public interface LessonService {
     List<String> selectLessonName(Long subjectId,
                                   Long courseId);
 
+    /**
+     * 更新课时的上下架状态
+     * @param lesson 所属课时的id
+     * @return 返回值true 更新成功
+     */
+    Boolean updateStatus(Lesson lesson);
+
 }
