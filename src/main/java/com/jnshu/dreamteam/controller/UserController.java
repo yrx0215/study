@@ -130,7 +130,6 @@ public class UserController {
      * @return
      */
     @LogInfo
-    @RequiresPermissions("密码修改,必须携带TOKEN")
     @PostMapping("/a/u/password")
     public Response changePassword(HttpServletRequest httpServletRequest
                                   , @RequestParam("newPassword") String newPassword

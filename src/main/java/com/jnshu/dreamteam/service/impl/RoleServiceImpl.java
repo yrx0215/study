@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
 import com.jnshu.dreamteam.mapper.RoleMapper;
@@ -14,6 +15,7 @@ import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
