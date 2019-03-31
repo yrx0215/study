@@ -15,6 +15,7 @@
         <result column="subject_name" property="subjectName"/>
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
+        <result column="grade" property="grade"/>
     </resultMap>
     
     <!--public List<Course> selectAllCourse();-->
@@ -32,9 +33,9 @@
 
     <!--public Course selectCourseById(Long id);-->
     <select id="selectCourseById" resultMap="Course">
-        SELECT id, subject_id , course_name, course_level, course_pic, course_introduction, course_status
-        FROM course
-        WHERE  id = #{id}
+        SELECT c.*,s.grade
+        FROM course c , subject s
+        WHERE  c.subject_id = s.id and c.id = #{id}
     </select>
 
     <!--public Boolean updateCourse(Course course);-->
