@@ -41,6 +41,9 @@ public class OpinionServiceImpl extends BaseServiceWrapper<Opinion> implements O
     @Override
     public Boolean insert(Opinion opinion) {
         LOGGER.trace("insert opinion");
+        Long dateTime = System.currentTimeMillis();
+        opinion.setCreateAt(dateTime);
+        opinion.setUpdateAt(dateTime);
         return getResult(opinionMapper.insert(opinion));
     }
 

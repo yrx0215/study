@@ -74,10 +74,7 @@
 
     <!-- Boolean updateStudentCheck(StudentCheck studentCheck);-->
     <update id="updateStudentCheck">
-        UPDATE student_check
-        SET check_time = #{checkTime},
-        check_day = #{checkDay}
-        where student_id = #{studentId}
+        UPDATE student_check SET check_time = #{checkTime},check_day = #{checkDay} where student_id = #{studentId}
 
     </update>
     <!-- Long insertStudentCheck(StudentCheck studentCheck);-->
