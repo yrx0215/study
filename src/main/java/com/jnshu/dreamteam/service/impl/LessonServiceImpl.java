@@ -58,4 +58,9 @@ public class LessonServiceImpl implements LessonService {
     public List<String> selectLessonName(Long subjectId, Long courseId) {
         return lessonMapper.selectLessonName(subjectId, courseId);
     }
+
+    @Override
+    public Boolean updateStatus(Lesson lesson) {
+        return lessonMapper.updateStatus(lesson);
+    }
 }

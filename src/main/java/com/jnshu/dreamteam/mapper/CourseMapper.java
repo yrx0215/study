@@ -98,4 +98,13 @@ public interface CourseMapper extends BaseMapper<Course> {
      * @return 返回值为 名称列表
      */
     List<String> selectCourseName(@Param("subjectId")Long subjectId);
+
+    /**
+     * 根据科目id和课程等级查询课程信息
+     * @param subjectId 科目id
+     * @param courseLevel 课程等级
+     * @return 返回值为课程id和名称
+     */
+    List selectCourseIdBySubjectIdAndCourseLevel(@Param("subjectId")Long subjectId,
+                                            @Param("courseLevel")Integer courseLevel);
 }

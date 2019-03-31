@@ -27,10 +27,10 @@ public class MessageController {
     /**
      * 参数有 page size title标题 sendType发送人群 messageType消息类型
      */
-    @RequestMapping(value = "/a/u/message/search", method = RequestMethod.GET)
-    public Response search(@RequestParam Map<String, Object> params) {
+    @RequestMapping(value = "/a/u/message", method = RequestMethod.GET)
+    public Response selectPages(Map<String, Object> params) {
         try {
-            return new Response(200, "OK", messageService.search(params));
+            return new Response(200, "OK", messageService.selectPages(params));
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());
@@ -55,6 +55,42 @@ public class MessageController {
 
     @RequestMapping(value = "/a/u/message/{id}", method = RequestMethod.GET)
     public Response select(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", messageService.select(id));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    @RequestMapping(value = "/a/u/message/{id}", method = RequestMethod.DELETE)
+    public Response delete(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", messageService.delete(id));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    //    ---------------------------------------- 下面是前台
+
+
+    @RequestMapping(value = "/a/message", method = RequestMethod.GET)
+    public Response frontSelectPages(Map<String, Object> params) {
+        try {
+            return new Response(200, "OK", messageService.selectPages(params));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    @RequestMapping(value = "/a/message/{id}")
+    public Response frontSelect(@PathVariable Long id) {
         try {
             return new Response(200, "OK", messageService.select(id));
         } catch (Throwable t) {

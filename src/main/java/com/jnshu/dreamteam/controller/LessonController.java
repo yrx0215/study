@@ -1,6 +1,7 @@
 package com.jnshu.dreamteam.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.pojo.Course;
 import com.jnshu.dreamteam.pojo.Lesson;
 import com.jnshu.dreamteam.pojo.Response;
@@ -214,4 +215,33 @@ public class LessonController {
     }
 
 
+    /**
+     * 更新上下架状态
+     * @param id 对应的lessonid
+     * @return 返回值为true 更新成功
+     */
+    @LogInfo
+    @RequestMapping(value = "/a/u/lessonStatus/{id}",method = RequestMethod.PUT)
+    public Response updateStatus(@PathVariable("id") Long id){
+        log.info("更新上下架状态 对应的lessonId是{}",id);
+        Lesson lesson =lessonService.getLessonById(id);
+        if (EmptyUtil.isEmpty(lesson)){
+            return Response.error();
+        }
+        Integer status = lesson.getLessonStatus();
+        log.info("当前lesson的状态是 {}",status);
+        if (status == 0){
+            lesson.setLessonStatus(1);
+        } else {
+            lesson.setLessonStatus(0);
+        }
+        log.info("更改后的lesson状态是 :{}" ,lesson.getLessonStatus());
+        lesson.setUpdateAt(System.currentTimeMillis());
+
+        Boolean b = lessonService.updateStatus(lesson);
+        if (!b){
+            return Response.error();
+        }
+        return new Response(200,"success","更新后的状态是:" + lesson.getLessonStatus());
+    }
 }
