@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.mapper.HeadPortraitBackgroundMapper;
 import com.jnshu.dreamteam.pojo.HeadPortraitBackground;
-import com.jnshu.dreamteam.service.BaseService;
+import com.jnshu.dreamteam.service.BaseServiceWrapper;
 import com.jnshu.dreamteam.service.HeadPortraitBackgroundService;
 import com.jnshu.dreamteam.utils.MyPage;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author draper_hxy
  */
 @Service
-public class HeadPortraitBackgroundServiceImpl extends BaseService implements HeadPortraitBackgroundService {
+public class HeadPortraitBackgroundServiceImpl extends BaseServiceWrapper<HeadPortraitBackground> implements HeadPortraitBackgroundService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -28,6 +28,7 @@ public class HeadPortraitBackgroundServiceImpl extends BaseService implements He
 
     @Override
     public IPage<HeadPortraitBackground> selectPages(Map<String, Object> params) {
+        initParams(params);
         LOGGER.trace("get backBg page, page = {}, size = {}", params.get("page"), params.get("size"));
         Long currentPage = Long.valueOf(params.get("page").toString());
         Long size = Long.valueOf(params.get("size").toString());

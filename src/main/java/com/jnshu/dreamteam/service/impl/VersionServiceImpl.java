@@ -44,6 +44,9 @@ public class VersionServiceImpl extends BaseServiceWrapper<Version> implements V
     @Override
     public Boolean insert(Version version) {
         LOGGER.trace("insert version");
+        Long dateTime = System.currentTimeMillis();
+        version.setCreateAt(dateTime);
+        version.setUpdateAt(dateTime);
         return getResult(versionMapper.insert(version));
     }
 
