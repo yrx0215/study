@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.devtools.restart.server.SourceFolderUrlFilter;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.security.util.AuthResources_it;
+
 
 /**
  * @author draper_hxy
