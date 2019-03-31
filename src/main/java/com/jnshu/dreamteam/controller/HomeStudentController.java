@@ -1,6 +1,5 @@
 package com.jnshu.dreamteam.controller;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.annotation.LogInfo;
 import com.jnshu.dreamteam.config.exception.ServiceDaoException;
@@ -111,8 +110,8 @@ public class HomeStudentController {
      * @throws ServiceDaoException
      */
     @GetMapping("/a/u/home/enshrineCourse")
-    public Response enshrineCourse(@RequestParam(value = "page",required = false) Integer page
-                                  ,HttpServletRequest httpServletRequest) throws ServiceDaoException{
+    public Response<IPage<List<Course>>> enshrineCourse(@RequestParam(value = "page",required = false) Integer page
+                                  , HttpServletRequest httpServletRequest) throws ServiceDaoException{
         page = page==null||page<=0?1:page;
         IPage iPage = new MyPage(page,10);
         String token = httpServletRequest.getHeader("HomeToken");
@@ -121,7 +120,7 @@ public class HomeStudentController {
             IPage<List<Course>> myPage = studentService.selectByStudentId(iPage,studentId);
             return new Response<>(200,"查询成功",myPage);
         }
-        return new Response(-1,"不存在token或token不正确");
+        return new Response<IPage<List<Course>>>(-1,"不存在token或token不正确");
     }
 
     /**
@@ -132,8 +131,8 @@ public class HomeStudentController {
      * @throws ServiceDaoException
      */
     @GetMapping("/a/u/home/enshrineLesson")
-    public Response enshrineLesson(@RequestParam(value = "page",required = false) Integer page
-                                  ,HttpServletRequest httpServletRequest) throws ServiceDaoException{
+    public Response<IPage<List<Lesson>>> enshrineLesson(@RequestParam(value = "page",required = false) Integer page
+                                  , HttpServletRequest httpServletRequest) throws ServiceDaoException{
 
         page = page==null||page<=0?1:page;
         IPage iPage = new MyPage(page,10);
@@ -143,7 +142,7 @@ public class HomeStudentController {
             IPage<List<Lesson>> myPage = studentService.selectLessonByStudentId(iPage,studentId);
             return new Response<>(200,"查询成功",myPage);
         }
-        return new Response(-1,"不存在token或token不正确");
+        return new Response<IPage<List<Lesson>>>(-1,"不存在token或token不正确");
     }
 
     /**
@@ -154,8 +153,8 @@ public class HomeStudentController {
      * @throws ServiceDaoException
      */
     @GetMapping("/a/u/home/buyDatum")
-    public Response buyDatumByStudentId(@RequestParam(value = "page",required = false) Integer page
-                                       ,HttpServletRequest httpServletRequest) throws ServiceDaoException{
+    public Response<IPage<List<Lesson>>> buyDatumByStudentId(@RequestParam(value = "page",required = false) Integer page
+                                       , HttpServletRequest httpServletRequest) throws ServiceDaoException{
         page = page==null||page<=0?1:page;
         IPage iPage = new MyPage(page,10);
         String token = httpServletRequest.getHeader("HomeToken");
@@ -164,7 +163,7 @@ public class HomeStudentController {
             IPage<List<Lesson>> myPage = studentService.selectDatumByStudentId(iPage,studentId);
             return new Response<>(200,"查询成功",myPage);
         }
-        return new Response(-1,"不存在token或token不正确");
+        return new Response<>(-1,"不存在token或token不正确");
     }
 
     /**
@@ -175,8 +174,8 @@ public class HomeStudentController {
      * @throws ServiceDaoException
      */
     @GetMapping("/a/u/home/buyLesson")
-    public Response buyLessonByStudentId(@RequestParam(value = "page",required = false) Integer page
-                                        ,HttpServletRequest httpServletRequest) throws ServiceDaoException{
+    public Response<IPage<List<Lesson>>> buyLessonByStudentId(@RequestParam(value = "page",required = false) Integer page
+                                        , HttpServletRequest httpServletRequest) throws ServiceDaoException{
         page = page==null||page<=0?1:page;
         IPage iPage = new MyPage(page,10);
         String token = httpServletRequest.getHeader("HomeToken");
@@ -185,7 +184,7 @@ public class HomeStudentController {
             IPage<List<Lesson>> myPage = studentService.selectBuyLessonByStudentId(iPage,studentId);
             return new Response<>(200,"查询成功",myPage);
         }
-        return new Response(-1,"不存在token或token不正确");
+        return new Response<>(-1,"不存在token或token不正确");
     }
 
     @PostMapping("/a/u/home/password")
@@ -208,5 +207,16 @@ public class HomeStudentController {
             return new Response(-1,"密码错误");
         }
         return new Response(-1,"密码格式错误，必须6-16位");
+    }
+
+    @GetMapping("/a/u/home/student")
+    public Response<Student> getStudent(HttpServletRequest request){
+        String token = request.getHeader("HomeToken");
+        if(token!=null && JwtUtil.verify(token)){
+            Long studentId = JwtUtil.getClaims(token,"studentId").asLong();
+            Student student = studentService.getStduent(studentId);
+            return new Response<>(200,"查询成功",student);
+        }
+        return new Response<>(-1,"HomeToken错误或不存在");
     }
 }

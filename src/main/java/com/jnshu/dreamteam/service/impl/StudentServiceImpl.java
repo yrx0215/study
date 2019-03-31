@@ -185,4 +185,9 @@ public class StudentServiceImpl implements StudentService {
     public Boolean updateStudentCheck(StudentCheck studentCheck) {
         return studentMapper.updateStudentCheck(studentCheck);
     }
+
+    @Override
+    public Student getStduent(Long id) {
+        return studentMapper.selectById(id);
+    }
 }

@@ -23,7 +23,7 @@ public class HelpController {
     private HelpService helpService;
 
     @RequestMapping(value = "/a/u/help", method = RequestMethod.GET)
-    public Response selectPages(@RequestParam Map<String, Object> params) {
+    public Response selectPages(Map<String, Object> params) {
         try {
             return new Response(200, "OK", helpService.selectPages(params));
         } catch (Throwable t) {
@@ -73,6 +73,32 @@ public class HelpController {
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.trace(t.getMessage());
+            return Response.error();
+        }
+    }
+
+
+    //    ---------------------------------------- 下面是前台
+
+
+    @RequestMapping(value = "/a/help", method = RequestMethod.GET)
+    public Response frontSelectPages(Map<String, Object> params) {
+        try {
+            return new Response(200, "OK", helpService.selectPages(params));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    @RequestMapping("/a/help/{id}")
+    public Response frontSelect(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", helpService.select(id));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
             return Response.error();
         }
     }

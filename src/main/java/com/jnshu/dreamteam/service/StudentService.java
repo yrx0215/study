@@ -168,4 +168,6 @@ public interface StudentService {
      * @return 返回值为true 更新成功
      */
     Boolean updateStudentCheck(StudentCheck studentCheck);
+
+    Student getStduent(Long Id);
 }
