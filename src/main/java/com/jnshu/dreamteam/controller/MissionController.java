@@ -187,50 +187,33 @@ public class MissionController {
         return new Response<>(0,"success", mission);
     }
 
+
+
     /**
      * 更新mission方法
      * @param mission 需要更新的mission信息
      * @return 返回更新后的mission信息
      */
-    @RequestMapping(value = "/a/u/mission/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/a/u/mission",method = RequestMethod.PUT)
     public Response<Mission> updateMissionById(Mission mission){
         log.info("更新mission方法 mission = {}",mission);
         Long missionId = mission.getId();
-        //删除相关id的信息
-        Boolean missionSuccess = missionService.deleteMissionById(missionId);
+        //删除missionContent中相关id的信息
         Boolean contentSuccess = missionContentService.delectMissionContentById(missionId);
-        if (!missionSuccess || !contentSuccess){
-            return new Response(-1,"更新失败, 删除原数据失败",null);
+        if (!contentSuccess){
+            return new Response(-1,"更新失败, 删除原数据失败","任务对应id没有任务步骤");
         }
-        Subject subject = subjectService.selectSubject(mission.getSubjectId());
-        Course course = courseService.selectCourseById(mission.getCourseId());
-        Lesson lesson = lessonService.getLessonById(mission.getLessonId());
-        if (EmptyUtil.isEmpty(subject) || EmptyUtil.isEmpty(course) || EmptyUtil.isEmpty(lesson)){
-            log.info("查找数据失败 subject : {}, course : {}, lesson : {}",subject, course, lesson);
-            return new Response(-1,"传入信息有误",null);
-        }
-        //获取对应的名称
-        String subjectName = subject.getSubjectName();
-        String courseName = course.getCourseName();
-        String lessonName = lesson.getLessonName();
-        //将名称set到mission中;
-        mission.setSubjectName(subjectName);
-        mission.setCourseName(courseName);
-        mission.setLessonName(lessonName);
-        //创建时间
-        mission.setCreateAt(System.currentTimeMillis());
-        missionService.addMission(mission);
-
-        Long updateMissionId = mission.getId();
-        log.info("mission 新的id是{}",updateMissionId);
+        //更新时间
+        mission.setUpdateAt(System.currentTimeMillis());
+        missionService.updateMissionNameById(mission);
+        //新增missionContent中的信息
         List<MissionContent> missionContent= mission.getMissionContent();
         for (MissionContent content : missionContent) {
             log.info("missionContent is {}" , content);
-            content.setMissionId(updateMissionId);
+            content.setMissionId(missionId);
             missionContentService.addMissionContent(content);
         }
-    return new Response<>(0,"success", mission);
+        return new Response<>(0,"success", mission);
     }
-
 
 }

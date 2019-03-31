@@ -102,4 +102,9 @@
         order by update_at desc
     </select>
 
+    <update id="updateMissionNameById">
+        UPDATE mission
+        SET  mission_name = #{missionName}
+        where id = #{id}
+    </update>
 </mapper>
