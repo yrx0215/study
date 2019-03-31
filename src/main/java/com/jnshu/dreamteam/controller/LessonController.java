@@ -11,10 +11,13 @@ import com.jnshu.dreamteam.service.LessonService;
 import com.jnshu.dreamteam.service.SubjectService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
+import com.jnshu.dreamteam.utils.UploadPic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -243,5 +246,18 @@ public class LessonController {
             return Response.error();
         }
         return new Response(200,"success","更新后的状态是:" + lesson.getLessonStatus());
+    }
+
+    /**
+     * 上传课程封面接口
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/a/u/mission/img")
+    public Response<String> uploadCourseImg(@RequestParam("file") MultipartFile file) throws IOException {
+        String pictureId = System.currentTimeMillis()+"";
+        String url = UploadPic.uploadFactory(file,pictureId,"course");
+        return new Response<>(200,"上传音视频成功","地址为："+url);
     }
 }

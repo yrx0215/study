@@ -73,4 +73,6 @@ public interface MissionMapper extends BaseMapper<Mission> {
                                @Param("lessonName")String lessonName,
                                @Param("missionName")String missionName);
 
+    Boolean updateMissionNameById(Mission mission);
+
 }

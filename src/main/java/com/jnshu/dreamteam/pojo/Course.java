@@ -1,8 +1,8 @@
 package com.jnshu.dreamteam.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -87,5 +87,7 @@ public class Course implements Serializable {
     @TableField("update_at")
     private Long updateAt;
 
+    @TableField(exist = false)
+    private Integer grade;
 
 }

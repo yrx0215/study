@@ -51,4 +51,9 @@ public class MissionServiceImpl implements MissionService {
     public IPage selectMissionByFuzzy(IPage iPage, String subjectName, Integer courseLevel, String courseName, String lessonName, String missionName) {
         return missionMapper.selectMissionByFuzzy(iPage,subjectName,courseLevel,courseName,lessonName,missionName);
     }
+
+    @Override
+    public Boolean updateMissionNameById(Mission mission) {
+        return missionMapper.updateMissionNameById(mission);
+    }
 }
