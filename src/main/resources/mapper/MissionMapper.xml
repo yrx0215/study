@@ -45,14 +45,16 @@
     </insert>
     <!--List selectAllMission();-->
     <select id="selectAllMission" resultMap="Mission">
-        SELECT m.*,mc.*,s.grade
+      select *
+      from mission
+    </select>
+    <!--SELECT m.*,mc.*,s.grade
         FROM mission m
         LEFT JOIN subject s
         ON m.subject_id= s.id
         LEFT JOIN mission_content mc
         ON m.id= mc.mission_id
-        ORDER BY m.update_at DESC
-    </select>
+        ORDER BY m.update_at DESC-->
 <!-- SELECT m.*, mc.content_step, mc.content_type,mc.content
         from mission m  , subject s
         left JOIN mission_content mc
