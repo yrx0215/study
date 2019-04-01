@@ -79,6 +79,9 @@ public class Mission implements Serializable {
     @TableField("update_at")
     private Long updateAt;
 
+    @TableField(exist = false)
+    private Integer grade;
+
     private List<MissionContent> missionContent;
 
     public Mission() {

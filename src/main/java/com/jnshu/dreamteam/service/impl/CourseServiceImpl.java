@@ -72,4 +72,9 @@ public class CourseServiceImpl implements CourseService {
     public List selectCourseIdBySubjectIdAndCourseLevel(Long subjectId, Integer courseLevel) {
         return courseMapper.selectCourseIdBySubjectIdAndCourseLevel(subjectId,courseLevel);
     }
+
+    @Override
+    public List<String> selectCourseNameBySubjectId(Long subjectid) {
+        return courseMapper.selectCourseNameBySubjectId(subjectid);
+    }
 }
