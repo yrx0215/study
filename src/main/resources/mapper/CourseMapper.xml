@@ -123,4 +123,9 @@
         where subject_id = #{subjectId} and course_level = #{courseLevel}
     </select>
 
+    <select id="selectCourseNameBySubjectId" resultType="java.lang.String">
+        select course_name
+        from course
+        WHERE subject_id = #{subjectId}
+    </select>
 </mapper>

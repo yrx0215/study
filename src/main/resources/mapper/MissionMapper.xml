@@ -15,6 +15,7 @@
         <result column="lesson_name" property="lessonName"/>
         <result column="create_at" property="createAt"/>
         <result column="update_at" property="updateAt"/>
+        <result column="grade" property="grade"/>
         <collection  property="missionContent" ofType="com.jnshu.dreamteam.pojo.MissionContent">
             <id column="mc_id" property="mcId"/>
             <result column="mission_id" property="missionId"/>
@@ -31,6 +32,12 @@
         <!--<result column="content_type" property="contentType"/>-->
         <!--<result column="content" property="content"/>-->
     <!--</resultMap>-->
+    
+    <select id="selectMissionNameByCourseId" resultType="java.lang.String">
+        select mission_name
+        FROM mission
+        WHERE lesson_id = #{lessonId}
+    </select>
 
     <insert id="addMission" useGeneratedKeys="true" keyProperty="id"  >
       INSERT  INTO mission (subject_id, course_id, lesson_id, mission_name, subject_name , course_name, lesson_name, create_at )
@@ -38,13 +45,20 @@
     </insert>
     <!--List selectAllMission();-->
     <select id="selectAllMission" resultMap="Mission">
-        SELECT m.*, mc.content_step, mc.content_type,mc.content
-        from mission m
+        SELECT m.*,mc.*,s.grade
+        FROM mission m
+        LEFT JOIN subject s
+        ON m.subject_id= s.id
+        LEFT JOIN mission_content mc
+        ON m.id= mc.mission_id
+        ORDER BY m.update_at DESC
+    </select>
+<!-- SELECT m.*, mc.content_step, mc.content_type,mc.content
+        from mission m  , subject s
         left JOIN mission_content mc
         ON m.id = mc.mission_id
-        ORDER BY m.update_at
-    </select>
-
+        WHERE s.id = m.subject_id
+        ORDER BY m.update_at DESC-->
     <!-- Boolean updateMissionStatus();-->
     <update id="updateMissionStatus">
       update mission
@@ -59,12 +73,14 @@
     </delete>
 <!--Mission selectMissionById(Long id);-->
     <select id="selectMissionById" resultMap="Mission"  >
-      SELECT m.*, mc.content_step, mc.content_type,mc.content
+      SELECT m.*, mc.content_step, mc.content_type,mc.content,s.grade
       FROM mission m
+      LEFT JOIN subject s
+      on s.id = m.subject_id
       LEFT JOIN  mission_content mc
       ON m.id = mc.mission_id
       WHERE m.id = #{id}
-      order by mc.content_step
+      order by mc.content_step, m.update_at
     </select>
 
     <!--      SELECT m.*, mc.content_step, mc.content_type,mc.content
@@ -104,7 +120,7 @@
 
     <update id="updateMissionNameById">
         UPDATE mission
-        SET  mission_name = #{missionName}
+        SET  mission_name = #{missionName},update_at = #{updateAt}
         where id = #{id}
     </update>
 </mapper>

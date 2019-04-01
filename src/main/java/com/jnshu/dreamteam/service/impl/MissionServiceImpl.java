@@ -7,6 +7,9 @@ import com.jnshu.dreamteam.service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 /**
  * @author yrx
  */
@@ -55,5 +58,10 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public Boolean updateMissionNameById(Mission mission) {
         return missionMapper.updateMissionNameById(mission);
+    }
+
+    @Override
+    public List selectMissionNameByLessonId(Long lessonId) {
+        return missionMapper.selectMissionNameByCourseId(lessonId);
     }
 }

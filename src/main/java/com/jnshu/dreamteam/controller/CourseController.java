@@ -223,4 +223,17 @@ public class CourseController {
         }
         return new Response(200, "success",courses);
     }
+
+
+
+    @RequestMapping(value = "/a/u/course/name",method = RequestMethod.POST)
+    public Response decisionLessonName(String courseName, Long subjectId){
+        log.info("根据subjectId查到coursename 并查重,subjectid {}, courseName {}",subjectId, courseName);
+        List course = courseService.selectCourseNameBySubjectId(subjectId);
+        Boolean isCourse = course.contains(courseName);
+        if (isCourse){
+            return new Response(-1,"已经有对应名称, 请更换名称");
+        }
+        return new Response(200,"success");
+    }
 }

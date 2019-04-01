@@ -11,13 +11,10 @@ import com.jnshu.dreamteam.service.LessonService;
 import com.jnshu.dreamteam.service.SubjectService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
-import com.jnshu.dreamteam.utils.UploadPic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -248,4 +245,14 @@ public class LessonController {
         return new Response(200,"success","更新后的状态是:" + lesson.getLessonStatus());
     }
 
+    @RequestMapping(value = "/a/u/lesson/name",method = RequestMethod.POST)
+    public Response decisionLessonName(String lessonName, Long courseId){
+        log.info("根据courseId查到lessonName 并查重,courseid {}, lessonName {}",courseId, lessonName);
+        List lesson = lessonService.selectLessonNameByCourseId(courseId);
+        Boolean isLesson = lesson.contains(lessonName);
+        if (isLesson){
+            return new Response(-1,"已经有对应名称, 请更换名称");
+        }
+        return new Response(200,"success");
+    }
 }

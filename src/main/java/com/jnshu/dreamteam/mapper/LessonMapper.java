@@ -126,4 +126,6 @@ public interface LessonMapper extends BaseMapper<Lesson> {
      */
     Boolean updateStatus(Lesson lesson);
 
+    List selectLessonNameByCourseId(@Param("courseId")Long courseId);
+
 }

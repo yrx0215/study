@@ -107,4 +107,6 @@ public interface CourseMapper extends BaseMapper<Course> {
      */
     List selectCourseIdBySubjectIdAndCourseLevel(@Param("subjectId")Long subjectId,
                                             @Param("courseLevel")Integer courseLevel);
+
+    List<String> selectCourseNameBySubjectId(@Param("subjectId")Long subjectId);
 }

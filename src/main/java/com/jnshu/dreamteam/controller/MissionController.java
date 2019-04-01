@@ -232,4 +232,23 @@ public class MissionController {
         return new Response<>(200,"上传音视频成功","地址为："+url);
     }
 
+
+    /**
+     * 判断输入的字段是否有重复
+     * @param missionName 输入的字段
+     * @param lessonId 根据课时id查找对应字段
+     * @return
+     */
+    @RequestMapping(value = "/a/u/mission/name",method = RequestMethod.POST)
+    public Response decisionMissionName(String missionName,Long lessonId){
+        //判断mission名称是否重复
+        log.info("判断mission名称是否重复 ,missionName为 {}, lessonId : {}",missionName,lessonId);
+        List mission = missionService.selectMissionNameByLessonId(lessonId);
+        Boolean isMission = mission.contains(missionName);
+        if (isMission){
+            return new Response(-1,"已经有对应名称, 请更换名称");
+        }
+        return new Response(200,"success");
+
+    }
 }

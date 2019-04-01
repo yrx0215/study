@@ -92,4 +92,6 @@ public interface LessonService {
      */
     Boolean updateStatus(Lesson lesson);
 
+    List selectLessonNameByCourseId(Long courseId);
+
 }
