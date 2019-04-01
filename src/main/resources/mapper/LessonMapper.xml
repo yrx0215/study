@@ -128,4 +128,10 @@
       where id = #{id}
     </update>
 
+    <select id="selectLessonNameByCourseId" resultType="java.lang.String">
+        select lesson_name
+        from lesson
+        where course_id = #{courseId}
+    </select>
+
 </mapper>

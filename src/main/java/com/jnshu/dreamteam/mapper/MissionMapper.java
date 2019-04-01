@@ -6,6 +6,8 @@ import com.jnshu.dreamteam.pojo.Mission;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * @author yrx
@@ -74,5 +76,8 @@ public interface MissionMapper extends BaseMapper<Mission> {
                                @Param("missionName")String missionName);
 
     Boolean updateMissionNameById(Mission mission);
+
+
+    List<String> selectMissionNameByCourseId(@Param("lessonId")Long lessonId);
 
 }

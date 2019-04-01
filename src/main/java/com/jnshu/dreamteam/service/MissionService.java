@@ -3,6 +3,9 @@ package com.jnshu.dreamteam.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.Mission;
 
+import java.util.List;
+
+
 /**
  * @author yrx
  */
@@ -69,4 +72,6 @@ public interface MissionService {
                                String missionName);
 
     Boolean updateMissionNameById(Mission mission);
+
+    List selectMissionNameByLessonId(Long lessonId);
 }

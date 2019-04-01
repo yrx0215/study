@@ -90,4 +90,6 @@ public interface CourseService {
      */
     List<String> selectCourseIdBySubjectIdAndCourseLevel(Long subjectId,
                                                          Integer courseLevel);
+
+    List<String> selectCourseNameBySubjectId(Long subjectId);
 }
