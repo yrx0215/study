@@ -87,6 +87,8 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getDigest, params.get("digest"));
         if (params.get("content") != null)
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
+        if (params.containsKey("sort"))
+            lambdaUpdateWrapper.set(News::getSort, params.get("sort"));
 
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
         return updateWrapper;
