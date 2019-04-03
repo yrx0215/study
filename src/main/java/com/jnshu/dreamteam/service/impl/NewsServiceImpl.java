@@ -83,4 +83,13 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
         return updateWrapper;
     }
+
+    @Override
+    protected QueryWrapper<News> buildQueryWrapper(QueryWrapper<News> queryWrapper, Map<String, Object> params) {
+        queryWrapper = super.buildQueryWrapper(queryWrapper, params);
+        if (params.containsKey("like"))
+            queryWrapper.lambda().like(News::getTitle, params.get("like").toString());
+        return queryWrapper;
+    }
+
 }
