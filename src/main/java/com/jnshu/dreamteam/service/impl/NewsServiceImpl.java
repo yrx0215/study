@@ -89,6 +89,8 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
         if (params.containsKey("sort"))
             lambdaUpdateWrapper.set(News::getSort, params.get("sort"));
+        if (params.containsKey("state"))
+            lambdaUpdateWrapper.set(News::getState, params.get("state"));
 
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
         return updateWrapper;
@@ -101,6 +103,8 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             queryWrapper.lambda().like(News::getTitle, params.get("like").toString());
         if (params.containsKey("type"))
             queryWrapper.lambda().eq(News::getType, params.get("type").toString());
+        if (params.containsKey("state"))
+            queryWrapper.lambda().eq(News::getState, params.get("state"));
         queryWrapper.lambda().orderByAsc(News::getSort);
         return queryWrapper;
     }

@@ -47,4 +47,8 @@ public class News {
     @TableField("sort")
     private Long sort;
 
+    // 上下架
+    @TableField("state")
+    private Integer state;
+
 }
