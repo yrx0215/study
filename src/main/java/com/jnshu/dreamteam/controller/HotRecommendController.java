@@ -23,7 +23,7 @@ public class HotRecommendController {
     private HotRecommendService hotRecommendService;
 
     @RequestMapping(value = "/a/u/hotRc", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", hotRecommendService.selectPages(params));
         } catch (Throwable t) {
@@ -82,7 +82,7 @@ public class HotRecommendController {
 
 
     @RequestMapping(value = "/a/hotRc", method = RequestMethod.GET)
-    public Response frontSelectPages(Map<String, Object> params) {
+    public Response frontSelectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", hotRecommendService.selectPages(params));
         } catch (Throwable t) {

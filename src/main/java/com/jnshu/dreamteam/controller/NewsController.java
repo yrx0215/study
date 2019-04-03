@@ -24,7 +24,7 @@ public class NewsController {
     private NewsService newsService;
 
     @RequestMapping(value = "/a/u/news", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", newsService.selectPages(params));
         } catch (Throwable t) {
