@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -60,6 +61,13 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
         Map params = new BeanMap(news);
         UpdateWrapper<News> updateWrapper = buildUpdateWrapper(null, params);
         return getResult(newsMapper.update(news, updateWrapper));
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        LOGGER.trace("delete news, id = {}", id);
+        LambdaQueryWrapper<News> deleteWrapper = new QueryWrapper<News>().lambda().eq(News::getId, id);
+        return getResult(newsMapper.delete(deleteWrapper));
     }
 
     @Override

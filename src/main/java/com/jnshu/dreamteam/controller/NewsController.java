@@ -67,6 +67,17 @@ public class NewsController {
         }
     }
 
+    @RequestMapping(value = "/a/u/news/{id}", method = RequestMethod.DELETE)
+    public Response update(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", newsService.delete(id));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
 //    ---------------------------------------- 以下为前台
 
 
