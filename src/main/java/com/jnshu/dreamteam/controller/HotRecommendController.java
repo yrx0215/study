@@ -66,7 +66,7 @@ public class HotRecommendController {
         }
     }
 
-    @RequestMapping(value = "/a/u/hostRc/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/a/u/hotRc/{id}", method = RequestMethod.DELETE)
     public Response delete(@PathVariable Long id) {
         try {
             return new Response(200, "OK", hotRecommendService.delete(id));
