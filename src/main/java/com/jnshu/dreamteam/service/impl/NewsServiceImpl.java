@@ -1,5 +1,6 @@
 package com.jnshu.dreamteam.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -63,6 +64,13 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     }
 
     @Override
+    public Boolean delete(Long id) {
+        LOGGER.trace("delete news, id = {}", id);
+        LambdaQueryWrapper<News> deleteWrapper = new QueryWrapper<News>().lambda().eq(News::getId, id);
+        return getResult(newsMapper.delete(deleteWrapper));
+    }
+
+    @Override
     protected UpdateWrapper<News> buildUpdateWrapper(UpdateWrapper<News> updateWrapper, Map<String, Object> params) {
         updateWrapper = super.buildUpdateWrapper(updateWrapper, null);
         LambdaUpdateWrapper<News> lambdaUpdateWrapper = updateWrapper.lambda();
@@ -79,8 +87,26 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getDigest, params.get("digest"));
         if (params.get("content") != null)
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
+        if (params.containsKey("sort"))
+            lambdaUpdateWrapper.set(News::getSort, params.get("sort"));
+        if (params.containsKey("state"))
+            lambdaUpdateWrapper.set(News::getState, params.get("state"));
 
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
         return updateWrapper;
     }
+
+    @Override
+    protected QueryWrapper<News> buildQueryWrapper(QueryWrapper<News> queryWrapper, Map<String, Object> params) {
+        queryWrapper = super.buildQueryWrapper(queryWrapper, params);
+        if (params.containsKey("like"))
+            queryWrapper.lambda().like(News::getTitle, params.get("like").toString());
+        if (params.containsKey("type"))
+            queryWrapper.lambda().eq(News::getType, params.get("type").toString());
+        if (params.containsKey("state"))
+            queryWrapper.lambda().eq(News::getState, params.get("state"));
+        queryWrapper.lambda().orderByAsc(News::getSort);
+        return queryWrapper;
+    }
+
 }

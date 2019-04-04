@@ -23,7 +23,7 @@ public class HelpController {
     private HelpService helpService;
 
     @RequestMapping(value = "/a/u/help", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", helpService.selectPages(params));
         } catch (Throwable t) {
@@ -82,7 +82,7 @@ public class HelpController {
 
 
     @RequestMapping(value = "/a/help", method = RequestMethod.GET)
-    public Response frontSelectPages(Map<String, Object> params) {
+    public Response frontSelectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", helpService.selectPages(params));
         } catch (Throwable t) {

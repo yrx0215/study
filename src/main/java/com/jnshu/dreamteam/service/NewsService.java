@@ -18,4 +18,6 @@ public interface NewsService {
 
     Boolean update(News news);
 
+    Boolean delete(Long id);
+
 }

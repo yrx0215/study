@@ -28,7 +28,7 @@ public class MessageController {
      * 参数有 page size title标题 sendType发送人群 messageType消息类型
      */
     @RequestMapping(value = "/a/u/message", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", messageService.selectPages(params));
         } catch (Throwable t) {
@@ -79,7 +79,7 @@ public class MessageController {
 
 
     @RequestMapping(value = "/a/message", method = RequestMethod.GET)
-    public Response frontSelectPages(Map<String, Object> params) {
+    public Response frontSelectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", messageService.selectPages(params));
         } catch (Throwable t) {

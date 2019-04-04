@@ -24,7 +24,7 @@ public class NewsController {
     private NewsService newsService;
 
     @RequestMapping(value = "/a/u/news", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", newsService.selectPages(params));
         } catch (Throwable t) {
@@ -60,6 +60,17 @@ public class NewsController {
     public Response update(@RequestBody News news) {
         try {
             return new Response(200, "OK", newsService.update(news));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            LOGGER.error(t.getMessage());
+            return Response.error();
+        }
+    }
+
+    @RequestMapping(value = "/a/u/news/{id}", method = RequestMethod.DELETE)
+    public Response update(@PathVariable Long id) {
+        try {
+            return new Response(200, "OK", newsService.delete(id));
         } catch (Throwable t) {
             t.printStackTrace();
             LOGGER.error(t.getMessage());

@@ -24,7 +24,7 @@ public class OpinionController {
     private OpinionService opinionService;
 
     @RequestMapping(value = "/a/u/opinion", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", opinionService.selectPages(params));
         } catch (Throwable t) {
