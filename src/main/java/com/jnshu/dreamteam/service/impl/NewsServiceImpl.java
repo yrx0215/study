@@ -87,9 +87,9 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getDigest, params.get("digest"));
         if (params.get("content") != null)
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
-        if (params.containsKey("sort"))
+        if (params.get("sort") != null)
             lambdaUpdateWrapper.set(News::getSort, params.get("sort"));
-        if (params.containsKey("state"))
+        if (params.get("state") != null)
             lambdaUpdateWrapper.set(News::getState, params.get("state"));
 
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
@@ -99,11 +99,11 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     @Override
     protected QueryWrapper<News> buildQueryWrapper(QueryWrapper<News> queryWrapper, Map<String, Object> params) {
         queryWrapper = super.buildQueryWrapper(queryWrapper, params);
-        if (params.containsKey("like"))
+        if (params.get("like") != null)
             queryWrapper.lambda().like(News::getTitle, params.get("like").toString());
-        if (params.containsKey("type"))
+        if (params.get("type") != null)
             queryWrapper.lambda().eq(News::getType, params.get("type").toString());
-        if (params.containsKey("state"))
+        if (params.get("state") != null)
             queryWrapper.lambda().eq(News::getState, params.get("state"));
         queryWrapper.lambda().orderByAsc(News::getSort);
         return queryWrapper;
