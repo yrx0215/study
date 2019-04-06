@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,6 +69,24 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
         LOGGER.trace("delete news, id = {}", id);
         LambdaQueryWrapper<News> deleteWrapper = new QueryWrapper<News>().lambda().eq(News::getId, id);
         return getResult(newsMapper.delete(deleteWrapper));
+    }
+
+    @Override
+    public Boolean updateList(Map<String, List<News>> params) {
+        List<News> newsList = params.get("sorts");
+        if (newsList == null || newsList.size() == 0) {
+            return false;
+        }
+        LOGGER.info("update news list, size = {}", newsList.size());
+
+        for (News news : newsList) {
+            LambdaUpdateWrapper<News> lambdaUpdateWrapper = new UpdateWrapper<News>().lambda();
+            lambdaUpdateWrapper
+                    .set(News::getSort, news.getSort())
+                    .eq(News::getId, news.getId());
+            newsMapper.update(news, lambdaUpdateWrapper);
+        }
+        return true;
     }
 
     @Override
