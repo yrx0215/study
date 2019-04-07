@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +72,24 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     }
 
     @Override
+    public Boolean updateList(Map<String, List<News>> params) {
+        List<News> newsList = params.get("sorts");
+        if (newsList == null || newsList.size() == 0) {
+            return false;
+        }
+        LOGGER.info("update news list, size = {}", newsList.size());
+
+        for (News news : newsList) {
+            LambdaUpdateWrapper<News> lambdaUpdateWrapper = new UpdateWrapper<News>().lambda();
+            lambdaUpdateWrapper
+                    .set(News::getSort, news.getSort())
+                    .eq(News::getId, news.getId());
+            newsMapper.update(news, lambdaUpdateWrapper);
+        }
+        return true;
+    }
+
+    @Override
     protected UpdateWrapper<News> buildUpdateWrapper(UpdateWrapper<News> updateWrapper, Map<String, Object> params) {
         updateWrapper = super.buildUpdateWrapper(updateWrapper, null);
         LambdaUpdateWrapper<News> lambdaUpdateWrapper = updateWrapper.lambda();
@@ -87,9 +106,9 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
             lambdaUpdateWrapper.set(News::getDigest, params.get("digest"));
         if (params.get("content") != null)
             lambdaUpdateWrapper.set(News::getContent, params.get("content"));
-        if (params.containsKey("sort"))
+        if (params.get("sort") != null)
             lambdaUpdateWrapper.set(News::getSort, params.get("sort"));
-        if (params.containsKey("state"))
+        if (params.get("state") != null)
             lambdaUpdateWrapper.set(News::getState, params.get("state"));
 
         lambdaUpdateWrapper.eq(News::getId, params.get("id"));
@@ -99,11 +118,11 @@ public class NewsServiceImpl extends BaseServiceWrapper<News> implements NewsSer
     @Override
     protected QueryWrapper<News> buildQueryWrapper(QueryWrapper<News> queryWrapper, Map<String, Object> params) {
         queryWrapper = super.buildQueryWrapper(queryWrapper, params);
-        if (params.containsKey("like"))
+        if (params.get("like") != null)
             queryWrapper.lambda().like(News::getTitle, params.get("like").toString());
-        if (params.containsKey("type"))
+        if (params.get("type") != null)
             queryWrapper.lambda().eq(News::getType, params.get("type").toString());
-        if (params.containsKey("state"))
+        if (params.get("state") != null)
             queryWrapper.lambda().eq(News::getState, params.get("state"));
         queryWrapper.lambda().orderByAsc(News::getSort);
         return queryWrapper;

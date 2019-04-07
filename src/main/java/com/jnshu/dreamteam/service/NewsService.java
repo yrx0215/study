@@ -3,6 +3,7 @@ package com.jnshu.dreamteam.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.pojo.News;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +20,7 @@ public interface NewsService {
     Boolean update(News news);
 
     Boolean delete(Long id);
+
+    Boolean updateList(Map<String, List<News>> params);
 
 }
