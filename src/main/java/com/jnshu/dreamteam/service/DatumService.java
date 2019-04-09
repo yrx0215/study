@@ -19,4 +19,7 @@ public interface DatumService {
     Boolean delectDatumById(Long id);
 
     Long addDatum(Datum datum);
+
+    IPage<Datum> selectDatumByCourseId(IPage iPage,
+                                       Long courseId);
 }

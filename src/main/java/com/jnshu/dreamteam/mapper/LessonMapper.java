@@ -128,4 +128,16 @@ public interface LessonMapper extends BaseMapper<Lesson> {
 
     List selectLessonNameByCourseId(@Param("courseId")Long courseId);
 
+    Boolean inserStudentLesson(@Param("studentId")Long studentId,
+                       @Param("classId")Long classId);
+
+    Boolean updateStudentLesson(@Param("studentId")Long studentId,
+                        @Param("classId")Long classId,
+                        @Param("buy")Integer buy,
+                        @Param("enshrine")Integer enshrine,
+                        @Param("datum")Integer datum,
+                        @Param("lessonStatus")Integer lessonStatus);
+
+    List<Object> selectStudentLesson(@Param("studentId") Long studentId,
+                        @Param("classId")Long classId);
 }

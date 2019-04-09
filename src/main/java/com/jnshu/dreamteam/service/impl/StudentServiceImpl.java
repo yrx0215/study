@@ -190,4 +190,14 @@ public class StudentServiceImpl implements StudentService {
     public Student getStduent(Long id) {
         return studentMapper.selectById(id);
     }
+
+    @Override
+    public Boolean addStudentAndCourse(Long studentId, Long courseId) {
+        return studentMapper.addStudentCourseId(studentId,courseId);
+    }
+
+    @Override
+    public List<Long> selectCourseByCollection(Long studentId) {
+        return studentMapper.selectCourseByCollection(studentId);
+    }
 }

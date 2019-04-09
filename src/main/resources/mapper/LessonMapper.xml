@@ -134,4 +134,36 @@
         where course_id = #{courseId}
     </select>
 
+    <!--前台, 课时状态查询-->
+    <insert id="inserStudentLesson">
+      INSERT INTO student_lesson_datum (student_id, class_id)
+      VALUES (#{studentId},#{classId})
+    </insert>
+    
+    <select id="selectStudentLesson" resultType="object">
+        select *
+        from student_lesson_datum
+        where student_id = #{studentId} and class_id = #{classId}
+    </select>
+    <!--前台, 修改课时状态-->
+    <update id="updateStudentLesson">
+        update student_lesson_datum
+        <set>
+            <if test="buy != null">
+            buy = #{buy},
+            </if>
+            <if test="enshrine != null">
+                enshrine = #{enshrine},
+
+            </if>
+            <if test="datum != null">
+              datum = #{datum},
+            </if>
+            <if test="lessonStatus != null">
+                lesson_status = #{lessonStatus}
+            </if>
+        </set>
+        where student_id = #{studentId} and class_id = #{classId}
+    </update>
+
 </mapper>

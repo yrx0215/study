@@ -129,4 +129,23 @@ public class DatumController {
         return new Response<>(200,"上传资料成功","资料地址为：" + url);
     }
 
+    /**
+     * 前台, 根据课程id查到对应资料信息
+     * @param page
+     * @param size
+     * @param courseId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/datum/{id}",method = RequestMethod.GET)
+    public Response selectDatumByCourseId(@RequestParam(value = "page",required = false)Integer page,
+                                          @RequestParam(value = "size", required = false)Integer size,
+                                          @PathVariable("id")Long courseId){
+        page = page == null || page <= 0 ? 1 : page;
+        size = size == null || size <= 0 ? 10 : size;
+        log.info("根据课程id查询资料数据 课程id是 : {}",courseId);
+        IPage iPage = new MyPage(page,size);
+        IPage mypage = datumService.selectDatumByCourseId(iPage, courseId);
+        log.info("查询到的资料总数为 :",mypage.getTotal());
+        return new Response(200,"success",mypage.getTotal());
+    }
 }

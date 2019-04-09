@@ -41,4 +41,9 @@ public class DatumServiceImpl implements DatumService {
     public Long addDatum(Datum datum) {
         return datumMapper.addDatum(datum);
     }
+
+    @Override
+    public IPage<Datum> selectDatumByCourseId(IPage iPage, Long courseId) {
+        return datumMapper.selectDatumByCourseId(iPage, courseId);
+    }
 }

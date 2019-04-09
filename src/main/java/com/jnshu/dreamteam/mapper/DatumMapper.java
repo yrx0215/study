@@ -23,4 +23,11 @@ public interface DatumMapper {
 
     Long addDatum(Datum datum);
 
+    /**
+     * 前台接口 ,根据课程id查找对应资料数
+     * @param courseId 课程id
+     * @return 返回值为
+     */
+    IPage<Datum> selectDatumByCourseId(IPage iPage, @Param("courseId") Long courseId);
+
 }

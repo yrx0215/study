@@ -51,4 +51,20 @@ public interface StudentMapper extends BaseMapper<Student> {
      */
     Boolean updateStudentCheck(StudentCheck studentCheck);
 
+    /**
+     * 前台, 用户id和课程id ,新增收藏数据
+     * @param studentId
+     * @param courseId
+     * @return
+     */
+    Boolean addStudentCourseId(@Param("studentId") Long studentId,
+                               @Param("courseId")Long courseId);
+
+    /**
+     * 前台, 通过学生的id查询到对应收藏的课程id
+     * @param studentId
+     * @return
+     */
+    List<Long> selectCourseByCollection(@Param("studentId")Long studentId);
+
 }

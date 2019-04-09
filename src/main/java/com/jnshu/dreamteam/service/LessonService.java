@@ -94,4 +94,16 @@ public interface LessonService {
 
     List selectLessonNameByCourseId(Long courseId);
 
+    Boolean inserStudentLesson(Long studentId,
+                               Long classId);
+
+    List<Object> selectStudentLesson(Long studentId,
+                                     Long classId);
+    Boolean updateStudentLesson(Long studentId,
+                                Long classId,
+                                Integer buy,
+                                Integer enshrine,
+                                Integer datum,
+                               Integer lessonStatus);
+
 }
