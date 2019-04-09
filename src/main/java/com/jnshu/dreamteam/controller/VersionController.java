@@ -24,7 +24,7 @@ public class VersionController {
     private VersionService versionService;
 
     @RequestMapping(value = "/a/u/version", method = RequestMethod.GET)
-    public Response selectPages(Map<String, Object> params) {
+    public Response selectPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", versionService.selectPages(params));
         } catch (Throwable t) {
