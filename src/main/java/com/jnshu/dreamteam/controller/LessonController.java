@@ -255,4 +255,31 @@ public class LessonController {
         }
         return new Response(200,"success");
     }
+
+
+    @RequestMapping(value = "/a/u/user/studentLesson",method = RequestMethod.POST)
+    public Response updateStudentLesson(Long studentId, Long classId,
+                                        @RequestParam(value = "buy",required = false)Integer buy,
+                                        @RequestParam(value = "enshrine", required = false)Integer enshrine,
+                                        @RequestParam(value = "datum",required = false)Integer datum,
+                                        @RequestParam(value = "lessonStatus", required = false)Integer lessonStatus){
+
+        log.info("前台课时信息,studentId {}, classId {}, buy {}, enshrine {} , datum {}, lessonStatus {}",studentId,classId,buy,enshrine,datum,lessonStatus);
+        List list = lessonService.selectStudentLesson(studentId,classId);
+        if (EmptyUtil.isEmpty(list)){
+            Boolean success = lessonService.inserStudentLesson(studentId,classId);
+            if (!success){
+                log.error("插入数据失败");
+                return Response.error();
+            }
+        }
+        if (!EmptyUtil.isEmpty(buy) || !EmptyUtil.isEmpty(enshrine) || !EmptyUtil.isEmpty(datum) || !EmptyUtil.isEmpty(lessonStatus)){
+            Boolean success = lessonService.updateStudentLesson(studentId, classId, buy, enshrine, datum, lessonStatus);
+            if (!success) {
+                log.error("更新数据失败");
+                return Response.error();
+            }
+        }
+        return new Response(200, "success");
+    }
 }

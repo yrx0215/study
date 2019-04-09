@@ -170,4 +170,8 @@ public interface StudentService {
     Boolean updateStudentCheck(StudentCheck studentCheck);
 
     Student getStduent(Long Id);
+
+    Boolean addStudentAndCourse(Long studentId,Long courseId);
+
+    List<Long> selectCourseByCollection(Long studentId);
 }

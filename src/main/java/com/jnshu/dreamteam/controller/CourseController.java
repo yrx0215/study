@@ -236,4 +236,70 @@ public class CourseController {
         }
         return new Response(200,"success");
     }
+
+
+//    /**
+//     * 前台, 新增用户和课程之间的关系, (在学习课程 和开始学习是使用, 增加到关系表中)
+//     * @param studentId
+//     * @param courseId
+//     * @return
+//     */
+//    @RequestMapping(value = "/a/u/user/studentCourse",method = RequestMethod.POST)
+//    public Response addCourseUser(Long studentId, Long courseId){
+//
+//        log.info("开始课程学习, 增加关系表中数据 学生id为 {} , 课程id为{}",studentId, courseId);
+//        Boolean success = courseService.inserStudentAndCourse(studentId,courseId);
+//        if (!success){
+//            return Response.error();
+//        }
+//        return Response.ok();
+//    }
+
+
+    /**
+     * 前台 , 学生课程表维护
+     * @param status
+     * @param collection
+     * @param studentId
+     * @param courseId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/studentCourse",method = RequestMethod.POST)
+    public Response updateStudentAndCourse(@RequestParam(value = "status", required = false) Integer status,
+                                           @RequestParam(value = "collection",required = false) Integer collection,
+                                           Long studentId,Long courseId){
+        log.info("开始学习, 收藏或者更改状态,status {}, collection {} studentId {} courseId {}",status, collection, studentId, courseId);
+        List<Long> list = courseService.selectStudentAndCourse(studentId);
+        if (list.contains(courseId)){
+            Boolean success = courseService.inserStudentAndCourse(studentId,courseId);
+            if (!success){
+                log.error("添加数据失败");
+                return Response.error();
+            }
+        }
+        //更新学习人数
+        Integer studyNumber = courseService.selectCourseById(courseId).getStudyNumber();
+        Integer studentNumber = courseService.selectStudentNumber(courseId);
+        log.info("实体表中 学习人数 {}, 关系表中人数 {}", studyNumber, studentNumber);
+        if (studyNumber > studentNumber){
+            log.error("关系表中数据小于实体表中");
+             return Response.error();
+        }
+        Course course = new Course();
+        course.setStudyNumber(studentNumber);
+        course.setId(courseId);
+        course.setUpdateAt(System.currentTimeMillis());
+        courseService.updateCourse(course);
+        //判断是否为空, 进行更新数据
+        if (!EmptyUtil.isEmpty(status) || !EmptyUtil.isEmpty(collection)){
+            Boolean success = courseService.updateStudentAndCourse(studentId,courseId,status,collection);
+            if (!success){
+                log.error("更新status 或 collection失败 ");
+                return Response.error();
+            }
+        }
+        return new Response(200, "success");
+
+    }
+
 }
