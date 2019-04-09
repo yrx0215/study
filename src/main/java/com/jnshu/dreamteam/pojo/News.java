@@ -43,4 +43,12 @@ public class News {
     @TableField("content")
     private String content;
 
+    // 排序
+    @TableField("sort")
+    private Long sort;
+
+    // 上下架
+    @TableField("state")
+    private Integer state;
+
 }

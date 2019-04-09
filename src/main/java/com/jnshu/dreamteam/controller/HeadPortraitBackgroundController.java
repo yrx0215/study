@@ -24,7 +24,7 @@ public class HeadPortraitBackgroundController {
     private HeadPortraitBackgroundService headService;
 
     @RequestMapping(value = "/a/u/headBg", method = RequestMethod.GET)
-    public Response selectHeadPages(Map<String, Object> params) {
+    public Response selectHeadPages(@RequestParam Map<String, Object> params) {
         try {
             return new Response(200, "OK", headService.selectPages(params));
         } catch (Throwable t) {
