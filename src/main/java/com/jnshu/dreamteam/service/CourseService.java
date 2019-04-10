@@ -98,7 +98,7 @@ public interface CourseService {
 
 
 
-    List<Long> selectStudentAndCourse(Long studentId);
+    List<Object> selectStudentAndCourse(Long studentId);
 
     Boolean updateStudentAndCourse(Long studentId,
                                    Long courseId,

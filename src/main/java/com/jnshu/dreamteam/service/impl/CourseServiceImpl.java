@@ -84,7 +84,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Long> selectStudentAndCourse(Long studentId) {
+    public List<Object> selectStudentAndCourse(Long studentId) {
         return courseMapper.selectStudentAndCourse(studentId);
     }
 

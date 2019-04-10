@@ -269,7 +269,7 @@ public class CourseController {
                                            @RequestParam(value = "collection",required = false) Integer collection,
                                            Long studentId,Long courseId){
         log.info("开始学习, 收藏或者更改状态,status {}, collection {} studentId {} courseId {}",status, collection, studentId, courseId);
-        List<Long> list = courseService.selectStudentAndCourse(studentId);
+        List<Object> list = courseService.selectStudentAndCourse(studentId);
         if (list.contains(courseId)){
             Boolean success = courseService.inserStudentAndCourse(studentId,courseId);
             if (!success){
@@ -300,6 +300,23 @@ public class CourseController {
         }
         return new Response(200, "success");
 
+    }
+
+    /**
+     * 前台, 根据学生id 查询对应课程状态;
+     * @param studentId
+     * @param courseId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/studentCourse",method = RequestMethod.GET)
+    public Response selcetStudentAndCourseStatus(Long studentId,
+                                                 @RequestParam(value = "courseId", required = false) Long courseId){
+        log.info("根据用户和课程id 查询对应的状态studentId{} , courseID {}",studentId, courseId);
+        List list = courseService.selectStudentAndCourse(studentId);
+        if (EmptyUtil.isEmpty(list)){
+            return new Response(-1, "没有学习课程");
+        }
+        return new Response(200, "success",list);
     }
 
 }

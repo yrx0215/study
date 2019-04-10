@@ -146,6 +146,6 @@ public class DatumController {
         IPage iPage = new MyPage(page,size);
         IPage mypage = datumService.selectDatumByCourseId(iPage, courseId);
         log.info("查询到的资料总数为 :",mypage.getTotal());
-        return new Response(200,"success",mypage.getTotal());
+        return new Response(200,"success",mypage);
     }
 }
