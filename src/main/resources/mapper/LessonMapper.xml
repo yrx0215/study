@@ -18,6 +18,15 @@
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
+    
+    <resultMap id="studentLessonDatum" type="com.jnshu.dreamteam.pojo.StudentLessonDatum">
+        <result property="studentId" column="student_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="buy" column="buy"/>
+        <result property="enshrine" column="enshrine"/>
+        <result property="datum" column="datum"/>
+        <result property="lessonStatus" column="lesson_status"/>
+    </resultMap>
 
     <!--public void selectAllLesson(IPage iPage);-->
     <select id="selectAllLesson" resultMap="Lesson">
@@ -140,7 +149,7 @@
       VALUES (#{studentId},#{classId})
     </insert>
     
-    <select id="selectStudentLesson" resultType="object">
+    <select id="selectStudentLesson" resultMap="studentLessonDatum">
         select *
         from student_lesson_datum
         where student_id = #{studentId} and class_id = #{classId}

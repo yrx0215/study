@@ -18,6 +18,13 @@
         <result column="grade" property="grade"/>
     </resultMap>
     
+    <resultMap id="studentCourse" type="com.jnshu.dreamteam.pojo.StudentCourse">
+        <result column="student_id" property="studentId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="status" property="status"/>
+        <result column="collection" property="collection"/>
+    </resultMap>
+    
     <!--public List<Course> selectAllCourse();-->
     <select id="selectAllCourse" resultType="com.jnshu.dreamteam.pojo.Course">
         select *
@@ -139,7 +146,7 @@
     </insert>
 
     <!--前台, 收藏课程, 查询关系表中是否有, 在修改数据-->
-    <select id="selectStudentAndCourse" resultType="long">
+    <select id="selectStudentAndCourse" resultMap="studentCourse">
       select *
       from student_course
       where student_id = #{studentId}
