@@ -92,4 +92,18 @@ public interface CourseService {
                                                          Integer courseLevel);
 
     List<String> selectCourseNameBySubjectId(Long subjectId);
+
+    Boolean inserStudentAndCourse(Long studentId,
+                                  Long courseId);
+
+
+
+    List<Object> selectStudentAndCourse(Long studentId);
+
+    Boolean updateStudentAndCourse(Long studentId,
+                                   Long courseId,
+                                   Integer status,
+                                   Integer collection);
+
+    Integer selectStudentNumber(Long courseId);
 }

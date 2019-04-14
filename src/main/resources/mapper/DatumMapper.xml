@@ -81,5 +81,11 @@
         VALUES (#{subjectId},#{courseId},#{lessonId},#{subjectName},#{courseName},#{lessonName},
         #{price},#{datum},#{createAt})
     </insert>
+    
+    <select id="selectDatumByCourseId" resultMap="Datum">
+        select *
+        FROM datum
+        where course_id = #{courseId}
+    </select>
 
 </mapper>

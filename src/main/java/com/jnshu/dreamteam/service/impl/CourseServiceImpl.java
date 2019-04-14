@@ -77,4 +77,24 @@ public class CourseServiceImpl implements CourseService {
     public List<String> selectCourseNameBySubjectId(Long subjectid) {
         return courseMapper.selectCourseNameBySubjectId(subjectid);
     }
+
+    @Override
+    public Boolean inserStudentAndCourse(Long studentId, Long courseId) {
+        return courseMapper.inserStudentAndCourse(studentId,courseId);
+    }
+
+    @Override
+    public List<Object> selectStudentAndCourse(Long studentId) {
+        return courseMapper.selectStudentAndCourse(studentId);
+    }
+
+    @Override
+    public Boolean updateStudentAndCourse(Long studentId, Long courseId,Integer status, Integer collection) {
+        return courseMapper.updateStudentAndCourse(studentId, courseId, status, collection);
+    }
+
+    @Override
+    public Integer selectStudentNumber(Long courseId) {
+        return courseMapper.selectStudentNumber(courseId);
+    }
 }

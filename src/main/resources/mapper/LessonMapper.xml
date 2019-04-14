@@ -18,6 +18,15 @@
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
+    
+    <resultMap id="studentLessonDatum" type="com.jnshu.dreamteam.pojo.StudentLessonDatum">
+        <result property="studentId" column="student_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="buy" column="buy"/>
+        <result property="enshrine" column="enshrine"/>
+        <result property="datum" column="datum"/>
+        <result property="lessonStatus" column="lesson_status"/>
+    </resultMap>
 
     <!--public void selectAllLesson(IPage iPage);-->
     <select id="selectAllLesson" resultMap="Lesson">
@@ -133,5 +142,37 @@
         from lesson
         where course_id = #{courseId}
     </select>
+
+    <!--前台, 课时状态查询-->
+    <insert id="inserStudentLesson">
+      INSERT INTO student_lesson_datum (student_id, class_id)
+      VALUES (#{studentId},#{classId})
+    </insert>
+    
+    <select id="selectStudentLesson" resultMap="studentLessonDatum">
+        select *
+        from student_lesson_datum
+        where student_id = #{studentId} and class_id = #{classId}
+    </select>
+    <!--前台, 修改课时状态-->
+    <update id="updateStudentLesson">
+        update student_lesson_datum
+        <set>
+            <if test="buy != null">
+            buy = #{buy},
+            </if>
+            <if test="enshrine != null">
+                enshrine = #{enshrine},
+
+            </if>
+            <if test="datum != null">
+              datum = #{datum},
+            </if>
+            <if test="lessonStatus != null">
+                lesson_status = #{lessonStatus}
+            </if>
+        </set>
+        where student_id = #{studentId} and class_id = #{classId}
+    </update>
 
 </mapper>

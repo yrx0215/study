@@ -2,12 +2,11 @@ package com.jnshu.dreamteam.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jnshu.dreamteam.config.annotation.LogInfo;
-import com.jnshu.dreamteam.pojo.Course;
-import com.jnshu.dreamteam.pojo.Lesson;
-import com.jnshu.dreamteam.pojo.Response;
-import com.jnshu.dreamteam.pojo.Subject;
+import com.jnshu.dreamteam.config.exception.ServiceDaoException;
+import com.jnshu.dreamteam.pojo.*;
 import com.jnshu.dreamteam.service.CourseService;
 import com.jnshu.dreamteam.service.LessonService;
+import com.jnshu.dreamteam.service.StudentService;
 import com.jnshu.dreamteam.service.SubjectService;
 import com.jnshu.dreamteam.utils.EmptyUtil;
 import com.jnshu.dreamteam.utils.MyPage;
@@ -35,6 +34,9 @@ public class LessonController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 查询所有课时
@@ -254,5 +256,131 @@ public class LessonController {
             return new Response(-1,"已经有对应名称, 请更换名称");
         }
         return new Response(200,"success");
+    }
+
+
+    /**
+     * 前台, 更新关系表状态
+     * @param studentId
+     * @param classId
+     * @param buy
+     * @param enshrine
+     * @param datum
+     * @param lessonStatus
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/studentLesson",method = RequestMethod.POST)
+    public Response updateStudentLesson(Long studentId, Long classId,
+                                        @RequestParam(value = "buy",required = false)Integer buy,
+                                        @RequestParam(value = "enshrine", required = false)Integer enshrine,
+                                        @RequestParam(value = "datum",required = false)Integer datum,
+                                        @RequestParam(value = "lessonStatus", required = false)Integer lessonStatus){
+
+        log.info("前台课时信息,studentId {}, classId {}, buy {}, enshrine {} , datum {}, lessonStatus {}",studentId,classId,buy,enshrine,datum,lessonStatus);
+        List list = lessonService.selectStudentLesson(studentId,classId);
+        if (EmptyUtil.isEmpty(list)){
+            Boolean success = lessonService.inserStudentLesson(studentId,classId);
+            if (!success){
+                log.error("插入数据失败");
+                return Response.error();
+            }
+        }
+        if (!EmptyUtil.isEmpty(buy) || !EmptyUtil.isEmpty(enshrine) || !EmptyUtil.isEmpty(datum) || !EmptyUtil.isEmpty(lessonStatus)){
+            Boolean success = lessonService.updateStudentLesson(studentId, classId, buy, enshrine, datum, lessonStatus);
+            if (!success) {
+                log.error("更新数据失败");
+                return Response.error();
+            }
+        }
+        return new Response(200, "success");
+    }
+
+
+    /**
+     * 前台, 解锁课时
+     * @param studentId
+     * @param lessonId
+     * @return
+     * @throws ServiceDaoException
+     */
+    @RequestMapping(value = "/a/u/user/unlockLesson",method = RequestMethod.POST)
+    public Response lockCourse(Long studentId, Long lessonId) throws ServiceDaoException {
+        log.info("解锁课时, studnetId {} lessonid {}",studentId, lessonId);
+        //查询学生的星星数
+         Student student = studentService.selectStudentById(studentId);
+         log.info("查询的学生信息为: {}", student);
+         if (EmptyUtil.isEmpty(student)){
+            return new Response(-1,"找不到对应用户信息");
+         }
+         Integer sStar = Math.toIntExact(student.getStar());
+
+        //查询解锁课程所用的星星
+        Lesson lesson = lessonService.getLessonById(lessonId);
+        if (EmptyUtil.isEmpty(lesson)){
+            return new Response(-1,"找不到对应的课程信息");
+        }
+        Integer needStar = lesson.getLessonStatus();
+
+        //比较
+        if (sStar < needStar){
+            return new Response(-1, "学生星星数不足");
+        }
+
+        sStar = sStar - needStar;
+        student.setStar(Long.valueOf(sStar));
+
+        //插入或更新用户课程表, 购买字段
+        studentService.updateStudentById(student);
+        Boolean success = lessonService.updateStudentLesson(studentId, lessonId, 1,null,null,null);
+        if (!success) {
+            //不成功, 数据库中没有这个字段
+            lessonService.inserStudentLesson(studentId, lessonId);
+            lessonService.updateStudentLesson(studentId, lessonId, 1,null,null,null);
+            return new Response(200,"success");
+        }
+        return new Response(200,"success");
+    }
+
+    /**
+     * 前台, 完成课时
+     * @param studentId
+     * @param lessonId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/lesson", method = RequestMethod.POST)
+    public Response finishLesson(Long studentId, Long lessonId) throws ServiceDaoException {
+        log.info("完成课时, studentid {}, lessonId {}", studentId, lessonId);
+        //查询课时奖励星星数
+        Lesson lesson = lessonService.getLessonById(lessonId);
+        Integer rewordStar = lesson.getRewardStar();
+
+        //查询关系表中的课程状态;
+//        List list = lessonService.selectStudentLesson(studentId, lessonId);
+//      会出现bug 如果关系表中已经有完成课程会在此获取数据
+//        log.info("关系表中的数据为 : {}",list);
+
+        //更新用户星星数
+        Student student = studentService.selectStudentById(studentId);
+        Integer sStar = Math.toIntExact(student.getStar());
+        Integer newStar = sStar + rewordStar ;
+        student.setStar(Long.valueOf(newStar));
+        studentService.updateStudentById(student);
+        //更新关系表中课程状态;
+        lessonService.updateStudentLesson(studentId,lessonId,null,null,null,2);
+        return new Response(200,"success");
+    }
+
+    /**
+     * 根据学生信息查询对应的课时信息
+     * @param studentId
+     * @param  lessonId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/lesson",method = RequestMethod.GET)
+    public Response selectStudentLesson(Long studentId, Long lessonId){
+        log.info("根据学生id 查询对应的课时信息 studentId{}, lessonId {}", studentId, lessonId);
+        List list = lessonService.selectStudentLesson(studentId, lessonId);
+        log.info("查询的对应信息是 {}", list);
+        return new Response(200,"success",list);
     }
 }

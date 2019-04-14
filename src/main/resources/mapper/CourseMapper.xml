@@ -18,6 +18,13 @@
         <result column="grade" property="grade"/>
     </resultMap>
     
+    <resultMap id="studentCourse" type="com.jnshu.dreamteam.pojo.StudentCourse">
+        <result column="student_id" property="studentId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="status" property="status"/>
+        <result column="collection" property="collection"/>
+    </resultMap>
+    
     <!--public List<Course> selectAllCourse();-->
     <select id="selectAllCourse" resultType="com.jnshu.dreamteam.pojo.Course">
         select *
@@ -53,6 +60,9 @@
           </if>
           <if test="courseIntroduction != null and courseIntroduction.trim() != ''">
             course_introduction = #{courseIntroduction},
+          </if>
+          <if test="studyNumber != null">
+              study_number = #{studyNumber},
           </if>
           update_at = #{updateAt}
       </set>
@@ -127,5 +137,38 @@
         select course_name
         from course
         WHERE subject_id = #{subjectId}
+    </select>
+
+    <!--前台,新增学生和课程关系表中数据-->
+    <insert id="inserStudentAndCourse">
+        INSERT into student_course(student_id, course_id)
+        VALUES (#{studentId},#{courseId})
+    </insert>
+
+    <!--前台, 收藏课程, 查询关系表中是否有, 在修改数据-->
+    <select id="selectStudentAndCourse" resultMap="studentCourse">
+      select *
+      from student_course
+      where student_id = #{studentId}
+    </select>
+
+    <update id="updateStudentAndCourse">
+      update student_course
+      <set>
+          <if test="status != null">
+            status = #{status},
+          </if>
+          <if test="collection != null">
+              collection = #{collection}
+          </if>
+      </set>
+        where student_id = #{studentId} and course_id = #{courseId}
+    </update>
+
+    <!--前台, 根据关系表, 查询学习人数, 更新-->
+    <select id="selectStudentNumber" resultType="integer">
+        select COUNT(student_id)
+        from student_course
+        WHERE course_id = #{courseId}
     </select>
 </mapper>

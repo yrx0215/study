@@ -312,4 +312,37 @@ public class StudentController {
         return new Response(200,"success",null);
     }
 
+
+//    /**
+//     * 前台 , 收藏接口,
+//     * @param studentId
+//     * @return
+//     */
+//    @RequestMapping(value = "/a/u/user/colletion",method = RequestMethod.GET)
+//    public Response studentCollectionCourse(Long studentId, Long courseId){
+//        log.info("用户收藏课程, 用户id {}, 课程id{}",studentId, courseId);
+//        studentService.addStudentAndCourse(studentId, courseId);
+//
+//        return new Response(200,"success");
+//    }
+
+    /**
+     * 前台, 根据学生id 查询收藏课程
+     * @param stdentId
+     * @return
+     */
+    @RequestMapping(value = "/a/u/user/{studentId}",method = RequestMethod.GET)
+    public Response selectCollectionByStudentId(@PathVariable("studentId")Long stdentId){
+
+        log.info("根据学生id, 查询收藏的课程 学生id为 {}",stdentId);
+        List<Long> collections = studentService.selectCourseByCollection(stdentId);
+        if (collections.size() == 0){
+            return new Response(-1,"没有找到收藏的课程");
+        }
+        return new Response(200,"success",collections);
+    }
+
+
+
+
 }

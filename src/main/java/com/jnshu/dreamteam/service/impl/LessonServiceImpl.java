@@ -68,4 +68,19 @@ public class LessonServiceImpl implements LessonService {
     public List selectLessonNameByCourseId(Long courseId) {
         return lessonMapper.selectLessonNameByCourseId(courseId);
     }
+
+    @Override
+    public Boolean inserStudentLesson(Long studentId, Long classId) {
+        return lessonMapper.inserStudentLesson(studentId, classId);
+    }
+
+    @Override
+    public List<Object> selectStudentLesson(Long studentId, Long classId) {
+        return lessonMapper.selectStudentLesson(studentId, classId);
+    }
+
+    @Override
+    public Boolean updateStudentLesson(Long studentId, Long classId, Integer buy, Integer enshrine, Integer datum, Integer lessonStatus) {
+        return lessonMapper.updateStudentLesson(studentId, classId, buy, enshrine, datum, lessonStatus);
+    }
 }

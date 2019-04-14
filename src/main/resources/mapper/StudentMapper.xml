@@ -24,6 +24,8 @@
         <result column="check_day" property="checkDay"/>
     </resultMap>
 
+
+
     <select id="selectByAccountOrPhone" resultMap="BaseResultMap">
         SELECT * FROM student WHERE student_account = #{account} OR phone = #{account}
     </select>
@@ -83,5 +85,17 @@
         VALUES (#{studentId},#{checkTime},#{checkDay})
     </insert>
 
+    <!--向关系表中添加学生id和课程id的关系, 以保存收藏信息-->
+    <insert id="addStudentCourseId" >
+        INSERT into student_course(student_id,course_id)
+        VALUES (#{studentId},#{courseId})
+    </insert>
+
+    <!--查看学生收藏的课程-->
+    <select id="selectCourseByCollection" resultType="java.lang.Long">
+        select *
+        FROM student_course
+        WHERE student_id = #{studentId}
+    </select>
 
 </mapper>
