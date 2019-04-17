@@ -157,6 +157,7 @@ public class StudentController {
         Map map = studentService.selectByAccountOrPhone(account,password);
         String token = JwtUtil.createToken(map);
         httpServletResponse.setHeader("HomeToken",token);
+
         return new Response(200,"登录成功");
     }
 
@@ -245,8 +246,8 @@ public class StudentController {
     }
 
 
-    @GetMapping("/a/u/student")
-    public Response<Student> selectStudentById(@RequestParam("studentId")Long studentId){
+    @GetMapping("/a/u/student/{studentId}")
+    public Response<Student> selectStudentById(@PathVariable("studentId") Long studentId){
         return new Response<>(200,"查询成功",studentService.selectStudentById(studentId));}
 
     @RequestMapping(value = "/a/u/student/check",method = RequestMethod.PUT)
