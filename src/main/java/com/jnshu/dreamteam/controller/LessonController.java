@@ -373,13 +373,13 @@ public class LessonController {
     /**
      * 根据学生信息查询对应的课时信息
      * @param studentId
-     * @param  lessonId
+     * @param  classId
      * @return
      */
     @RequestMapping(value = "/a/u/user/lesson",method = RequestMethod.GET)
-    public Response selectStudentLesson(Long studentId, Long lessonId){
-        log.info("根据学生id 查询对应的课时信息 studentId{}, lessonId {}", studentId, lessonId);
-        List list = lessonService.selectStudentLesson(studentId, lessonId);
+    public Response selectStudentLesson(Long studentId, Long classId){
+        log.info("根据学生id 查询对应的课时信息 studentId{}, lessonId {}", studentId, classId);
+        List list = lessonService.selectStudentLesson(studentId, classId);
         log.info("查询的对应信息是 {}", list);
         return new Response(200,"success",list);
     }
