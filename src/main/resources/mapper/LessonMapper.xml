@@ -175,4 +175,12 @@
         where student_id = #{studentId} and class_id = #{classId}
     </update>
 
+    <!--通过学生id 查看数据库关系表中是否有对应的数据-->
+    <select id="selectStudentExistence" resultMap="studentLessonDatum">
+      SELECT  *
+      from student_lesson_datum
+      WHERE student_id = #{studentId}
+    </select>
+
+
 </mapper>

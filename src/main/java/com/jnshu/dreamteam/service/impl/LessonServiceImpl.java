@@ -83,4 +83,9 @@ public class LessonServiceImpl implements LessonService {
     public Boolean updateStudentLesson(Long studentId, Long classId, Integer buy, Integer enshrine, Integer datum, Integer lessonStatus) {
         return lessonMapper.updateStudentLesson(studentId, classId, buy, enshrine, datum, lessonStatus);
     }
+
+    @Override
+    public List selectStudentExistence(Long studentId) {
+        return lessonMapper.selectStudentExistence(studentId);
+    }
 }

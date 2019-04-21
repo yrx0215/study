@@ -102,13 +102,25 @@ public class DatumController {
     @RequestMapping(value = "/a/u/datum",method = RequestMethod.POST)
     public Response addDatum(Long subjectId, Long courseId,Long lessonId, Datum datum){
         log.info("新增datum资料 数据为{},subjectId {},courseId {}, lessonId {}",datum,subjectId,courseId, lessonId);
-        String subjectName = subjectService.selectSubject(subjectId).getSubjectName();
-        String courseName = courseService.selectCourseById(courseId).getCourseName();
-        String lessonName = lessonService.getLessonById(lessonId).getLessonName();
+        //捕捉空指针, 异常
+        String subjectName = null;
+        String courseName = null;
+        String lessonName = null;
+        try {
+            subjectName = subjectService.selectSubject(subjectId).getSubjectName();
+            courseName = courseService.selectCourseById(courseId).getCourseName();
+            lessonName = lessonService.getLessonById(lessonId).getLessonName();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response(-1,"输入参数有误, 确认后重新输入");
+        }
 
+
+        // 判断空;
         if (EmptyUtil.isEmpty(subjectName)|| EmptyUtil.isEmpty(courseName)|| EmptyUtil.isEmpty(lessonName)){
             return new Response(-1,"输入参数有误");
         }
+
         datum.setSubjectName(subjectName);
         datum.setCourseName(courseName);
         datum.setLessonName(lessonName);

@@ -140,4 +140,6 @@ public interface LessonMapper extends BaseMapper<Lesson> {
 
     List<Object> selectStudentLesson(@Param("studentId") Long studentId,
                         @Param("classId")Long classId);
+
+    List selectStudentExistence(@Param("studentId")Long studentId);
 }

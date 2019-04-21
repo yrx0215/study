@@ -106,4 +106,6 @@ public interface LessonService {
                                 Integer datum,
                                Integer lessonStatus);
 
+    List selectStudentExistence(Long studentId);
+
 }

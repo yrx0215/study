@@ -379,8 +379,21 @@ public class LessonController {
     @RequestMapping(value = "/a/u/user/lesson",method = RequestMethod.GET)
     public Response selectStudentLesson(Long studentId, Long classId){
         log.info("根据学生id 查询对应的课时信息 studentId{}, lessonId {}", studentId, classId);
-        List list = lessonService.selectStudentLesson(studentId, classId);
-        log.info("查询的对应信息是 {}", list);
-        return new Response(200,"success",list);
+
+        //查看关系表中是否有学生id  通过学生id查找数据
+        List<StudentLessonDatum> studentList = lessonService.selectStudentExistence(studentId);
+        if (EmptyUtil.isEmpty(studentList)){
+            return new Response(-1,"没有对应学生或学生未学习课程");
+        }
+        //查看关系表中对应的学生id是否有对应的课程 通过学生id 查找对应的课程;
+        for (int i = 0; i < studentList.size(); i++) {
+             Long classIdInDb = studentList.get(i).getClassId();
+             if (classIdInDb.equals(classId)){
+                 List list = lessonService.selectStudentLesson(studentId, classId);
+                 log.info("查询的对应信息是 {}", list);
+                 return new Response(200,"success",list);
+             }
+        }
+        return new Response(-1,"该学生未学习对应课程");
     }
 }
